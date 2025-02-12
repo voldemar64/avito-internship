@@ -1,0 +1,117 @@
+.profile {
+    height: calc(100vh - 279px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 74px 0 120px;
+    background-color: #FEDEA1;
+}
+
+.profile__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.profile__title {
+    margin: 0 0 123px;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #2B2D42;
+}
+
+.profile__input-container {
+    width: 410px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    line-height: 13px;
+    color: #2B2D42;
+    padding: 18px 0 12px;
+    border-bottom: 1px solid #424242;
+}
+
+.profile__input-container:last-of-type {
+    border: none;
+    padding-top: 17px;
+    padding-bottom: 0;
+    margin-bottom: 100px;
+}
+
+.profile__label {
+    font-weight: 500;
+}
+
+.profile__input {
+    text-align: right;
+    color: #2B2D42;
+    background-color: transparent;
+    border: none;
+    min-width: 60%;
+}
+
+.profile__submit {
+    background-color: transparent;
+    color: #6FB0B6;
+    border: none;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    transition: opacity .3s linear;
+}
+
+.profile__submit_disabled {
+    opacity: 0.6;
+    color: rgba(139, 139, 139, 1);
+    cursor: default;
+}
+
+.profile__submit:hover {
+    opacity: .5;
+}
+
+.profile__signout {
+    width: 136px;
+    align-self: center;
+    background-color: transparent;
+    text-decoration: none;
+    border: none;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    color: #EE3465;
+    transition: opacity .3s linear;
+}
+
+.profile__signout:hover {
+    opacity: .5;
+}
+
+@media screen and (max-width: 1279px) {
+    .profile {
+        padding: 238px 0 269px;
+    }
+
+    .profile__input-container:last-of-type {
+        margin-bottom: 210px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .profile {
+        padding: 70px 0 40px;
+    }
+
+    .profile__input-container {
+        width: 260px;
+    }
+
+    .profile__input-container:last-of-type {
+        margin-bottom: 379px;
+    }
+}

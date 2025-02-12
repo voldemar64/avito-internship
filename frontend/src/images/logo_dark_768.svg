@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="25px" fill="#000000" version="1.1" viewBox="0 0 2230 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+
+
+
+
+
+
+
+        <rect y="12.8" width="51.2" height="486.4" fill="#6FB0B6"/>
+    <rect x="51.2" y="396.8" width="76.8" height="102.4" fill="#FEDEA1"/>
+    <rect x="51.2" y="12.8" width="76.8" height="384" fill="#6FB0B6"/>
+    <g fill="#538489">
+            <rect x="230.4" y="192" width="102.4" height="102.4"/>
+        <rect x="332.8" y="396.8" width="102.4" height="102.4"/>
+        </g>
+    <rect x="128" y="12.8" width="51.2" height="486.4" fill="#6FB0B6"/>
+    <g fill="#538489">
+            <rect x="332.8" y="294.4" width="102.4" height="102.4"/>
+        <rect x="230.4" y="294.4" width="102.4" height="102.4"/>
+        <rect x="230.4" y="396.8" width="102.4" height="102.4"/>
+        <rect x="332.8" y="192" width="102.4" height="102.4"/>
+        </g>
+    <path d="m460.8 486.4h-12.8v-307.2h-217.6v307.2h-25.6v-486.4h-204.8v486.4h-12.8c-7.074 0-12.8 5.726-12.8 12.8s5.726 12.8 12.8 12.8h486.4c7.074 0 12.8-5.726 12.8-12.8-12.8-7.074-18.526-12.8-25.6-12.8zm-422.4 0h-25.6v-460.8h25.6v460.8zm76.8 0h-51.2v-76.8h51.2v76.8zm0-102.4h-51.2v-358.4h51.2v358.4zm51.2 102.4h-25.6v-460.8h25.6v460.8zm153.6 0h-76.8v-76.8h76.8v76.8zm0-102.4h-76.8v-76.8h76.8v76.8zm0-102.4h-76.8v-76.8h76.8v76.8zm102.4 204.8h-76.8v-76.8h76.8v76.8zm0-102.4h-76.8v-76.8h76.8v76.8zm0-102.4h-76.8v-76.8h76.8v76.8z" fill="#573A32"/>
+
+    <text x="480" y="500" fill="#2B2D42" font-family="Inter, Arial, sans-serif" font-size="380" font-weight="700">SiteScout</text>
+
+
+</svg>
