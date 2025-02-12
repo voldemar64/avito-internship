@@ -58,19 +58,6 @@ export function resetPassword(email, password, code) {
     .catch((err) => console.log(`не удалось сменить пароль: ${err}`))
 }
 
-export function checkToken(token) {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(handleRes)
-    .catch((err) => console.log(err));
-}
-
 function handleRes(res) {
   if (res.ok) {
     return res.json();

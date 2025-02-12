@@ -57,7 +57,7 @@ class MainApi {
 }
 
 const api = new MainApi(
-  "http://localhost:5000", // адрес нашего API
+  "http://localhost:5000",
   {
     Accept: "application/json",
     "Content-Type": "application/json",
