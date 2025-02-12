@@ -8,6 +8,7 @@ import Login from "../login/Login";
 import Register from "../register/Register";
 import ResetPassword from "../reset_password/ResetPassword";
 import Profile from "../profile/Profile";
+import Posts from "../posts_landing/posts/Posts";
 import NotFound from "../not_found/NotFound";
 import InfoTooltip from "../infotooltip/InfoTooltip";
 import SideBar from "../sidebar/SideBar";
@@ -17,6 +18,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useWindowWidth } from "../../utils/windowWidth";
 import * as auth from "../../utils/auth";
 import mainApi from "../../utils/mainApi";
+import postsApi from "../../utils/postsApi";
 
 import tick from "../../images/tick.svg";
 import cross from "../../images/cross.svg";
@@ -30,6 +32,14 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [tokenChecked, setTokenChecked] = React.useState(false);
+  
+  const [searchDone, setSearchDone] = React.useState(false);
+
+  const [listLength, setListLength] = React.useState(0);
+
+  const [localApiPosts, setLocalApiPosts] = React.useState([]);
+  const [apiFilteredPosts, setApiFilteredPosts] = React.useState([]);
+
 
   const navigate = useNavigate();
   const token = localStorage.getItem("jwt");
@@ -43,7 +53,6 @@ function App() {
             setTokenChecked(true);
             setLoggedIn(true);
             setCurrentUser(res);
-            console.log(res.user);
           } else {
             setTokenChecked(false);
             handleSignOut();
@@ -58,6 +67,20 @@ function App() {
       setTokenChecked(false);
     }
   }, [token]);
+
+  React.useEffect(() => {
+    if (loggedIn && !(localStorage.getItem('posts'))) {
+      postsApi.getInitialPosts()
+          .then((posts) => {
+            localStorage.setItem('posts', JSON.stringify(posts));
+            console.log(posts);
+          })
+          .catch(err => console.log(`Ошибка при получении объявлений: ${err}`))
+    }
+
+    const allPosts = JSON.parse(localStorage.getItem('posts'));
+    setLocalApiPosts(allPosts);
+  }, [loggedIn])
 
   function handleRegister(name, surname, phone, email, password) {
     auth
@@ -147,6 +170,11 @@ function App() {
     setTokenChecked(false);
     setLoggedIn(false);
     setCurrentUser({});
+    setApiFilteredPosts([])
+    localStorage.removeItem('savedPosts')
+    localStorage.removeItem('filteredPosts')
+    localStorage.removeItem('savedCheck')
+    localStorage.removeItem('savedSearchValue')
     localStorage.removeItem("jwt");
     navigate("/");
   }
@@ -167,6 +195,34 @@ function App() {
         setPopupPhoto(tick);
         setIsInfoTooltipOpen(true);
       });
+  }
+
+  function durationFilter(toggle) {
+    const filteredPosts = JSON.parse(localStorage.getItem('filteredMovies'))
+
+    if (toggle && filteredPosts) {
+      const shorts = filteredPosts.filter((i) => i.duration <= SHORT_FILMS)
+      setApiFilteredPosts(shorts)
+    } else {
+      setApiFilteredPosts(filteredPosts)
+    }
+  }
+
+  function handleSearch(input) {
+    const filteredSearch = (input === '') ? [] : localApiPosts.filter((i) => {
+      const inputs = input.toLowerCase();
+      const name = i.name.toLowerCase();
+
+      return (name.includes(inputs) ? i : null)
+    })
+    localStorage.setItem('filteredPosts', JSON.stringify(filteredSearch))
+    setApiFilteredPosts(filteredSearch)
+    console.log(filteredSearch)
+    setSearchDone(input !== '')
+  }
+
+  function addPosts() {
+    setListLength(listLength + 5)
   }
 
   function handleInfoTooltip() {
@@ -213,6 +269,21 @@ function App() {
                 onSubmit={handleEditProfile}
                 signOut={handleSignOut}
                 loggedIn={loggedIn}
+                tokenChecked={tokenChecked}
+              />
+            }
+          />
+          <Route
+            path="/list"
+            element={
+              <Posts
+                durationFilter={durationFilter}
+                handleSearch={handleSearch}
+                posts={apiFilteredPosts}
+                addPosts={addPosts}
+                listLength={listLength}
+                searchDone={searchDone}
+                logggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
             }
