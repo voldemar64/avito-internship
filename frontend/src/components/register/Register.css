@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 396px;
     margin: 0 auto;
+    padding-bottom: 30px;
 }
 
 .register_type_big {
@@ -59,7 +60,7 @@
 .register__form {
     display: flex;
     flex-direction: column;
-    margin: 40px 0 16px;
+    margin: 40px 16px 0;
     gap: 20px;
 }
 

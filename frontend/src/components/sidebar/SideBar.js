@@ -1,9 +1,15 @@
 import "./SideBar.css";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import profilePath from "../../images/profile.svg";
 
 function SideBar(props) {
+    const location = useLocation();
+    const isMain = location.pathname === "/";
+    const isProfile = location.pathname === "/profile";
+    const isForm = location.pathname === "/form";
+    const isList = location.pathname === "/list";
+
   return (
     <section className={`side-bar${props.isOpen ? " side-bar_visible" : ""}`}>
       <button
@@ -13,19 +19,19 @@ function SideBar(props) {
       />
       <div className="side-bar__container">
         <Link
-          className="side-bar__button"
+          className={`side-bar__button${isMain ? " side-bar__button_active" : ""}`}
           to="/"
           onClick={props.onClose}>
           Главная
         </Link>
         <Link
-          className="side-bar__button"
+          className={`side-bar__button${isForm ? " side-bar__button_active" : ""}`}
           to="/form"
           onClick={props.onClose}>
-          Поиск
+          Разместить объявление
         </Link>
         <Link
-          className="side-bar__button"
+          className={`side-bar__button${isList ? " side-bar__button_active" : ""}`}
           to="/list"
           onClick={props.onClose}
         >
@@ -33,7 +39,7 @@ function SideBar(props) {
         </Link>
       </div>
       <Link
-        className="side-bar__button side-bar__button_profile"
+        className={`side-bar__button side-bar__button_profile${isProfile ? " side-bar__button_active" : ""}`}
         to="/profile"
         onClick={props.onClose}
       >

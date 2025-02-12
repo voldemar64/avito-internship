@@ -13,7 +13,7 @@ function Footer() {
     pathName.pathname === "/profile" ? (
     <footer className="footer">
       <p className="footer__title">
-        SiteScout - лучшее приложение для поиска недвижимости на рынке
+        SiteScout - лучшее приложение для поиска всего
       </p>
       <div className="footer__nav">
         <p className="footer__date">&copy; SiteScout {year}</p>
@@ -30,7 +30,7 @@ function Footer() {
             className="footer__link"
             rel="noreferrer"
             target="_blank"
-            href="https://github.com/voldemar64/SiteScout"
+            href="https://github.com/voldemar64/avito-internship"
           >
             Github
           </a>

@@ -11,6 +11,9 @@
     visibility: hidden;
     opacity: 0;
     transition: visibility .4s, opacity .4s;
+    border-left: 1px solid #2B2D42;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
 
 .side-bar_visible {
@@ -23,8 +26,8 @@
     border: none;
     cursor: pointer;
     position: absolute;
-    top: 22.5px;
-    right: 22.5px;
+    top: 23px;
+    right: 23px;
     width: 22px;
     height: 22px;
     background: center center no-repeat url("../../images/close.svg");
@@ -50,6 +53,10 @@
     text-align: center;
     color: #2B2D42;
     transition: opacity .4s ease-in;
+}
+
+.side-bar__button_active {
+    text-decoration: underline;
 }
 
 .side-bar__container > .side-bar__button:hover {
