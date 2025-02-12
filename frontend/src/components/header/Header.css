@@ -72,6 +72,14 @@
   border-radius: 3px;
 }
 
+.header__link_type_form {
+
+}
+
+.header__link_type_list {
+
+}
+
 .header__link:hover {
   opacity: 0.5;
 }
