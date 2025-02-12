@@ -1,0 +1,55 @@
+﻿# Node modules
+node_modules/
+
+# Build output
+build/
+
+# Logs
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+jspm_packages/
+
+# Environment variables
+.env
+.env.*.local
+
+# WebStorm project files (исключено для командной работы)
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Coverage directory used by testing tools
+coverage/
+
+# Parcel-bundler cache
+.cache/
+
+# eslint cache
+.eslintcache
+
+# Generated files
+*.log
+*.gz
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Ignore public files you don't want to track (if any)
+public/static/
+
+# Optional React specific ignores
+serviceWorker.js
+src/setupProxy.js
+src/setupTests.js
+
+# Ignore local specific files
+*.local
