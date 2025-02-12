@@ -1,5 +1,9 @@
-﻿const express = require('express');
-const bodyParser = require('body-parser');
+﻿import express from 'express';
+import bodyParser from 'body-parser';
+import logger from '../backend_auth/middlewares/logger.js';
+import corsMiddleware from '../backend_auth/middlewares/cors.js';
+
+const { requestLogger, errorLogger } = logger;
 
 const ItemTypes = {
     REAL_ESTATE: 'Недвижимость',
@@ -9,6 +13,10 @@ const ItemTypes = {
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(corsMiddleware);
+app.use(requestLogger);
+app.use(errorLogger);
 
 // In-memory хранилище для объявлений
 let items = [];
@@ -105,7 +113,7 @@ app.delete('/items/:id', (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

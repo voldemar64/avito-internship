@@ -1,5 +1,5 @@
 {
-  "name": "site_scout_auth",
+  "name": "avito_internship_auth",
   "version": "1.0.0",
   "description": "Backend with registration & authentication functionality",
   "main": "app.js",
