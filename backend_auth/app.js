@@ -16,7 +16,7 @@ const app = express();
 
 const { requestLogger, errorLogger } = logger;
 const { login, createUser, resetPassword, sendCode } = usersController;
-const { signinValidation, signupValidation} = validation;
+const { signinValidation, signupValidation } = validation;
 
 // Middleware
 app.use(express.json());
@@ -46,10 +46,7 @@ app.use(errorHandler);
 // Database connection
 (async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/sitescoutdb', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect('mongodb://127.0.0.1:27017/avitointernshipdb');
         logger.logger.info('База данных подключена');
     } catch (err) {
         logger.logger.error(`Ошибка подключения к базе данных: ${err.message}`);
