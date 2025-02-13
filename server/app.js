@@ -1,120 +1,53 @@
 ﻿import express from 'express';
+import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import { errors } from 'celebrate';
+import auth from '../backend_auth/middlewares/auth.js';
 import logger from '../backend_auth/middlewares/logger.js';
 import corsMiddleware from '../backend_auth/middlewares/cors.js';
+import errorHandler from "../backend_auth/middlewares/errors.js";
+import itemsRoutes from './routes/items.js';
+import NotFound from '../backend_auth/errors/NotFound.js';
 
+const PORT = process.env.PORT || 8080;
+const app = express();
+
+// Логгеры для запросов и ошибок
 const { requestLogger, errorLogger } = logger;
 
-const ItemTypes = {
-    REAL_ESTATE: 'Недвижимость',
-    AUTO: 'Авто',
-    SERVICES: 'Услуги',
-};
-
-const app = express();
+// Middleware для обработки JSON и URL-кодированных данных
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(corsMiddleware);
+
+// Логирование запросов и ошибок
 app.use(requestLogger);
 app.use(errorLogger);
 
-// In-memory хранилище для объявлений
-let items = [];
+// Защищенные маршруты
+app.use(auth);
+app.use('/items', itemsRoutes);
 
-const makeCounter = () => {
-    let count = 0;
-    return () => count++;
-};
-
-const itemsIdCounter = makeCounter();
-
-// Создание нового объявления
-app.post('/items', (req, res) => {
-    const { name, description, location, type, ...rest } = req.body;
-
-    // Validate common required fields
-    if (!name || !description || !location || !type) {
-        return res.status(400).json({ error: 'Missing required common fields' });
-    }
-
-    switch (type) {
-        case ItemTypes.REAL_ESTATE:
-            if (!rest.propertyType || !rest.area || !rest.rooms || !rest.price) {
-                return res
-                    .status(400)
-                    .json({ error: 'Missing required fields for Real estate' });
-            }
-            break;
-        case ItemTypes.AUTO:
-            if (!rest.brand || !rest.model || !rest.year || !rest.mileage) {
-                return res
-                    .status(400)
-                    .json({ error: 'Missing required fields for Auto' });
-            }
-            break;
-        case ItemTypes.SERVICES:
-            if (!rest.serviceType || !rest.experience || !rest.cost) {
-                return res
-                    .status(400)
-                    .json({ error: 'Missing required fields for Services' });
-            }
-            break;
-        default:
-            return res.status(400).json({ error: 'Invalid type' });
-    }
-
-    const item = {
-        id: itemsIdCounter(),
-        name,
-        description,
-        location,
-        type,
-        ...rest,
-    };
-
-    items.push(item);
-    res.status(201).json(item);
+// Обработка ошибок
+app.use(errorLogger);
+app.use('*', (_req, res, next) => {
+    next(new NotFound('Страница не найдена'));
 });
+app.use(errors());
+app.use(errorHandler);
 
-// Получение всех объявлений
-app.get('/items', (req, res) => {
-    res.json(items);
-});
-
-// Получение объявления по его id
-app.get('/items/:id', (req, res) => {
-    const item = items.find(i => i.id === parseInt(req.params.id, 10));
-    if (item) {
-        res.json(item);
-    } else {
-        res.status(404).send('Item not found');
+// Подключение к базе данных
+(async () => {
+    try {
+        await mongoose.connect('mongodb://127.0.0.1:27017/avitointernshipdb');
+        logger.logger.info('База данных подключена');
+    } catch (err) {
+        logger.logger.error(`Ошибка подключения к базе данных: ${err.message}`);
+        process.exit(1);
     }
-});
+})();
 
-// Обновление объявления по его id
-app.put('/items/:id', (req, res) => {
-    const item = items.find(i => i.id === parseInt(req.params.id, 10));
-    if (item) {
-        Object.assign(item, req.body);
-        res.json(item);
-    } else {
-        res.status(404).send('Item not found');
-    }
-});
-
-// Удаление объявления по его id
-app.delete('/items/:id', (req, res) => {
-    const itemIndex = items.findIndex(i => i.id === parseInt(req.params.id, 10));
-    if (itemIndex !== -1) {
-        items.splice(itemIndex, 1);
-        res.status(204).send();
-    } else {
-        res.status(404).send('Item not found');
-    }
-});
-
-const PORT = process.env.PORT || 8080;
-
+// Запуск сервера
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
