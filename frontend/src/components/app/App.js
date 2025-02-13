@@ -35,7 +35,7 @@ function App() {
   
   const [searchDone, setSearchDone] = React.useState(false);
 
-  const [listLength, setListLength] = React.useState(0);
+  const [listLength, setListLength] = React.useState(5);
 
   const [localApiPosts, setLocalApiPosts] = React.useState([]);
   const [apiFilteredPosts, setApiFilteredPosts] = React.useState([]);
@@ -69,11 +69,10 @@ function App() {
   }, [token]);
 
   React.useEffect(() => {
-    if (loggedIn && !(localStorage.getItem('posts'))) {
+    if (loggedIn) {
       postsApi.getInitialPosts()
           .then((posts) => {
             localStorage.setItem('posts', JSON.stringify(posts));
-            console.log(posts);
           })
           .catch(err => console.log(`Ошибка при получении объявлений: ${err}`))
     }
@@ -168,14 +167,15 @@ function App() {
 
   function handleSignOut() {
     setTokenChecked(false);
-    setLoggedIn(false);
-    setCurrentUser({});
+    setLoggedIn(false)
+    setCurrentUser({})
+    setLocalApiPosts([])
     setApiFilteredPosts([])
-    localStorage.removeItem('savedPosts')
+    localStorage.removeItem("posts")
     localStorage.removeItem('filteredPosts')
     localStorage.removeItem('savedCheck')
     localStorage.removeItem('savedSearchValue')
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("jwt")
     navigate("/");
   }
 
@@ -198,28 +198,34 @@ function App() {
   }
 
   function durationFilter(toggle) {
-    const filteredPosts = JSON.parse(localStorage.getItem('filteredMovies'))
+    const filteredPosts = JSON.parse(localStorage.getItem('filteredPosts'))
 
     if (toggle && filteredPosts) {
-      const shorts = filteredPosts.filter((i) => i.duration <= SHORT_FILMS)
-      setApiFilteredPosts(shorts)
+      const cars = filteredPosts.filter((i) => i.type === "Авто")
+      setApiFilteredPosts(cars)
     } else {
       setApiFilteredPosts(filteredPosts)
     }
   }
 
   function handleSearch(input) {
-    const filteredSearch = (input === '') ? [] : localApiPosts.filter((i) => {
-      const inputs = input.toLowerCase();
-      const name = i.name.toLowerCase();
+    if (localApiPosts && localApiPosts.length > 0) {
+      const filteredSearch = (input === '')
+          ? localApiPosts
+          : localApiPosts.filter((i) => {
+            const inputs = input.toLowerCase();
+            const name = i.name.toLowerCase();
+            return name.includes(inputs);
+          });
 
-      return (name.includes(inputs) ? i : null)
-    })
-    localStorage.setItem('filteredPosts', JSON.stringify(filteredSearch))
-    setApiFilteredPosts(filteredSearch)
-    console.log(filteredSearch)
-    setSearchDone(input !== '')
+      localStorage.setItem('filteredPosts', JSON.stringify(filteredSearch));
+      setApiFilteredPosts(filteredSearch || localApiPosts);
+      setSearchDone(input !== '');
+    } else {
+      console.log('Нет данных для поиска');
+    }
   }
+
 
   function addPosts() {
     setListLength(listLength + 5)
@@ -276,14 +282,15 @@ function App() {
           <Route
             path="/list"
             element={
-              <Posts
+              <ProtectedRoute
+                component={Posts}
                 durationFilter={durationFilter}
                 handleSearch={handleSearch}
                 posts={apiFilteredPosts}
                 addPosts={addPosts}
                 listLength={listLength}
                 searchDone={searchDone}
-                logggedIn={loggedIn}
+                loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
             }
