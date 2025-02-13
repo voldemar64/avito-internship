@@ -60,8 +60,7 @@
 }
 
 .side-bar__container > .side-bar__button:hover {
-    padding-bottom: 4px;
-    border-bottom: 2px solid #fff;
+    text-decoration: #8B8B8B underline;
 }
 
 .side-bar__account {

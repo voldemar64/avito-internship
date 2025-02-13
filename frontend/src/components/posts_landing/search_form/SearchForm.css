@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px #424242 solid;
+    border-bottom: 1px #8B8B8B solid;
     padding-bottom: 13px;
     margin-bottom: 33px;
 }
@@ -48,11 +48,11 @@
 
 .search-form__checkbox {
     --active: #444;
-    --active-inner: #3DDC84;
+    --active-inner: #6FB0B6;
     --disabled-inner: rgb(122, 122, 122);
     --focus: 2px rgba(39, 94, 254, .3);
     --border: #444;
-    --border-hover: #3DDC84;
+    --border-hover: #6FB0B6;
     --background: #202020;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -104,7 +104,7 @@
 .search-form__text {
     font-size: 13px;
     line-height: 18px;
-    color: #FFFFFF;
+    color: #8B8B8B;
     padding: 0;
     margin: 0;
 }
