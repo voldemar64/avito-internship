@@ -39,7 +39,7 @@
     }
 
     patchPost(data) {
-        return fetch(`${this._baseUrl}/cards/${data.id}`, {
+        return fetch(`${this._baseUrl}/items/${data._id}`, {
             method: 'PUT',
             headers:this._headers,
             body: JSON.stringify(data)
@@ -50,7 +50,7 @@
     }
 
     deletePost(id) {
-        return fetch(`${this._baseUrl}/cards/${id}`, {
+        return fetch(`${this._baseUrl}/items/${id}`, {
             method: 'DELETE',
             headers:this._headers
         })
