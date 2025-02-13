@@ -1,7 +1,7 @@
 import { Joi, celebrate } from 'celebrate';
 
 const nameSchema = Joi.string().min(2).max(100).required();
-const descriptionSchema = Joi.string().min(10).required();
+const descriptionSchema = Joi.string().required();
 const locationSchema = Joi.string().min(2).required();
 const typeSchema = Joi.string().valid('Недвижимость', 'Авто', 'Услуги').required();
 
