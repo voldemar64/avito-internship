@@ -77,9 +77,13 @@
     padding: 15px 120px 15px 15px;
     font-size: 13px;
     line-height: 16px;
-    background-color: rgba(139, 139, 139, .4);
+    background-color: rgba(175, 175, 175, .4);
     border-radius: 8px;
     border: none;
+}
+
+.register__input_inactive {
+    background-color: rgba(139, 139, 139, .6);
 }
 
 .register__error {
@@ -215,6 +219,7 @@
     }
 
     .register__button {
+        margin-top: 30px;
         width: 100%;
         font-size: 12px;
         line-height: 15px;
@@ -249,6 +254,10 @@
         width: 80px;
         font-size: 12px;
         line-height: 15px;
+    }
+
+    .register__button {
+        margin-top: 15px;
     }
 }
 
