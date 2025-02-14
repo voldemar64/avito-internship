@@ -26,21 +26,48 @@
             })
     }
 
-    addNewPost(data) {
+    addNewPost(id, data) {
+        const dataToSend = {
+            name: data.name,
+            description: data.description,
+            location: data.location,
+            type: data.type,
+            owner: id,
+        };
+
+        if (data.url) {
+            dataToSend.url = data.url;
+        }
+
+        if (data.type === "Авто") {
+            dataToSend.brand = data.brand;
+            dataToSend.model = data.model;
+            dataToSend.year = data.year;
+            if (data.mileage) {
+                dataToSend.mileage = data.mileage;
+            }
+        } else if (data.type === "Недвижимость") {
+            dataToSend.propertyType = data.propertyType;
+            dataToSend.area = data.area;
+            dataToSend.rooms = data.rooms;
+            dataToSend.price = data.price;
+        } else if (data.type === "Услуги") {
+            dataToSend.serviceType = data.serviceType;
+            dataToSend.experience = data.experience;
+            dataToSend.cost = data.cost;
+            if (data.schedule) {
+                dataToSend.schedule = data.schedule;
+            }
+        }
+
         return fetch(`${this._baseUrl}/items`, {
             method: 'POST',
             headers: this._headers,
-            body: JSON.stringify({
-                name: data.name,
-                description: data.description,
-                location: data.location,
-                type: data.type,
-            })
+            body: JSON.stringify(dataToSend),
         })
-            .then(res => {
-                return this._handleRes(res);
-            })
+          .then(res => this._handleRes(res))
     }
+
 
     patchPost(data) {
         return fetch(`${this._baseUrl}/items/${data._id}`, {
