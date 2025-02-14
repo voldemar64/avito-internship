@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 
 import Header from "../header/Header";
 import Main from "../main_landing/main/Main";
@@ -9,7 +9,8 @@ import Register from "../register/Register";
 import ResetPassword from "../reset_password/ResetPassword";
 import Profile from "../profile/Profile";
 import Posts from "../posts_landing/posts/Posts";
-import Post from "../posts_landing/post/Post";
+import Post from "../post/Post";
+import PostsForm from "../posts_form/PostsForm";
 import NotFound from "../not_found/NotFound";
 import InfoTooltip from "../infotooltip/InfoTooltip";
 import SideBar from "../sidebar/SideBar";
@@ -35,7 +36,7 @@ function App() {
   const [tokenChecked, setTokenChecked] = React.useState(false);
   
   const [searchDone, setSearchDone] = React.useState(false);
-  const [selectedPost, setSelectedPost] = React.useState(0);
+  const [selectedPost, setSelectedPost] = React.useState(null);
 
   const [listLength, setListLength] = React.useState(5);
 
@@ -75,12 +76,13 @@ function App() {
       postsApi.getInitialPosts()
           .then((posts) => {
             localStorage.setItem('posts', JSON.stringify(posts));
+            const allPosts = JSON.parse(localStorage.getItem('posts'));
+            setLocalApiPosts(allPosts);
+            setApiFilteredPosts(allPosts);
           })
           .catch(err => console.log(`Ошибка при получении объявлений: ${err}`))
     }
 
-    const allPosts = JSON.parse(localStorage.getItem('posts'));
-    setLocalApiPosts(allPosts);
   }, [loggedIn])
 
   function handleRegister(name, surname, phone, email, password) {
@@ -186,7 +188,7 @@ function App() {
       .patchUserInfo(user)
       .then((res) => {
         if (res) {
-          setCurrentUser(res.user);
+          setCurrentUser(res);
           setPopupTitle("Данные пользователя изменены");
           setPopupPhoto(tick);
           setIsInfoTooltipOpen(true);
@@ -211,7 +213,7 @@ function App() {
   }
 
   function handleSearch(input) {
-    if (localApiPosts && localApiPosts.length > 0) {
+    if (localApiPosts) {
       const filteredSearch = (input === '')
           ? localApiPosts
           : localApiPosts.filter((i) => {
@@ -228,20 +230,25 @@ function App() {
     }
   }
 
-  function handleAddPost(card) {
-    postsApi.addNewPost(card)
+  function handleAddPost(id, card) {
+    postsApi.addNewPost(id, card)
       .then(newItem => {
         setLocalApiPosts([newItem, ...localApiPosts]);
       })
       .catch(err => {
         console.log(`карточка не добавилась:  ${err}`)
       })
-    }
+  }
+
+  function handleEditPost(card) {
+
+  }
 
   function handleItemDelete(card) {
     postsApi.deletePost(card._id)
       .then(() => {
         setLocalApiPosts((cards) => cards.filter((c) => c._id !== card._id && c))
+        setApiFilteredPosts((cards) => cards.filter((c) => c._id !== card._id))
       })
       .catch(err => {
         console.log(`карточка не удаляется: ${err}`)
@@ -262,8 +269,9 @@ function App() {
     }
   }
 
-  function handleItemClick(id) {
-      setSelectedPost(id)
+  function handleItemClick(item) {
+    setSelectedPost(item)
+    navigate(`/list/${item._id}`)
   }
 
   function handleSideBar() {
@@ -315,8 +323,20 @@ function App() {
                 addPosts={addPosts}
                 onCardClick={handleItemClick}
                 onCardDelete={handleItemDelete}
+                onEditButtonClick={handleEditPost}
                 listLength={listLength}
                 searchDone={searchDone}
+                loggedIn={loggedIn}
+                tokenChecked={tokenChecked}
+              />
+            }
+          />
+          <Route
+            path="/form"
+            element={
+              <ProtectedRoute
+                component={PostsForm}
+                onSubmit={handleAddPost}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
@@ -329,6 +349,7 @@ function App() {
                 component={Post}
                 post={selectedPost}
                 onCardDelete={handleItemDelete}
+                onEditButtonClick={handleEditPost}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
