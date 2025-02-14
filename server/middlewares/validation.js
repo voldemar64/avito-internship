@@ -1,9 +1,10 @@
 import { Joi, celebrate } from 'celebrate';
 
-const nameSchema = Joi.string().min(2).max(100).required();
+const nameSchema = Joi.string().required();
 const descriptionSchema = Joi.string().required();
-const locationSchema = Joi.string().min(2).required();
+const locationSchema = Joi.string().required();
 const typeSchema = Joi.string().valid('Недвижимость', 'Авто', 'Услуги').required();
+const urlSchema = Joi.string().uri().optional();
 
 // Валидация для недвижимости
 const realEstateValidation = Joi.object().keys({
@@ -11,6 +12,8 @@ const realEstateValidation = Joi.object().keys({
     description: descriptionSchema,
     location: locationSchema,
     type: typeSchema,
+    owner: Joi.string().hex().length(24).required(),
+    url: urlSchema,
     propertyType: Joi.string().required(),
     area: Joi.number().min(1).required(),
     rooms: Joi.number().min(1).required(),
@@ -23,6 +26,8 @@ const autoValidation = Joi.object().keys({
     description: descriptionSchema,
     location: locationSchema,
     type: typeSchema,
+    owner: Joi.string().hex().length(24).required(),
+    url: urlSchema,
     brand: Joi.string().required(),
     model: Joi.string().required(),
     year: Joi.number().min(1900).max(new Date().getFullYear()).required(),
@@ -35,20 +40,19 @@ const servicesValidation = Joi.object().keys({
     description: descriptionSchema,
     location: locationSchema,
     type: typeSchema,
+    owner: Joi.string().hex().length(24).required(),
+    url: urlSchema,
     serviceType: Joi.string().required(),
     experience: Joi.number().min(1).required(),
     cost: Joi.number().min(0).required(),
 });
 
-// Валидация для url
-const urlValidation = Joi.string().uri().optional();
-
 // Основная валидация для post и patch
 const postItemValidation = celebrate({
     body: Joi.object().keys({
         type: typeSchema,
-        owner: Joi.string().hex().length(24).required(), // Валидация для owner
-        url: urlValidation, // Валидация для url
+        owner: Joi.string().hex().length(24).required(),
+        url: urlSchema,
     }).unknown(true).custom((value, helpers) => {
         if (value.type === 'Недвижимость') {
             const { error } = realEstateValidation.validate(value);
@@ -68,7 +72,6 @@ const postItemValidation = celebrate({
 const patchItemValidation = celebrate({
     body: Joi.object().keys({
         type: typeSchema,
-        url: urlValidation, // Валидация для url
     }).unknown(true).custom((value, helpers) => {
         if (value.type === 'Недвижимость') {
             const { error } = realEstateValidation.validate(value);

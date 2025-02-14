@@ -16,12 +16,26 @@ const itemSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
-        minlength: 10,
     },
     location: {
         type: String,
+        required: true
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        minlength: 2,
+        ref: 'user',
+    },
+    url: {
+        type: String,
+        default: 'https://www.laser-bulat.ru/upload/medialibrary/735/2lj6sel8ygv8p6j2xj85gplt9ufd5xpn.png',
+        validate: {
+            validator: function(value) {
+                const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+                return value === '' || regex.test(value);
+            },
+            message: 'Неверный формат URL.',
+        },
     },
     type: {
         type: String,
@@ -79,22 +93,6 @@ const itemSchema = new mongoose.Schema({
         type: Number,
         required: function() { return this.type === ItemTypes.SERVICES; },
         min: 0,
-    },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'user',
-    },
-    url: {
-        type: String,
-        default: 'https://www.laser-bulat.ru/upload/medialibrary/735/2lj6sel8ygv8p6j2xj85gplt9ufd5xpn.png',
-        validate: {
-            validator: function(value) {
-                const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-                return value === '' || regex.test(value);
-            },
-            message: 'Неверный формат URL.',
-        },
     },
 });
 

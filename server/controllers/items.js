@@ -30,14 +30,13 @@ const getCurrentItem = async (req, res, next) => {
 
 const postItem = async (req, res, next) => {
     try {
-        const { name, description, location, type, url, owner, ...rest } = req.body;
+        const { name, description, location, type, owner, ...rest } = req.body;
 
         const item = new Item({
             name,
             description,
             location,
             type,
-            url,
             owner,
             ...rest,
         });
@@ -81,7 +80,7 @@ const deleteItem = async (req, res, next) => {
             throw new NotFound('Объявление по указанному _id не найдено.');
         }
 
-        res.status(204).send();
+        res.status(204).send("Item deleted");
     } catch (err) {
         if (err.name === 'CastError') {
             next(new ValidationError('Передан некорректный _id объявления.'));
