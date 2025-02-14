@@ -38,6 +38,7 @@ function App() {
   const [listLength, setListLength] = React.useState(5);
 
   const [localApiPosts, setLocalApiPosts] = React.useState([]);
+  const [localSavedPosts, setLocalSavedPosts] = React.useState([]);
   const [apiFilteredPosts, setApiFilteredPosts] = React.useState([]);
 
 
@@ -226,6 +227,34 @@ function App() {
     }
   }
 
+  function handleLikePost(post) {
+    const liked = localSavedPosts.some((i) => post._id === i._id);
+
+    if (!liked) {
+      mainApi.savePost(post)
+          .then((res) => {
+            const posts = [...localSavedPosts, res]
+            localStorage.setItem('savedPosts', JSON.stringify(posts))
+            localStorage.setItem('savedFilteredPosts', JSON.stringify(posts))
+            setLocalSavedPosts(posts)
+          })
+    } else {
+      const cardToDelete = localSavedPosts.find((i) => post._id === i._id)
+      handleDislikePost(cardToDelete)
+    }
+  }
+
+  function handleDislikePost(post) {
+    mainApi.deletePost(post)
+        .then((item) => {
+          localStorage.setItem('savedPosts', JSON.stringify(localSavedPosts.filter((i) => i._id !== item._id)))
+          localStorage.setItem('savedFilteredPosts', JSON.stringify(savedFilteredPosts.filter((i) => i._id !== item._id)))
+          const posts = JSON.parse(localStorage.getItem('savedPosts'));
+          const filteredPosts = JSON.parse(localStorage.getItem('savedFilteredPosts'));
+          setSavedFilteredPosts(filteredPosts)
+          setLocalSavedPosts(posts)
+        })
+  }
 
   function addPosts() {
     setListLength(listLength + 5)

@@ -80,6 +80,11 @@ const itemSchema = new mongoose.Schema({
         required: function() { return this.type === ItemTypes.SERVICES; },
         min: 0,
     },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'user',
+    },
 });
 
 export default mongoose.model('Item', itemSchema);

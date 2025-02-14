@@ -44,6 +44,7 @@ const servicesValidation = Joi.object().keys({
 const postItemValidation = celebrate({
     body: Joi.object().keys({
         type: typeSchema,
+        owner: Joi.string().hex().length(24).required(), // Валидация для owner
     }).unknown(true).custom((value, helpers) => {
         if (value.type === 'Недвижимость') {
             const { error } = realEstateValidation.validate(value);
