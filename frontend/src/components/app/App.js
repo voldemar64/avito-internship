@@ -9,6 +9,7 @@ import Register from "../register/Register";
 import ResetPassword from "../reset_password/ResetPassword";
 import Profile from "../profile/Profile";
 import Posts from "../posts_landing/posts/Posts";
+import Post from "../posts_landing/post/Post";
 import NotFound from "../not_found/NotFound";
 import InfoTooltip from "../infotooltip/InfoTooltip";
 import SideBar from "../sidebar/SideBar";
@@ -34,11 +35,11 @@ function App() {
   const [tokenChecked, setTokenChecked] = React.useState(false);
   
   const [searchDone, setSearchDone] = React.useState(false);
+  const [selectedPost, setSelectedPost] = React.useState(0);
 
   const [listLength, setListLength] = React.useState(5);
 
   const [localApiPosts, setLocalApiPosts] = React.useState([]);
-  const [localSavedPosts, setLocalSavedPosts] = React.useState([]);
   const [apiFilteredPosts, setApiFilteredPosts] = React.useState([]);
 
 
@@ -227,33 +228,24 @@ function App() {
     }
   }
 
-  function handleLikePost(post) {
-    const liked = localSavedPosts.some((i) => post._id === i._id);
-
-    if (!liked) {
-      mainApi.savePost(post)
-          .then((res) => {
-            const posts = [...localSavedPosts, res]
-            localStorage.setItem('savedPosts', JSON.stringify(posts))
-            localStorage.setItem('savedFilteredPosts', JSON.stringify(posts))
-            setLocalSavedPosts(posts)
-          })
-    } else {
-      const cardToDelete = localSavedPosts.find((i) => post._id === i._id)
-      handleDislikePost(cardToDelete)
+  function handleAddPost(card) {
+    postsApi.addNewPost(card)
+      .then(newItem => {
+        setLocalApiPosts([newItem, ...localApiPosts]);
+      })
+      .catch(err => {
+        console.log(`карточка не добавилась:  ${err}`)
+      })
     }
-  }
 
-  function handleDislikePost(post) {
-    mainApi.deletePost(post)
-        .then((item) => {
-          localStorage.setItem('savedPosts', JSON.stringify(localSavedPosts.filter((i) => i._id !== item._id)))
-          localStorage.setItem('savedFilteredPosts', JSON.stringify(savedFilteredPosts.filter((i) => i._id !== item._id)))
-          const posts = JSON.parse(localStorage.getItem('savedPosts'));
-          const filteredPosts = JSON.parse(localStorage.getItem('savedFilteredPosts'));
-          setSavedFilteredPosts(filteredPosts)
-          setLocalSavedPosts(posts)
-        })
+  function handleItemDelete(card) {
+    postsApi.deletePost(card._id)
+      .then(() => {
+        setLocalApiPosts((cards) => cards.filter((c) => c._id !== card._id && c))
+      })
+      .catch(err => {
+        console.log(`карточка не удаляется: ${err}`)
+    });
   }
 
   function addPosts() {
@@ -268,6 +260,10 @@ function App() {
     if (e.target.classList.contains("popup")) {
       handleInfoTooltip();
     }
+  }
+
+  function handleItemClick(id) {
+      setSelectedPost(id)
   }
 
   function handleSideBar() {
@@ -317,8 +313,22 @@ function App() {
                 handleSearch={handleSearch}
                 posts={apiFilteredPosts}
                 addPosts={addPosts}
+                onCardClick={handleItemClick}
+                onCardDelete={handleItemDelete}
                 listLength={listLength}
                 searchDone={searchDone}
+                loggedIn={loggedIn}
+                tokenChecked={tokenChecked}
+              />
+            }
+          />
+          <Route
+            path="/list/:id"
+            element={
+              <ProtectedRoute
+                component={Post}
+                post={selectedPost}
+                onCardDelete={handleItemDelete}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />

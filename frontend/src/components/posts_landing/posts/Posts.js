@@ -2,7 +2,7 @@
 import PostsCardsList from "../posts_card_list/PostsCardsList";
 import React from "react";
 
-function Posts({ durationFilter, handleSearch, posts, addPosts, listLength, searchDone }) {
+function Posts({ durationFilter, handleSearch, posts, addPosts, onCardClick, onCardDelete, listLength, searchDone }) {
 
     return (
         <>
@@ -13,6 +13,8 @@ function Posts({ durationFilter, handleSearch, posts, addPosts, listLength, sear
             <PostsCardsList
                 posts={posts}
                 addPosts={addPosts}
+                onCardClick={onCardClick}
+                onCardDelete={onCardDelete}
                 listLength={listLength}
                 searchDone={searchDone}
             />
