@@ -9,9 +9,9 @@
     display: flex;
     justify-content: center;
     border-radius: 6px;
-    border: #424242 1px solid;
-    color: white;
-    background-color: #202020;
+    border: none;
+    color: #fff;
+    background-color: #2B2D42;
     padding: 11px 0;
     cursor: pointer;
     transition: opacity 0.3s linear;
@@ -19,6 +19,7 @@
 
 .preloader__button:hover {
     opacity: 0.5;
+    transition: opacity 0.3s linear;
 }
 
 @media screen and (max-width: 1279px) {

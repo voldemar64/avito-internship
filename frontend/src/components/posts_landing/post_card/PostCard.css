@@ -1,11 +1,19 @@
 ﻿.card {
-    background-color: #222222;
+    position: relative;
+    background-color: #ffe6c1;
     width: 360px;
+    padding-bottom: 16px;
     display: flex;
     flex-direction: column;
     gap: 18px;
-    padding: 18px 0;
-    border-radius: 6px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.25);
+    transition: box-shadow 0.2s;
 }
 
 .card__container {
@@ -14,16 +22,17 @@
     padding: 0 18px;
 }
 
-.card__title {
-    padding: 0;
-    margin: 0;
-    font-size: 15px;
-    line-height: 18px;
-    color: #FFFFFF;
+.card__heading {
+    font-family: 'Inter', 'Arial', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    color: #2B2D42;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 200px;
+    width: calc(100% - 50px);
+    margin: 0;
 }
 
 .card__duration {
@@ -34,13 +43,72 @@
     color: #8B8B8B;
 }
 
-.card__image {
-    width: 360px;
-    height: 200px;
+.card__photo {
+    box-sizing: border-box;
+    object-fit: cover;
+    width: 100%;
+    height: 282px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    transition: opacity 0.3s linear;
 }
 
-.card__like:hover {
-    opacity: .5;
+.card__photo:hover {
+    opacity: 0.8;
+    transition: opacity 0.2s linear;
+}
+
+.card__description {
+    display: flex;
+    justify-content: space-between;
+    width: 87.2%;
+    padding: 21px 15px 26px 21px;
+}
+
+.card__edit-button {
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: #2B2D42;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #6FB0B6;
+    transition: opacity 0.3s linear;
+}
+
+.card__edit-button:hover {
+    opacity: 0.5;
+    transition: opacity 0.2s linear;
+}
+
+.card__edit-button_hidden {
+    display: none;
+}
+
+.card__delete-button {
+    position: absolute;
+    background: center center no-repeat url('../../../images/trash.svg') transparent;
+    border: none;
+    top: 18px;
+    right: 15px;
+    width: 18px;
+    height: 19px;
+    cursor: pointer;
+    transition: opacity .3s;
+}
+
+.card__delete-button_hidden {
+    display: none;
+}
+
+.card__delete-button:hover {
+    opacity: .6;
+    transition: opacity .2s;
+}
+
+.card__delete-button:focus {
+    outline: #5982fa 3px solid;
 }
 
 @media screen and (max-width: 1279px) {
@@ -58,7 +126,7 @@
     .card {
         width: 300px;
         gap: 14px;
-        padding: 14px 0;
+        padding-bottom: 14px;
     }
 
     .card__title {
