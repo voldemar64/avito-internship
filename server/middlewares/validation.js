@@ -40,11 +40,15 @@ const servicesValidation = Joi.object().keys({
     cost: Joi.number().min(0).required(),
 });
 
+// Валидация для url
+const urlValidation = Joi.string().uri().optional();
+
 // Основная валидация для post и patch
 const postItemValidation = celebrate({
     body: Joi.object().keys({
         type: typeSchema,
         owner: Joi.string().hex().length(24).required(), // Валидация для owner
+        url: urlValidation, // Валидация для url
     }).unknown(true).custom((value, helpers) => {
         if (value.type === 'Недвижимость') {
             const { error } = realEstateValidation.validate(value);
@@ -64,6 +68,7 @@ const postItemValidation = celebrate({
 const patchItemValidation = celebrate({
     body: Joi.object().keys({
         type: typeSchema,
+        url: urlValidation, // Валидация для url
     }).unknown(true).custom((value, helpers) => {
         if (value.type === 'Недвижимость') {
             const { error } = realEstateValidation.validate(value);

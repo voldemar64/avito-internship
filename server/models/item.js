@@ -85,6 +85,17 @@ const itemSchema = new mongoose.Schema({
         required: true,
         ref: 'user',
     },
+    url: {
+        type: String,
+        default: 'https://www.laser-bulat.ru/upload/medialibrary/735/2lj6sel8ygv8p6j2xj85gplt9ufd5xpn.png',
+        validate: {
+            validator: function(value) {
+                const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+                return value === '' || regex.test(value);
+            },
+            message: 'Неверный формат URL.',
+        },
+    },
 });
 
 export default mongoose.model('Item', itemSchema);

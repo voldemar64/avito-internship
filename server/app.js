@@ -25,7 +25,6 @@ app.use(requestLogger);
 app.use(errorLogger);
 
 // Защищенные маршруты
-app.use(auth);
 app.use('/items', itemsRoutes);
 
 // Обработка ошибок

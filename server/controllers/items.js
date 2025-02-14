@@ -30,18 +30,15 @@ const getCurrentItem = async (req, res, next) => {
 
 const postItem = async (req, res, next) => {
     try {
-        const { name, description, location, type, ...rest } = req.body;
-
-        // Валидация полей в контроллере (если потребуется дополнительная логика)
-        if (!name || !description || !location || !type) {
-            throw new ValidationError('Отсутствуют обязательные поля.');
-        }
+        const { name, description, location, type, url, owner, ...rest } = req.body;
 
         const item = new Item({
             name,
             description,
             location,
             type,
+            url,
+            owner,
             ...rest,
         });
 

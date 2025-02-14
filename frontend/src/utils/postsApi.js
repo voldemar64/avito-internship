@@ -6,11 +6,15 @@
 
     _handleRes(res) {
         if (res.ok) {
+            if (res.status === 204) {
+                return {};
+            }
             return res.json();
         } else {
             return Promise.reject(`Ошибка: ${res.status}`);
         }
     }
+
 
     getInitialPosts() {
         return fetch(`${this._baseUrl}/items`, {
