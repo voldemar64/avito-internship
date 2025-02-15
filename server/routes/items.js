@@ -14,14 +14,13 @@ const {
 
 const {
     currentItemValidation,
-    postItemValidation,
-    patchItemValidation,
+    itemValidation,
 } = validation;
 
 router.get('/', getItems);
 router.get('/:id', currentItemValidation, getCurrentItem);
-router.post('/', postItemValidation, postItem);
-router.patch('/:id', patchItemValidation, patchItem);
+router.post('/', itemValidation, postItem);
+router.patch('/:id', itemValidation, patchItem);
 router.delete('/:id', deleteItem);
 
 export default router;

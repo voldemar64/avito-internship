@@ -49,30 +49,11 @@ const servicesValidation = Joi.object().keys({
 });
 
 // Основная валидация для post и patch
-const postItemValidation = celebrate({
+const itemValidation = celebrate({
     body: Joi.object().keys({
         type: typeSchema,
         owner: Joi.string().hex().length(24).required(),
         url: urlSchema,
-    }).unknown(true).custom((value, helpers) => {
-        if (value.type === 'Недвижимость') {
-            const { error } = realEstateValidation.validate(value);
-            if (error) return helpers.error('any.invalid');
-        } else if (value.type === 'Авто') {
-            const { error } = autoValidation.validate(value);
-            if (error) return helpers.error('any.invalid');
-        } else if (value.type === 'Услуги') {
-            const { error } = servicesValidation.validate(value);
-            if (error) return helpers.error('any.invalid');
-        }
-        return value;
-    }),
-});
-
-// Валидация для обновления
-const patchItemValidation = celebrate({
-    body: Joi.object().keys({
-        type: typeSchema,
     }).unknown(true).custom((value, helpers) => {
         if (value.type === 'Недвижимость') {
             const { error } = realEstateValidation.validate(value);
@@ -96,6 +77,5 @@ const currentItemValidation = celebrate({
 
 export default {
     currentItemValidation,
-    postItemValidation,
-    patchItemValidation,
+    itemValidation,
 };
