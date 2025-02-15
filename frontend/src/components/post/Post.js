@@ -43,6 +43,7 @@ function Post({ post, onCardDelete, onEditButtonClick }) {
       <p className="post__text">Тип услуги: {post.serviceType}</p>
       <p className="post__text">Опыт: {post.experience} лет</p>
       <p className="post__text">Стоимость: {post.cost} ₽</p>
+      <p className="post__text">Расписание: {post.schedule}</p>
     </>
   );
 
