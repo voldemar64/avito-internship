@@ -1,27 +1,22 @@
 ﻿import "./PostsForm.css";
 import "../register/Register.css";
-import { useForm } from "../../utils/formValidator";
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function PostsFrom({ onSubmit }) {
+function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
   const currentUser = React.useContext(CurrentUserContext);
+  let location = useLocation();
 
-  const validateUrl = (url) => {
-    if (!url) return ""; // Поле не обязательное
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    return urlRegex.test(url) ? "" : "Введите корректный URL.";
-  };
 
-  // Логика валидации формы
-  const { values, handleChange } = useForm({
-    url: validateUrl,
+  const [selectedType, setSelectedType] = useState("");
+  const [firstColumnFields, setFirstColumnFields] = useState({
+    name: "",
+    description: "",
+    location: "",
+    url: "",
   });
 
-  // Стейт для выбранного типа объявления
-  const [selectedType, setSelectedType] = useState("");
-
-  // Стейты для полей второго столбца
   const [autoFields, setAutoFields] = useState({
     brand: "",
     model: "",
@@ -43,27 +38,62 @@ function PostsFrom({ onSubmit }) {
     schedule: "",
   });
 
-  const [isFirstColumnValid, setIsFirstColumnValid] = React.useState(false);
+  const [isFirstColumnValid, setIsFirstColumnValid] = useState(false);
   const [disabledForm, setDisabledForm] = useState(true);
 
   useEffect(() => {
-    setIsFirstColumnValid(values.name && values.description && values.location && values.type);
-  }, [
-    values.name,
-    values.description,
-    values.location,
-    values.type,
-  ])
+    if (location.pathname !== "http://localhost:3000/form") {
+      onExit();
+    }
+  }, [location]);
 
-  // useEffect для отслеживания изменений всех полей формы
   useEffect(() => {
-    const isFormValid = isFirstColumnValid &&
+    if (post) {
+      setSelectedType(post.type);
+      setIsFirstColumnValid(true);
+      setFirstColumnFields({
+        name: post.name,
+        description: post.description,
+        location: post.location,
+        url: post.url || "",
+      });
+      if (post.type === "Авто") {
+        setAutoFields({
+          brand: post.brand,
+          model: post.model,
+          year: post.year,
+          mileage: post.mileage,
+        });
+      } else if (post.type === "Недвижимость") {
+        setRealEstateFields({
+          propertyType: post.propertyType,
+          area: post.area,
+          rooms: post.rooms,
+          price: post.price,
+        });
+      } else if (post.type === "Услуги") {
+        setServicesFields({
+          serviceType: post.serviceType,
+          experience: post.experience,
+          cost: post.cost,
+          schedule: post.schedule,
+        });
+      }
+    }
+  }, [post]);
+
+  useEffect(() => {
+    setIsFirstColumnValid(firstColumnFields.name && firstColumnFields.description && firstColumnFields.location);
+  }, [firstColumnFields]);
+
+  useEffect(() => {
+    const isFormValid = selectedType && isFirstColumnValid &&
       (selectedType === "Авто" ? autoFields.brand && autoFields.model && autoFields.year && autoFields.mileage :
         selectedType === "Недвижимость" ? realEstateFields.propertyType && realEstateFields.area && realEstateFields.rooms && realEstateFields.price :
           selectedType === "Услуги" ? servicesFields.serviceType && servicesFields.experience && servicesFields.cost && servicesFields.schedule :
             true);
 
-    const isUrlValid = !values.url || /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(values.url);
+    const isUrlValid = !firstColumnFields.url || /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(firstColumnFields.url);
 
     if (isFormValid && isUrlValid) {
       setDisabledForm(false);
@@ -76,26 +106,26 @@ function PostsFrom({ onSubmit }) {
     autoFields,
     realEstateFields,
     servicesFields,
-    values.url,
+    firstColumnFields.url,
   ]);
 
-  // Функция для обработки отправки формы
   function handleSubmit(e) {
     e.preventDefault();
+    const user_id = currentUser._id;
 
     const dataToSubmit = {
-      name: values.name,
-      description: values.description,
-      location: values.location,
-      type: values.type,
+      name: firstColumnFields.name,
+      description: firstColumnFields.description,
+      location: firstColumnFields.location,
     };
 
-    // Отправляем URL только если он был заполнен
-    if (values.url) {
-      dataToSubmit.url = values.url;
+    if (firstColumnFields.url) {
+      dataToSubmit.url = firstColumnFields.url;
     }
 
-    // Добавляем данные для выбранного типа объявления
+    dataToSubmit.type = selectedType;
+    dataToSubmit.owner = user_id;
+
     if (selectedType === "Авто") {
       dataToSubmit.brand = autoFields.brand;
       dataToSubmit.model = autoFields.model;
@@ -113,10 +143,15 @@ function PostsFrom({ onSubmit }) {
       dataToSubmit.schedule = servicesFields.schedule;
     }
 
-    onSubmit(currentUser._id, dataToSubmit);
+    if (post) {
+      const post_id = post._id;
+      onEditSubmit(post_id, dataToSubmit);
+    } else {
+      console.log(dataToSubmit);
+      onSubmit(dataToSubmit);
+    }
   }
 
-  // Рендеринг полей для каждого типа объявления
   const renderFieldsForType = () => {
     switch (selectedType) {
       case "Авто":
@@ -130,7 +165,6 @@ function PostsFrom({ onSubmit }) {
     }
   };
 
-  // Поля для типа "Авто"
   const renderAutoFields = () => (
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
@@ -141,7 +175,7 @@ function PostsFrom({ onSubmit }) {
           required
           className={`register__input register__input_type_select ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={autoFields.brand}
+          defaultValue={autoFields.brand}
           onChange={(e) => setAutoFields({ ...autoFields, brand: e.target.value })}
         >
           <option value="">Выберите марку</option>
@@ -161,7 +195,7 @@ function PostsFrom({ onSubmit }) {
           type="text"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={autoFields.model}
+          defaultValue={autoFields.model}
           onChange={(e) => setAutoFields({ ...autoFields, model: e.target.value })}
         />
       </div>
@@ -173,7 +207,7 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={autoFields.year}
+          defaultValue={autoFields.year}
           onChange={(e) => setAutoFields({ ...autoFields, year: e.target.value })}
         />
       </div>
@@ -184,14 +218,13 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={autoFields.mileage}
+          defaultValue={autoFields.mileage}
           onChange={(e) => setAutoFields({ ...autoFields, mileage: e.target.value })}
         />
       </div>
     </div>
   );
 
-  // Поля для типа "Недвижимость"
   const renderRealEstateFields = () => (
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
@@ -202,7 +235,7 @@ function PostsFrom({ onSubmit }) {
           required
           className={`register__input register__input_type_select ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={realEstateFields.propertyType}
+          defaultValue={realEstateFields.propertyType}
           onChange={(e) => setRealEstateFields({ ...realEstateFields, propertyType: e.target.value })}
         >
           <option value="">Выберите тип</option>
@@ -219,7 +252,7 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={realEstateFields.area}
+          defaultValue={realEstateFields.area}
           onChange={(e) => setRealEstateFields({ ...realEstateFields, area: e.target.value })}
         />
       </div>
@@ -231,7 +264,7 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={realEstateFields.rooms}
+          defaultValue={realEstateFields.rooms}
           onChange={(e) => setRealEstateFields({ ...realEstateFields, rooms: e.target.value })}
         />
       </div>
@@ -243,14 +276,13 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={realEstateFields.price}
+          defaultValue={realEstateFields.price}
           onChange={(e) => setRealEstateFields({ ...realEstateFields, price: e.target.value })}
         />
       </div>
     </div>
   );
 
-  // Поля для типа "Услуги"
   const renderServicesFields = () => (
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
@@ -261,7 +293,7 @@ function PostsFrom({ onSubmit }) {
           required
           className={`register__input register__input_type_select ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={servicesFields.serviceType}
+          defaultValue={servicesFields.serviceType}
           onChange={(e) => setServicesFields({ ...servicesFields, serviceType: e.target.value })}
         >
           <option value="">Выберите тип</option>
@@ -278,7 +310,7 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={servicesFields.experience}
+          defaultValue={servicesFields.experience}
           onChange={(e) => setServicesFields({ ...servicesFields, experience: e.target.value })}
         />
       </div>
@@ -290,7 +322,7 @@ function PostsFrom({ onSubmit }) {
           type="number"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={servicesFields.cost}
+          defaultValue={servicesFields.cost}
           onChange={(e) => setServicesFields({ ...servicesFields, cost: e.target.value })}
         />
       </div>
@@ -302,7 +334,7 @@ function PostsFrom({ onSubmit }) {
           type="text"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
-          value={servicesFields.schedule}
+          defaultValue={servicesFields.schedule}
           onChange={(e) => setServicesFields({ ...servicesFields, schedule: e.target.value })}
         />
       </div>
@@ -322,10 +354,9 @@ function PostsFrom({ onSubmit }) {
                 name="type"
                 required
                 className="register__input register__input_type_select"
+                value={selectedType}
                 onChange={(e) => {
-                  handleChange(e);
                   setSelectedType(e.target.value);
-                  // Очищаем поля второго столбца при изменении типа
                   setAutoFields({
                     brand: "",
                     model: "",
@@ -359,7 +390,8 @@ function PostsFrom({ onSubmit }) {
                 required
                 type="text"
                 className="register__input"
-                onChange={handleChange}
+                defaultValue={firstColumnFields.name}
+                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, name: e.target.value })}
               />
             </div>
             <div className="register__container">
@@ -369,7 +401,8 @@ function PostsFrom({ onSubmit }) {
                 required
                 type="text"
                 className="register__input"
-                onChange={handleChange}
+                defaultValue={firstColumnFields.description}
+                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, description: e.target.value })}
               />
             </div>
             <div className="register__container">
@@ -379,7 +412,8 @@ function PostsFrom({ onSubmit }) {
                 required
                 type="text"
                 className="register__input"
-                onChange={handleChange}
+                defaultValue={firstColumnFields.location}
+                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, location: e.target.value })}
               />
             </div>
             <div className="register__container">
@@ -388,7 +422,8 @@ function PostsFrom({ onSubmit }) {
                 name="url"
                 type="text"
                 className="register__input"
-                onChange={handleChange}
+                defaultValue={firstColumnFields.url}
+                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, url: e.target.value })}
               />
             </div>
           </div>
