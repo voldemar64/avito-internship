@@ -4,7 +4,7 @@ import { useFormWithValidation } from "../../utils/formValidator";
 import React, { useState } from "react";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 
-function PostsFrom({ submit }) {
+function PostsFrom({ onSubmit }) {
   const currentUser = React.useContext(CurrentUserContext)
 
 
@@ -82,7 +82,7 @@ function PostsFrom({ submit }) {
         dataToSubmit.schedule = servicesFields.schedule || '';
       }
 
-      submit(currentUser._id, dataToSubmit);
+      onSubmit(currentUser._id, dataToSubmit);
     }
   }
 

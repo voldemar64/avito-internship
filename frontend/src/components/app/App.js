@@ -234,10 +234,13 @@ function App() {
     postsApi.addNewPost(id, card)
       .then(newItem => {
         setLocalApiPosts([newItem, ...localApiPosts]);
+        setApiFilteredPosts([newItem, ...localApiPosts]);
       })
       .catch(err => {
         console.log(`карточка не добавилась:  ${err}`)
       })
+
+    navigate("/list")
   }
 
   function handleEditPost(card) {
