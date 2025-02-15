@@ -55,9 +55,7 @@
             dataToSend.serviceType = data.serviceType;
             dataToSend.experience = data.experience;
             dataToSend.cost = data.cost;
-            if (data.schedule) {
-                dataToSend.schedule = data.schedule;
-            }
+            dataToSend.schedule = data.schedule;
         }
 
         return fetch(`${this._baseUrl}/items`, {

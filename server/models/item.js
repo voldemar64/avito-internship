@@ -94,6 +94,10 @@ const itemSchema = new mongoose.Schema({
         required: function() { return this.type === ItemTypes.SERVICES; },
         min: 0,
     },
+    schedule: {
+        type: String,
+        required: function() { return this.type === ItemTypes.SERVICES; },
+    },
 });
 
 export default mongoose.model('Item', itemSchema);

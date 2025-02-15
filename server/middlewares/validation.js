@@ -45,6 +45,7 @@ const servicesValidation = Joi.object().keys({
     serviceType: Joi.string().required(),
     experience: Joi.number().min(1).required(),
     cost: Joi.number().min(0).required(),
+    schedule: Joi.string().required(),
 });
 
 // Основная валидация для post и patch
