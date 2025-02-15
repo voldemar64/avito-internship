@@ -201,11 +201,11 @@ function App() {
       });
   }
 
-  function durationFilter(toggle) {
+  function postsTypeFilter(type) {
     const filteredPosts = JSON.parse(localStorage.getItem('filteredPosts'))
 
-    if (toggle && filteredPosts) {
-      const cars = filteredPosts.filter((i) => i.type === "Авто")
+    if (type !== '' && filteredPosts) {
+      const cars = filteredPosts.filter((i) => i.type === type)
       setApiFilteredPosts(cars)
     } else {
       setApiFilteredPosts(filteredPosts)
@@ -233,8 +233,10 @@ function App() {
   function handleAddPost(id, card) {
     postsApi.addNewPost(id, card)
       .then(newItem => {
-        setLocalApiPosts([newItem, ...localApiPosts]);
-        setApiFilteredPosts([newItem, ...localApiPosts]);
+        localStorage.setItem('posts', JSON.stringify([newItem, ...localApiPosts]));
+        const allPosts = JSON.parse(localStorage.getItem('posts'));
+        setLocalApiPosts(allPosts);
+        setApiFilteredPosts(allPosts);
       })
       .catch(err => {
         console.log(`карточка не добавилась:  ${err}`)
@@ -320,7 +322,7 @@ function App() {
             element={
               <ProtectedRoute
                 component={Posts}
-                durationFilter={durationFilter}
+                postsTypeFilter={postsTypeFilter}
                 handleSearch={handleSearch}
                 posts={apiFilteredPosts}
                 addPosts={addPosts}

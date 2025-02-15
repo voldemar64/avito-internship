@@ -58,12 +58,12 @@ function PostsFrom({ onSubmit }) {
   // useEffect для отслеживания изменений всех полей формы
   useEffect(() => {
     const isFormValid = isFirstColumnValid &&
-      (selectedType === "Авто" ? autoFields.brand && autoFields.model && autoFields.year :
+      (selectedType === "Авто" ? autoFields.brand && autoFields.model && autoFields.year && autoFields.mileage :
         selectedType === "Недвижимость" ? realEstateFields.propertyType && realEstateFields.area && realEstateFields.rooms && realEstateFields.price :
-          selectedType === "Услуги" ? servicesFields.serviceType && servicesFields.experience && servicesFields.cost :
+          selectedType === "Услуги" ? servicesFields.serviceType && servicesFields.experience && servicesFields.cost && servicesFields.schedule :
             true);
 
-    const isUrlValid = !values.url;
+    const isUrlValid = !values.url || /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(values.url);
 
     if (isFormValid && isUrlValid) {
       setDisabledForm(false);
@@ -72,52 +72,48 @@ function PostsFrom({ onSubmit }) {
     }
   }, [
     isFirstColumnValid,
-    isValid,
     selectedType,
     autoFields,
     realEstateFields,
     servicesFields,
     values.url,
-    errors.url,
   ]);
 
   // Функция для обработки отправки формы
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (isValid) {
-      const dataToSubmit = {
-        name: values.name,
-        description: values.description,
-        location: values.location,
-        type: values.type,
-      };
+    const dataToSubmit = {
+      name: values.name,
+      description: values.description,
+      location: values.location,
+      type: values.type,
+    };
 
-      // Отправляем URL только если он был заполнен
-      if (values.url) {
-        dataToSubmit.url = values.url;
-      }
-
-      // Добавляем данные для выбранного типа объявления
-      if (selectedType === "Авто") {
-        dataToSubmit.brand = autoFields.brand;
-        dataToSubmit.model = autoFields.model;
-        dataToSubmit.year = autoFields.year;
-        dataToSubmit.mileage = autoFields.mileage || '';
-      } else if (selectedType === "Недвижимость") {
-        dataToSubmit.propertyType = realEstateFields.propertyType;
-        dataToSubmit.area = realEstateFields.area;
-        dataToSubmit.rooms = realEstateFields.rooms;
-        dataToSubmit.price = realEstateFields.price;
-      } else if (selectedType === "Услуги") {
-        dataToSubmit.serviceType = servicesFields.serviceType;
-        dataToSubmit.experience = servicesFields.experience;
-        dataToSubmit.cost = servicesFields.cost;
-        dataToSubmit.schedule = servicesFields.schedule;
-      }
-
-      onSubmit(currentUser._id, dataToSubmit);
+    // Отправляем URL только если он был заполнен
+    if (values.url) {
+      dataToSubmit.url = values.url;
     }
+
+    // Добавляем данные для выбранного типа объявления
+    if (selectedType === "Авто") {
+      dataToSubmit.brand = autoFields.brand;
+      dataToSubmit.model = autoFields.model;
+      dataToSubmit.year = autoFields.year;
+      dataToSubmit.mileage = autoFields.mileage || '';
+    } else if (selectedType === "Недвижимость") {
+      dataToSubmit.propertyType = realEstateFields.propertyType;
+      dataToSubmit.area = realEstateFields.area;
+      dataToSubmit.rooms = realEstateFields.rooms;
+      dataToSubmit.price = realEstateFields.price;
+    } else if (selectedType === "Услуги") {
+      dataToSubmit.serviceType = servicesFields.serviceType;
+      dataToSubmit.experience = servicesFields.experience;
+      dataToSubmit.cost = servicesFields.cost;
+      dataToSubmit.schedule = servicesFields.schedule;
+    }
+
+    onSubmit(currentUser._id, dataToSubmit);
   }
 
   // Рендеринг полей для каждого типа объявления
@@ -149,9 +145,12 @@ function PostsFrom({ onSubmit }) {
           onChange={(e) => setAutoFields({ ...autoFields, brand: e.target.value })}
         >
           <option value="">Выберите марку</option>
+          <option value="BMW">BMW</option>
+          <option value="Mercedes">Mercedes</option>
+          <option value="Audi">Audi</option>
           <option value="Toyota">Toyota</option>
           <option value="Honda">Honda</option>
-          <option value="BMW">BMW</option>
+          <option value="Nissan">Nissan</option>
         </select>
       </div>
       <div className="register__container">

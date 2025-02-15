@@ -1,55 +1,62 @@
-﻿import "./SearchForm.css"
+﻿import "./SearchForm.css";
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-function SearchForm({ durationFilter, handleSearch }) {
+function SearchForm({ postsTypeFilter, handleSearch }) {
     const localStorageValue = localStorage.getItem('savedSearchValue');
-    const localChecked = localStorage.getItem('savedCheck') === 'true';
+    const localType = localStorage.getItem('savedType');
 
-    const [isActive, setIsActive] = React.useState(localChecked ?? false);
+    const [selectedType, setSelectedType] = React.useState(localType ?? '');
     const [value, setValue] = React.useState(localStorageValue ?? '');
 
-    const pathName = useLocation()
+    const pathName = useLocation();
 
     React.useEffect(() => {
         if (pathName.pathname === "/list") {
-            localStorage.setItem('savedSearchValue', value)
-            localStorage.setItem('savedCheck', isActive)
+            localStorage.setItem('savedSearchValue', value);
+            localStorage.setItem('savedType', selectedType);
         }
-    }, [pathName, value, isActive])
+    }, [pathName, value, selectedType]);
 
     React.useEffect(() => {
         if (pathName.pathname === "/list") {
-            handleSearch(localStorageValue ?? '')
-            durationFilter(localChecked ?? false)
+            handleSearch(localStorageValue ?? '');
+            postsTypeFilter(localType ?? '');
         }
-    }, [pathName])
+    }, [pathName]);
 
     function handleSubmitForm(e) {
         e.preventDefault();
         handleSearch(value);
-        durationFilter(isActive)
+        postsTypeFilter(selectedType);
     }
 
     return (
-        <section className="search-form">
-            <form className="search-form__container"  onSubmit={(e) => handleSubmitForm(e)}>
-                <input className="search-form__input"
-                       placeholder="Объявление" value={value}
-                       onChange={(e) => setValue(e.target.value)}
-                />
-                <button className="search-form__button"/>
-            </form>
-            <div className="search-form__toggle">
-                <input type="checkbox" className={`search-form__checkbox${isActive ? " search-form__checkbox_on" : ""}`}
-                       onClick={() => {
-                           setIsActive(!isActive)
-                           durationFilter(!isActive)
-                       }}/>
-                <label className="search-form__text">Короткометражки</label>
-            </div>
-        </section>
-    )
+      <section className="search-form">
+          <form className="search-form__container" onSubmit={(e) => handleSubmitForm(e)}>
+              <input
+                className="search-form__input"
+                placeholder="Объявление"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+              <button className="search-form__button" />
+          </form>
+          <select
+            className="search-form__select"
+            value={selectedType}
+            onChange={(e) => {
+                setSelectedType(e.target.value);
+                postsTypeFilter(e.target.value);
+            }}
+          >
+              <option value="">Тип объявления</option>
+              <option value="Авто">Авто</option>
+              <option value="Недвижимость">Недвижимость</option>
+              <option value="Услуги">Услуги</option>
+          </select>
+      </section>
+    );
 }
 
 export default SearchForm;

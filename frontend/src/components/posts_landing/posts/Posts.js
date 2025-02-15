@@ -2,12 +2,12 @@
 import PostsCardsList from "../posts_card_list/PostsCardsList";
 import React from "react";
 
-function Posts({ durationFilter, handleSearch, posts, addPosts, onCardClick, onCardDelete, listLength, searchDone }) {
+function Posts({ postsTypeFilter, handleSearch, posts, addPosts, onCardClick, onCardDelete, listLength, searchDone }) {
 
     return (
         <>
             <SearchForm
-                durationFilter={durationFilter}
+                postsTypeFilter={postsTypeFilter}
                 handleSearch={handleSearch}
             />
             <PostsCardsList

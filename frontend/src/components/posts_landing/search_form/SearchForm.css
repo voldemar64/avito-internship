@@ -11,7 +11,7 @@
     justify-content: space-between;
     border-bottom: 1px #8B8B8B solid;
     padding-bottom: 13px;
-    margin-bottom: 33px;
+    margin-bottom: 10px;
 }
 
 .search-form__input {
@@ -40,65 +40,12 @@
     opacity: .5;
 }
 
-.search-form__toggle {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.search-form__checkbox {
-    --active: #444;
-    --active-inner: #6FB0B6;
-    --disabled-inner: rgb(122, 122, 122);
-    --focus: 2px rgba(39, 94, 254, .3);
-    --border: #444;
-    --border-hover: #6FB0B6;
-    --background: #202020;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    outline: none;
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
-    margin: 0;
-    cursor: pointer;
-    border: 1px solid var(--bc, var(--border));
-    background: var(--b, var(--background));
-    transition: background .3s, border-color .3s;
-    padding: 0;
-    width: 36px;
-    height: 23px;
-    border-radius: 16px;
-    box-shadow: 0 2px 5px #000;
-}
-
-.search-form__checkbox::after {
-    content: "";
-    display: block;
-    position: absolute;
-    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),
-    opacity var(--d-o, 0.2s);
-    left: 2px;
-    top: 2px;
-    border-radius: 50%;
-    width: 17px;
-    height: 17px;
-    background: var(--ab, var(--disabled-inner));
-    transform: translateX(var(--x, 0));
-}
-
-.search-form__checkbox_on {
-    --b: var(--active);
-    --bc: var(--active);
-    --d-o: 0.3s;
-    --d-t: 0.6s;
-    --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
-    --ab: var(--active-inner);
-    --x: 14px;
-}
-
-.search-form__checkbox:hover {
-    --bc: var(--border-hover);
+.search-form__select {
+    border: 1px solid #8B8B8B;
+    border-radius: 10px;
+    width: 150px;
+    background-color: #ffe6c1;
+    color: #8B8B8B;
 }
 
 .search-form__text {
@@ -109,15 +56,13 @@
     margin: 0;
 }
 
+
+
 @media screen and (max-width: 1279px) {
     .search-form {
         justify-content: right;
         margin: 80px 0 61px;
         padding: 0 30px;
-    }
-
-    .search-form__toggle {
-        justify-content: right;
     }
 }
 
