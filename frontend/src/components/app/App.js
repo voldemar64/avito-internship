@@ -37,6 +37,7 @@ function App() {
   
   const [searchDone, setSearchDone] = React.useState(false);
   const [selectedPost, setSelectedPost] = React.useState(null);
+  const [selectedEditPost, setSelectedEditPost] = React.useState(null);
 
   const [listLength, setListLength] = React.useState(5);
 
@@ -175,9 +176,9 @@ function App() {
     setCurrentUser({})
     setLocalApiPosts([])
     setApiFilteredPosts([])
-    localStorage.removeItem("posts")
+    localStorage.removeItem('posts')
     localStorage.removeItem('filteredPosts')
-    localStorage.removeItem('savedCheck')
+    localStorage.removeItem('savedType')
     localStorage.removeItem('savedSearchValue')
     localStorage.removeItem("jwt")
     navigate("/");
@@ -230,23 +231,61 @@ function App() {
     }
   }
 
-  function handleAddPost(id, card) {
-    postsApi.addNewPost(id, card)
+  function handleAddPost(card) {
+    postsApi.addNewPost(card)
       .then(newItem => {
-        localStorage.setItem('posts', JSON.stringify([newItem, ...localApiPosts]));
-        const allPosts = JSON.parse(localStorage.getItem('posts'));
-        setLocalApiPosts(allPosts);
-        setApiFilteredPosts(allPosts);
+        if (newItem) {
+          localStorage.setItem('posts', JSON.stringify([newItem, ...localApiPosts]));
+          const allPosts = JSON.parse(localStorage.getItem('posts'));
+          setLocalApiPosts(allPosts);
+
+          setApiFilteredPosts(allPosts);
+          setPopupTitle("Пост добавлен!");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setPopupTitle("Пост не добавился!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
+        }
       })
       .catch(err => {
-        console.log(`карточка не добавилась:  ${err}`)
+        setPopupTitle("Пост не добавился!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
       })
 
     navigate("/list")
   }
 
-  function handleEditPost(card) {
+  function handleEditPost(card_id, card) {
+    postsApi.patchPost(card_id, card)
+      .then(newItem => {
+        if (newItem) {
+          const updatedPosts = localApiPosts.map(post =>
+            post._id === newItem._id ? newItem : post
+          );
 
+          localStorage.setItem('posts', JSON.stringify(updatedPosts));
+          setLocalApiPosts(updatedPosts);
+          setApiFilteredPosts(updatedPosts);
+
+          setPopupTitle("Пост обновлён!");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setPopupTitle("Пост не обновился!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
+        }
+      })
+      .catch(err => {
+        setPopupTitle("Пост не обновился!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
+
+    navigate("/list");
   }
 
   function handleItemDelete(card) {
@@ -279,8 +318,18 @@ function App() {
     navigate(`/list/${item._id}`)
   }
 
+  function handleEditButtonClick(item) {
+    setSelectedEditPost(item)
+    navigate("/form")
+  }
+
   function handleSideBar() {
     setIsSideBarOpen(!isSideBarOpen);
+  }
+
+  function handleSelectedEditPost() {
+    setSelectedEditPost(null)
+    console.log(selectedPost);
   }
 
   return (
@@ -328,7 +377,7 @@ function App() {
                 addPosts={addPosts}
                 onCardClick={handleItemClick}
                 onCardDelete={handleItemDelete}
-                onEditButtonClick={handleEditPost}
+                onEditButtonClick={handleEditButtonClick}
                 listLength={listLength}
                 searchDone={searchDone}
                 loggedIn={loggedIn}
@@ -342,6 +391,9 @@ function App() {
               <ProtectedRoute
                 component={PostsForm}
                 onSubmit={handleAddPost}
+                onEditSubmit={handleEditPost}
+                post={selectedEditPost}
+                onExit={handleSelectedEditPost}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
@@ -354,7 +406,7 @@ function App() {
                 component={Post}
                 post={selectedPost}
                 onCardDelete={handleItemDelete}
-                onEditButtonClick={handleEditPost}
+                onEditButtonClick={handleEditButtonClick}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
