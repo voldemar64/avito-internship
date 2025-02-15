@@ -1,12 +1,11 @@
 ﻿import "./PostsForm.css";
 import "../register/Register.css";
-import { useFormWithValidation } from "../../utils/formValidator";
-import React, { useState } from "react";
-import {CurrentUserContext} from "../../contexts/CurrentUserContext";
+import { useForm } from "../../utils/formValidator";
+import React, { useState, useEffect } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function PostsFrom({ onSubmit }) {
-  const currentUser = React.useContext(CurrentUserContext)
-
+  const currentUser = React.useContext(CurrentUserContext);
 
   const validateUrl = (url) => {
     if (!url) return ""; // Поле не обязательное
@@ -15,7 +14,7 @@ function PostsFrom({ onSubmit }) {
   };
 
   // Логика валидации формы
-  const { values, errors, handleChange, isValid } = useFormWithValidation({
+  const { values, handleChange } = useForm({
     url: validateUrl,
   });
 
@@ -44,8 +43,43 @@ function PostsFrom({ onSubmit }) {
     schedule: "",
   });
 
-  // Проверка на наличие ошибок в полях первого столбца
-  const isFirstColumnValid = values.name && values.description && values.location && values.type;
+  const [isFirstColumnValid, setIsFirstColumnValid] = React.useState(false);
+  const [disabledForm, setDisabledForm] = useState(true);
+
+  useEffect(() => {
+    setIsFirstColumnValid(values.name && values.description && values.location && values.type);
+  }, [
+    values.name,
+    values.description,
+    values.location,
+    values.type,
+  ])
+
+  // useEffect для отслеживания изменений всех полей формы
+  useEffect(() => {
+    const isFormValid = isFirstColumnValid &&
+      (selectedType === "Авто" ? autoFields.brand && autoFields.model && autoFields.year :
+        selectedType === "Недвижимость" ? realEstateFields.propertyType && realEstateFields.area && realEstateFields.rooms && realEstateFields.price :
+          selectedType === "Услуги" ? servicesFields.serviceType && servicesFields.experience && servicesFields.cost :
+            true);
+
+    const isUrlValid = !values.url;
+
+    if (isFormValid && isUrlValid) {
+      setDisabledForm(false);
+    } else {
+      setDisabledForm(true);
+    }
+  }, [
+    isFirstColumnValid,
+    isValid,
+    selectedType,
+    autoFields,
+    realEstateFields,
+    servicesFields,
+    values.url,
+    errors.url,
+  ]);
 
   // Функция для обработки отправки формы
   function handleSubmit(e) {
@@ -79,7 +113,7 @@ function PostsFrom({ onSubmit }) {
         dataToSubmit.serviceType = servicesFields.serviceType;
         dataToSubmit.experience = servicesFields.experience;
         dataToSubmit.cost = servicesFields.cost;
-        dataToSubmit.schedule = servicesFields.schedule || '';
+        dataToSubmit.schedule = servicesFields.schedule;
       }
 
       onSubmit(currentUser._id, dataToSubmit);
@@ -265,6 +299,7 @@ function PostsFrom({ onSubmit }) {
         <label className="register__label">График работы</label>
         <input
           name="schedule"
+          required
           type="text"
           className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
           disabled={!isFirstColumnValid}
@@ -356,15 +391,14 @@ function PostsFrom({ onSubmit }) {
                 className="register__input"
                 onChange={handleChange}
               />
-              {errors.url && <span className="register__error">{errors.url}</span>}
             </div>
           </div>
           {renderFieldsForType()}
         </div>
         <button
-          className={`register__button ${!isValid ? "register__button_disabled" : ""}`}
+          className={`register__button ${disabledForm ? "register__button_disabled" : ""}`}
           type="submit"
-          disabled={!isValid}
+          disabled={disabledForm}
         >
           Выложить объявление
         </button>
