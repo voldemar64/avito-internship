@@ -77,3 +77,9 @@
         font-size: 18px;
     }
 }
+
+@media screen and (max-width: 425px) {
+    .search-form {
+        margin-bottom: 0;
+    }
+}
