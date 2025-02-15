@@ -3,7 +3,7 @@ import Preloader from "../preloader/Preloader";
 import "./PostsCardsList.css";
 import React from "react";
 
-function PostsCardList({posts, onCardClick, onCardDelete, addPosts, listLength, searchDone }) {
+function PostsCardList({posts, addPosts, onCardClick, onCardDelete, onEditButtonClick, listLength, searchDone }) {
 
     return (
         <section className="movies">
@@ -11,7 +11,12 @@ function PostsCardList({posts, onCardClick, onCardDelete, addPosts, listLength, 
                 <ul className="cards">
                     {posts.map((card) => {
                         return (
-                            <PostCard key={card._id} card={card} onCardClick={onCardClick} onCardDelete={onCardDelete} />
+                            <PostCard
+                              key={card._id}
+                              card={card}
+                              onCardClick={onCardClick}
+                              onCardDelete={onCardDelete}
+                              onEditButtonClick={onEditButtonClick} />
                         )
                     }).slice(0, listLength)
                     }

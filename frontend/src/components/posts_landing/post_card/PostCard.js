@@ -18,7 +18,7 @@ function Card({ key, card, onCardClick, onCardDelete, onEditButtonClick }) {
   }
 
   function handleEditButtonClick() {
-    console.log("Edit click");
+    onEditButtonClick(card)
   }
 
   return (

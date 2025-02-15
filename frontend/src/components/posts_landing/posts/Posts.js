@@ -2,7 +2,7 @@
 import PostsCardsList from "../posts_card_list/PostsCardsList";
 import React from "react";
 
-function Posts({ postsTypeFilter, handleSearch, posts, addPosts, onCardClick, onCardDelete, listLength, searchDone }) {
+function Posts({ postsTypeFilter, handleSearch, posts, addPosts, onCardClick, onCardDelete, onEditButtonClick, listLength, searchDone }) {
 
     return (
         <>
@@ -15,6 +15,7 @@ function Posts({ postsTypeFilter, handleSearch, posts, addPosts, onCardClick, on
                 addPosts={addPosts}
                 onCardClick={onCardClick}
                 onCardDelete={onCardDelete}
+                onEditButtonClick={onEditButtonClick}
                 listLength={listLength}
                 searchDone={searchDone}
             />
