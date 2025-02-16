@@ -8,11 +8,20 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.18.2",
     "express-winston": "^4.2.0",
     "celebrate": "^15.0.3",
     "body-parser": "^1.20.2",
     "mongoose": "^8.9.3",
     "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "nodemon": "^3.1.9"
   }
 }
