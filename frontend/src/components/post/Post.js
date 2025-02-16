@@ -1,23 +1,23 @@
 ﻿import React from "react";
 import "./Post.css";
-import {CurrentUserContext} from "../../contexts/CurrentUserContext";
-import {useNavigate} from "react-router-dom";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useNavigate } from "react-router-dom";
 
 function Post({ post, onCardDelete, onEditButtonClick }) {
-  const currentUser = React.useContext(CurrentUserContext)
+  const currentUser = React.useContext(CurrentUserContext);
   const navigate = useNavigate();
 
-  const isOwn = post.owner === currentUser._id
-  const cardDeleteButtonClassName = `post__delete-button ${isOwn ? '' : 'post__delete-button_hidden'}`
-  const cardEditButtonClassName = `post__edit-button${isOwn ? '' : ' post__edit-button_hidden'}`;
+  const isOwn = post.owner === currentUser._id;
+  const cardDeleteButtonClassName = `post__delete-button ${isOwn ? "" : "post__delete-button_hidden"}`;
+  const cardEditButtonClassName = `post__edit-button${isOwn ? "" : " post__edit-button_hidden"}`;
 
   function handleEditButtonClick() {
-    onEditButtonClick(post)
+    onEditButtonClick(post);
   }
 
   function handleDeleteClick() {
-    navigate("/list")
-    onCardDelete(post)
+    navigate("/list");
+    onCardDelete(post);
   }
 
   const renderRealEstateDetails = () => (
@@ -71,8 +71,17 @@ function Post({ post, onCardDelete, onEditButtonClick }) {
           <>{renderDetailsByType()}</>
         </div>
         <div className="post__buttons-container">
-          <button type="button" className={cardEditButtonClassName} onClick={handleEditButtonClick}>Изменить</button>
-          <button className={cardDeleteButtonClassName} onClick={handleDeleteClick}></button>
+          <button
+            type="button"
+            className={cardEditButtonClassName}
+            onClick={handleEditButtonClick}
+          >
+            Изменить
+          </button>
+          <button
+            className={cardDeleteButtonClassName}
+            onClick={handleDeleteClick}
+          ></button>
         </div>
       </div>
     </section>

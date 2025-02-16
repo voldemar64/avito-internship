@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "Voldemar",
   "license": "ISC",
-  "description": "SiteScout - million dollar profit project",
+  "description": "Avito - million dollar profit project",
   "dependencies": {
     "dotenv": "^16.4.7",
     "html-webpack-plugin": "^5.6.3",

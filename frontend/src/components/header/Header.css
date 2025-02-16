@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #F7E7CE;
+  background-color: #f7e7ce;
   margin: 0;
   padding: 18px 70px;
   position: relative;
@@ -10,7 +10,7 @@
 }
 
 .header_type_dark {
-  background-color: #FEDEA1;
+  background-color: #fedea1;
 }
 
 .header__container {
@@ -68,16 +68,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #6FB0B6;
+  background-color: #6fb0b6;
   border-radius: 3px;
 }
 
 .header__link_type_form {
-
 }
 
 .header__link_type_list {
-
 }
 
 .header__link:hover {

@@ -4,11 +4,11 @@ import { Link, useLocation } from "react-router-dom";
 import profilePath from "../../images/profile.svg";
 
 function SideBar(props) {
-    const location = useLocation();
-    const isMain = location.pathname === "/";
-    const isProfile = location.pathname === "/profile";
-    const isForm = location.pathname === "/form";
-    const isList = location.pathname === "/list";
+  const location = useLocation();
+  const isMain = location.pathname === "/";
+  const isProfile = location.pathname === "/profile";
+  const isForm = location.pathname === "/form";
+  const isList = location.pathname === "/list";
 
   return (
     <section className={`side-bar${props.isOpen ? " side-bar_visible" : ""}`}>
@@ -21,13 +21,15 @@ function SideBar(props) {
         <Link
           className={`side-bar__button${isMain ? " side-bar__button_active" : ""}`}
           to="/"
-          onClick={props.onClose}>
+          onClick={props.onClose}
+        >
           Главная
         </Link>
         <Link
           className={`side-bar__button${isForm ? " side-bar__button_active" : ""}`}
           to="/form"
-          onClick={props.onClose}>
+          onClick={props.onClose}
+        >
           Разместить объявление
         </Link>
         <Link

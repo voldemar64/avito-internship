@@ -11,49 +11,47 @@ function Header({ onSideBarOpen, isLogged, windowWidth }) {
   const isList = location.pathname === "/list";
 
   return (
-    <header
-      className={`header${isProfile ? " header_type_dark" : ""}`}
-    >
+    <header className={`header${isProfile ? " header_type_dark" : ""}`}>
       <div className="header__container">
         <Link to="/" className="header__logo"></Link>
         {isLogged ? (
-            width >= 1280 ? (
-                <nav className="header__account">
-                  <Link
-                      to="/form"
-                      className={`header__link header__link_type_form${isForm ? " header__link_active" : ""}`}
-                  >
-                    Разместить объявление
-                  </Link>
-                  <Link
-                      to="/list"
-                      className={`header__link header__link_type_list${isList ? " header__link_active" : ""}`}
-                  >
-                    Объявления
-                  </Link>
-                  <Link
-                      to="/profile"
-                      className={`header__link header__link_type_profile${isProfile ? " header__link_active" : ""}`}
-                  >
-                    <p className="header__subtitle">Аккаунт</p>
-                    <img src={profilePath} alt="профиль" className="header__img"/>
-                  </Link>
-                </nav>
-        ) : (
-            <button
-                type="button"
-                className="header__button"
-                onClick={onSideBarOpen}
-            ></button>
-        )
+          width >= 1280 ? (
+            <nav className="header__account">
+              <Link
+                to="/form"
+                className={`header__link header__link_type_form${isForm ? " header__link_active" : ""}`}
+              >
+                Разместить объявление
+              </Link>
+              <Link
+                to="/list"
+                className={`header__link header__link_type_list${isList ? " header__link_active" : ""}`}
+              >
+                Объявления
+              </Link>
+              <Link
+                to="/profile"
+                className={`header__link header__link_type_profile${isProfile ? " header__link_active" : ""}`}
+              >
+                <p className="header__subtitle">Аккаунт</p>
+                <img src={profilePath} alt="профиль" className="header__img" />
+              </Link>
+            </nav>
           ) : (
+            <button
+              type="button"
+              className="header__button"
+              onClick={onSideBarOpen}
+            ></button>
+          )
+        ) : (
           <nav className="header__account">
-          <Link
-          to="/signup"
-          className="header__link header__link_type_register"
-          >
-          Регистрация
-          </Link>
+            <Link
+              to="/signup"
+              className="header__link header__link_type_register"
+            >
+              Регистрация
+            </Link>
             <Link
               to="/signin"
               className="header__link header__link_type_signin"

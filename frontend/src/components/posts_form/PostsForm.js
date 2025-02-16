@@ -8,7 +8,6 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
   const currentUser = React.useContext(CurrentUserContext);
   let location = useLocation();
 
-
   const [selectedType, setSelectedType] = useState("");
   const [firstColumnFields, setFirstColumnFields] = useState({
     name: "",
@@ -83,17 +82,37 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
   }, [post]);
 
   useEffect(() => {
-    setIsFirstColumnValid(firstColumnFields.name && firstColumnFields.description && firstColumnFields.location);
+    setIsFirstColumnValid(
+      firstColumnFields.name &&
+        firstColumnFields.description &&
+        firstColumnFields.location,
+    );
   }, [firstColumnFields]);
 
   useEffect(() => {
-    const isFormValid = selectedType && isFirstColumnValid &&
-      (selectedType === "Авто" ? autoFields.brand && autoFields.model && autoFields.year && autoFields.mileage :
-        selectedType === "Недвижимость" ? realEstateFields.propertyType && realEstateFields.area && realEstateFields.rooms && realEstateFields.price :
-          selectedType === "Услуги" ? servicesFields.serviceType && servicesFields.experience && servicesFields.cost && servicesFields.schedule :
-            true);
+    const isFormValid =
+      selectedType &&
+      isFirstColumnValid &&
+      (selectedType === "Авто"
+        ? autoFields.brand &&
+          autoFields.model &&
+          autoFields.year &&
+          autoFields.mileage
+        : selectedType === "Недвижимость"
+          ? realEstateFields.propertyType &&
+            realEstateFields.area &&
+            realEstateFields.rooms &&
+            realEstateFields.price
+          : selectedType === "Услуги"
+            ? servicesFields.serviceType &&
+              servicesFields.experience &&
+              servicesFields.cost &&
+              servicesFields.schedule
+            : true);
 
-    const isUrlValid = !firstColumnFields.url || /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(firstColumnFields.url);
+    const isUrlValid =
+      !firstColumnFields.url ||
+      /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(firstColumnFields.url);
 
     if (isFormValid && isUrlValid) {
       setDisabledForm(false);
@@ -130,7 +149,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
       dataToSubmit.brand = autoFields.brand;
       dataToSubmit.model = autoFields.model;
       dataToSubmit.year = autoFields.year;
-      dataToSubmit.mileage = autoFields.mileage || '';
+      dataToSubmit.mileage = autoFields.mileage || "";
     } else if (selectedType === "Недвижимость") {
       dataToSubmit.propertyType = realEstateFields.propertyType;
       dataToSubmit.area = realEstateFields.area;
@@ -173,10 +192,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         <select
           name="brand"
           required
-          className={`register__input register__input_type_select ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input register__input_type_select ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={autoFields.brand}
-          onChange={(e) => setAutoFields({ ...autoFields, brand: e.target.value })}
+          onChange={(e) =>
+            setAutoFields({ ...autoFields, brand: e.target.value })
+          }
         >
           <option value="">Выберите марку</option>
           <option value="BMW">BMW</option>
@@ -193,10 +214,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="model"
           required
           type="text"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={autoFields.model}
-          onChange={(e) => setAutoFields({ ...autoFields, model: e.target.value })}
+          onChange={(e) =>
+            setAutoFields({ ...autoFields, model: e.target.value })
+          }
         />
       </div>
       <div className="register__container">
@@ -205,10 +228,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="year"
           required
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={autoFields.year}
-          onChange={(e) => setAutoFields({ ...autoFields, year: e.target.value })}
+          onChange={(e) =>
+            setAutoFields({ ...autoFields, year: e.target.value })
+          }
         />
       </div>
       <div className="register__container">
@@ -216,10 +241,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         <input
           name="mileage"
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={autoFields.mileage}
-          onChange={(e) => setAutoFields({ ...autoFields, mileage: e.target.value })}
+          onChange={(e) =>
+            setAutoFields({ ...autoFields, mileage: e.target.value })
+          }
         />
       </div>
     </div>
@@ -233,10 +260,15 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         <select
           name="propertyType"
           required
-          className={`register__input register__input_type_select ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input register__input_type_select ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={realEstateFields.propertyType}
-          onChange={(e) => setRealEstateFields({ ...realEstateFields, propertyType: e.target.value })}
+          onChange={(e) =>
+            setRealEstateFields({
+              ...realEstateFields,
+              propertyType: e.target.value,
+            })
+          }
         >
           <option value="">Выберите тип</option>
           <option value="Квартира">Квартира</option>
@@ -250,10 +282,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="area"
           required
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={realEstateFields.area}
-          onChange={(e) => setRealEstateFields({ ...realEstateFields, area: e.target.value })}
+          onChange={(e) =>
+            setRealEstateFields({ ...realEstateFields, area: e.target.value })
+          }
         />
       </div>
       <div className="register__container">
@@ -262,10 +296,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="rooms"
           required
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={realEstateFields.rooms}
-          onChange={(e) => setRealEstateFields({ ...realEstateFields, rooms: e.target.value })}
+          onChange={(e) =>
+            setRealEstateFields({ ...realEstateFields, rooms: e.target.value })
+          }
         />
       </div>
       <div className="register__container">
@@ -274,10 +310,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="price"
           required
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={realEstateFields.price}
-          onChange={(e) => setRealEstateFields({ ...realEstateFields, price: e.target.value })}
+          onChange={(e) =>
+            setRealEstateFields({ ...realEstateFields, price: e.target.value })
+          }
         />
       </div>
     </div>
@@ -291,10 +329,15 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         <select
           name="serviceType"
           required
-          className={`register__input register__input_type_select ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input register__input_type_select ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={servicesFields.serviceType}
-          onChange={(e) => setServicesFields({ ...servicesFields, serviceType: e.target.value })}
+          onChange={(e) =>
+            setServicesFields({
+              ...servicesFields,
+              serviceType: e.target.value,
+            })
+          }
         >
           <option value="">Выберите тип</option>
           <option value="Ремонт">Ремонт</option>
@@ -308,10 +351,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="experience"
           required
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={servicesFields.experience}
-          onChange={(e) => setServicesFields({ ...servicesFields, experience: e.target.value })}
+          onChange={(e) =>
+            setServicesFields({ ...servicesFields, experience: e.target.value })
+          }
         />
       </div>
       <div className="register__container">
@@ -320,10 +365,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="cost"
           required
           type="number"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={servicesFields.cost}
-          onChange={(e) => setServicesFields({ ...servicesFields, cost: e.target.value })}
+          onChange={(e) =>
+            setServicesFields({ ...servicesFields, cost: e.target.value })
+          }
         />
       </div>
       <div className="register__container">
@@ -332,10 +379,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           name="schedule"
           required
           type="text"
-          className={`register__input ${!isFirstColumnValid ? 'register__input_inactive' : ''}`}
+          className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
           defaultValue={servicesFields.schedule}
-          onChange={(e) => setServicesFields({ ...servicesFields, schedule: e.target.value })}
+          onChange={(e) =>
+            setServicesFields({ ...servicesFields, schedule: e.target.value })
+          }
         />
       </div>
     </div>
@@ -391,7 +440,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.name}
-                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, name: e.target.value })}
+                onChange={(e) =>
+                  setFirstColumnFields({
+                    ...firstColumnFields,
+                    name: e.target.value,
+                  })
+                }
               />
             </div>
             <div className="register__container">
@@ -402,7 +456,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.description}
-                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, description: e.target.value })}
+                onChange={(e) =>
+                  setFirstColumnFields({
+                    ...firstColumnFields,
+                    description: e.target.value,
+                  })
+                }
               />
             </div>
             <div className="register__container">
@@ -413,7 +472,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.location}
-                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, location: e.target.value })}
+                onChange={(e) =>
+                  setFirstColumnFields({
+                    ...firstColumnFields,
+                    location: e.target.value,
+                  })
+                }
               />
             </div>
             <div className="register__container">
@@ -423,7 +487,12 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.url}
-                onChange={(e) => setFirstColumnFields({ ...firstColumnFields, url: e.target.value })}
+                onChange={(e) =>
+                  setFirstColumnFields({
+                    ...firstColumnFields,
+                    url: e.target.value,
+                  })
+                }
               />
             </div>
           </div>

@@ -1,85 +1,83 @@
 ﻿.search-form {
-    padding: 0 70px;
-    margin: 70px 0 48px;
-    display: flex;
-    flex-direction: column;
+  padding: 0 70px;
+  margin: 70px 0 48px;
+  display: flex;
+  flex-direction: column;
 }
 
 .search-form__container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px #8B8B8B solid;
-    padding-bottom: 13px;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px #8b8b8b solid;
+  padding-bottom: 13px;
+  margin-bottom: 10px;
 }
 
 .search-form__input {
-    outline: none;
-    background-color: transparent;
-    width: 80%;
-    padding: 0;
-    margin: 0;
-    color: #8B8B8B;
-    border: none;
-    font-size: 28px;
+  outline: none;
+  background-color: transparent;
+  width: 80%;
+  padding: 0;
+  margin: 0;
+  color: #8b8b8b;
+  border: none;
+  font-size: 28px;
 }
 
 .search-form__button {
-    margin: 0;
-    padding: 0;
-    width: 33px;
-    height: 33px;
-    border: none;
-    cursor: pointer;
-    background: center center no-repeat url("../../../images/find.svg");
-    transition: opacity .3s linear;
+  margin: 0;
+  padding: 0;
+  width: 33px;
+  height: 33px;
+  border: none;
+  cursor: pointer;
+  background: center center no-repeat url("../../../images/find.svg");
+  transition: opacity 0.3s linear;
 }
 
 .search-form__button:hover {
-    opacity: .5;
+  opacity: 0.5;
 }
 
 .search-form__select {
-    border: 1px solid #8B8B8B;
-    border-radius: 10px;
-    width: 150px;
-    background-color: #ffe6c1;
-    color: #8B8B8B;
+  border: 1px solid #8b8b8b;
+  border-radius: 10px;
+  width: 150px;
+  background-color: #ffe6c1;
+  color: #8b8b8b;
 }
 
 .search-form__text {
-    font-size: 13px;
-    line-height: 18px;
-    color: #8B8B8B;
-    padding: 0;
-    margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: #8b8b8b;
+  padding: 0;
+  margin: 0;
 }
 
-
-
 @media screen and (max-width: 1279px) {
-    .search-form {
-        justify-content: right;
-        margin: 80px 0 61px;
-        padding: 0 30px;
-    }
+  .search-form {
+    justify-content: right;
+    margin: 80px 0 61px;
+    padding: 0 30px;
+  }
 }
 
 @media screen and (max-width: 767px) {
-    .search-form {
-        justify-content: center;
-        margin: 70px 0 51px;
-        padding: 0 14px;
-    }
+  .search-form {
+    justify-content: center;
+    margin: 70px 0 51px;
+    padding: 0 14px;
+  }
 
-    .search-form__input {
-        font-size: 18px;
-    }
+  .search-form__input {
+    font-size: 18px;
+  }
 }
 
 @media screen and (max-width: 425px) {
-    .search-form {
-        margin-bottom: 0;
-    }
+  .search-form {
+    margin-bottom: 0;
+  }
 }

@@ -1,24 +1,24 @@
 ﻿.main_landing {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 1300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1300px;
 }
 
 .main_landing__title {
-    text-align: center;
-    margin: 0;
-    line-height: 50px;
-    font-size: 46px;
+  text-align: center;
+  margin: 0;
+  line-height: 50px;
+  font-size: 46px;
 }
 
 @media screen and (max-width: 768px) {
-    .main_landing {
-        height: 500px;
-    }
+  .main_landing {
+    height: 500px;
+  }
 
-    .main_landing__title {
-        line-height: 30px;
-        font-size: 27px;
-    }
+  .main_landing__title {
+    line-height: 30px;
+    font-size: 27px;
+  }
 }

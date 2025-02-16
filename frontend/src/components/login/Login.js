@@ -66,7 +66,10 @@ function Login({ submit, loggedIn }) {
         </Link>
       </p>
       <p className="register__text">
-        <Link to="/reset-password" className="register__link register__link_type_password">
+        <Link
+          to="/reset-password"
+          className="register__link register__link_type_password"
+        >
           Забыли пароль?
         </Link>
       </p>

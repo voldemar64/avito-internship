@@ -1,136 +1,136 @@
 .post {
-    position: relative;
-    display: flex;
-    gap: 20px;
-    padding: 20px 70px;
-    border-radius: 10px;
+  position: relative;
+  display: flex;
+  gap: 20px;
+  padding: 20px 70px;
+  border-radius: 10px;
 }
 
 .post__image {
-    width: 50%;
-    max-height: 600px;
-    box-sizing: border-box;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  width: 50%;
+  max-height: 600px;
+  box-sizing: border-box;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .post__container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .post__description {
-    font-family: 'Inter', 'Arial', sans-serif;
-    display: flex;
-    flex-direction: column;
-    font-weight: 500;
-    font-size: 16px;
-    color: #4f4f4f;
-    line-height: 1.6;
-    gap: 30px;
+  font-family: "Inter", "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  font-size: 16px;
+  color: #4f4f4f;
+  line-height: 1.6;
+  gap: 30px;
 }
 
 .post__buttons-container {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .post__text {
-    margin: 0;
+  margin: 0;
 }
 
 .post__heading {
-    font-family: 'Inter', 'Arial', sans-serif;
-    font-weight: 700;
-    font-size: 40px;
-    color: #2b2d42;
-    margin: 0;
+  font-family: "Inter", "Arial", sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #2b2d42;
+  margin: 0;
 }
 
 .post__edit-button {
-    font-family: 'Inter', 'Arial', sans-serif;
-    color: #2B2D42;
-    width: 100px;
-    height: 30px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: #6FB0B6;
-    transition: opacity 0.3s linear;
+  font-family: "Inter", "Arial", sans-serif;
+  color: #2b2d42;
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #6fb0b6;
+  transition: opacity 0.3s linear;
 }
 
 .post__edit-button:hover {
-    opacity: 0.5;
-    transition: opacity 0.2s linear;
+  opacity: 0.5;
+  transition: opacity 0.2s linear;
 }
 
 .post__edit-button_hidden {
-    display: none;
+  display: none;
 }
 
 .post__delete-button {
-    background: center center no-repeat url('../../images/trash.svg') transparent;
-    border: none;
-    width: 18px;
-    height: 19px;
-    cursor: pointer;
-    transition: opacity .3s;
+  background: center center no-repeat url("../../images/trash.svg") transparent;
+  border: none;
+  width: 18px;
+  height: 19px;
+  cursor: pointer;
+  transition: opacity 0.3s;
 }
 
 .post__delete-button_hidden {
-    display: none;
+  display: none;
 }
 
 .post__delete-button:hover {
-    opacity: .6;
-    transition: opacity .2s;
+  opacity: 0.6;
+  transition: opacity 0.2s;
 }
 
 .post__delete-button:focus {
-    outline: #5982fa 3px solid;
+  outline: #5982fa 3px solid;
 }
 
 @media (max-width: 1024px) {
-    .post {
-        padding: 20px 30px;
-    }
+  .post {
+    padding: 20px 30px;
+  }
 }
 
 @media screen and (max-width: 425px) {
-    .post {
-        padding: 15px 14px;
-        flex-direction: column;
-    }
+  .post {
+    padding: 15px 14px;
+    flex-direction: column;
+  }
 
-    .post__image {
-        width: 100%;
-    }
+  .post__image {
+    width: 100%;
+  }
 
-    .post__container {
-        gap: 15px;
-    }
+  .post__container {
+    gap: 15px;
+  }
 
-    .post__heading {
-        font-size: 28px;
-    }
+  .post__heading {
+    font-size: 28px;
+  }
 
-    .post__description {
-        font-size: 14px;
-        gap: 15px;
-    }
+  .post__description {
+    font-size: 14px;
+    gap: 15px;
+  }
 
-    .post__edit-button {
-        width: 100%;
-        height: 40px;
-        font-size: 20px;
-    }
+  .post__edit-button {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+  }
 
-    .post__delete-button {
-        position: absolute;
-        top: 25px;
-        right: 23px;
-    }
+  .post__delete-button {
+    position: absolute;
+    top: 25px;
+    right: 23px;
+  }
 }

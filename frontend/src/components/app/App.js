@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 import Header from "../header/Header";
 import Main from "../main_landing/main/Main";
@@ -34,7 +34,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [tokenChecked, setTokenChecked] = React.useState(false);
-  
+
   const [searchDone, setSearchDone] = React.useState(false);
   const [selectedPost, setSelectedPost] = React.useState(null);
   const [selectedEditPost, setSelectedEditPost] = React.useState(null);
@@ -43,7 +43,6 @@ function App() {
 
   const [localApiPosts, setLocalApiPosts] = React.useState([]);
   const [apiFilteredPosts, setApiFilteredPosts] = React.useState([]);
-
 
   const navigate = useNavigate();
   const token = localStorage.getItem("jwt");
@@ -74,17 +73,17 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      postsApi.getInitialPosts()
-          .then((posts) => {
-            localStorage.setItem('posts', JSON.stringify(posts));
-            const allPosts = JSON.parse(localStorage.getItem('posts'));
-            setLocalApiPosts(allPosts);
-            setApiFilteredPosts(allPosts);
-          })
-          .catch(err => console.log(`Ошибка при получении объявлений: ${err}`))
+      postsApi
+        .getInitialPosts()
+        .then((posts) => {
+          localStorage.setItem("posts", JSON.stringify(posts));
+          const allPosts = JSON.parse(localStorage.getItem("posts"));
+          setLocalApiPosts(allPosts);
+          setApiFilteredPosts(allPosts);
+        })
+        .catch((err) => console.log(`Ошибка при получении объявлений: ${err}`));
     }
-
-  }, [loggedIn])
+  }, [loggedIn]);
 
   function handleRegister(name, surname, phone, email, password) {
     auth
@@ -130,57 +129,57 @@ function App() {
   function sendCode(email) {
     auth
       .sendCode(email)
-        .then((res) => {
-          if (res) {
-            setPopupTitle("Код отправлен!");
-            setPopupPhoto(tick);
-            setIsInfoTooltipOpen(true);
-          } else {
-            setPopupTitle("Код не отправлен!:(");
-            setPopupPhoto(cross);
-            setIsInfoTooltipOpen(true);
-          }
-        })
-        .catch(() => {
-          setPopupTitle("Что-то пошло не так!:(");
+      .then((res) => {
+        if (res) {
+          setPopupTitle("Код отправлен!");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setPopupTitle("Код не отправлен!:(");
           setPopupPhoto(cross);
           setIsInfoTooltipOpen(true);
-        })
+        }
+      })
+      .catch(() => {
+        setPopupTitle("Что-то пошло не так!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
   }
 
   function handleResetPassword(email, password, code) {
     auth
-        .resetPassword(email, password, code)
-        .then((res) => {
-          if (res) {
-            setPopupTitle("Пароль изменён!");
-            setPopupPhoto(tick);
-            navigate("/signin");
-          } else {
-            setPopupTitle("Что-то пошло не так!:(");
-            setPopupPhoto(cross);
-            setIsInfoTooltipOpen(true);
-          }
-        })
-        .catch(() => {
+      .resetPassword(email, password, code)
+      .then((res) => {
+        if (res) {
+          setPopupTitle("Пароль изменён!");
+          setPopupPhoto(tick);
+          navigate("/signin");
+        } else {
           setPopupTitle("Что-то пошло не так!:(");
           setPopupPhoto(cross);
           setIsInfoTooltipOpen(true);
-        })
-        .finally(setIsInfoTooltipOpen(true));
+        }
+      })
+      .catch(() => {
+        setPopupTitle("Что-то пошло не так!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      })
+      .finally(setIsInfoTooltipOpen(true));
   }
 
   function handleSignOut() {
     setTokenChecked(false);
-    setLoggedIn(false)
-    setCurrentUser({})
-    setLocalApiPosts([])
-    setApiFilteredPosts([])
-    localStorage.removeItem('posts')
-    localStorage.removeItem('filteredPosts')
-    localStorage.removeItem('savedType')
-    localStorage.removeItem('savedSearchValue')
-    localStorage.removeItem("jwt")
+    setLoggedIn(false);
+    setCurrentUser({});
+    setLocalApiPosts([]);
+    setApiFilteredPosts([]);
+    localStorage.removeItem("posts");
+    localStorage.removeItem("filteredPosts");
+    localStorage.removeItem("savedType");
+    localStorage.removeItem("savedSearchValue");
+    localStorage.removeItem("jwt");
     navigate("/");
   }
 
@@ -203,40 +202,45 @@ function App() {
   }
 
   function postsTypeFilter(type) {
-    const filteredPosts = JSON.parse(localStorage.getItem('filteredPosts'))
+    const filteredPosts = JSON.parse(localStorage.getItem("filteredPosts"));
 
-    if (type !== '' && filteredPosts) {
-      const cars = filteredPosts.filter((i) => i.type === type)
-      setApiFilteredPosts(cars)
+    if (type !== "" && filteredPosts) {
+      const cars = filteredPosts.filter((i) => i.type === type);
+      setApiFilteredPosts(cars);
     } else {
-      setApiFilteredPosts(filteredPosts)
+      setApiFilteredPosts(filteredPosts);
     }
   }
 
   function handleSearch(input) {
     if (localApiPosts) {
-      const filteredSearch = (input === '')
+      const filteredSearch =
+        input === ""
           ? localApiPosts
           : localApiPosts.filter((i) => {
-            const inputs = input.toLowerCase();
-            const name = i.name.toLowerCase();
-            return name.includes(inputs);
-          });
+              const inputs = input.toLowerCase();
+              const name = i.name.toLowerCase();
+              return name.includes(inputs);
+            });
 
-      localStorage.setItem('filteredPosts', JSON.stringify(filteredSearch));
+      localStorage.setItem("filteredPosts", JSON.stringify(filteredSearch));
       setApiFilteredPosts(filteredSearch || localApiPosts);
-      setSearchDone(input !== '');
+      setSearchDone(input !== "");
     } else {
-      console.log('Нет данных для поиска');
+      console.log("Нет данных для поиска");
     }
   }
 
   function handleAddPost(card) {
-    postsApi.addNewPost(card)
-      .then(newItem => {
+    postsApi
+      .addNewPost(card)
+      .then((newItem) => {
         if (newItem) {
-          localStorage.setItem('posts', JSON.stringify([newItem, ...localApiPosts]));
-          const allPosts = JSON.parse(localStorage.getItem('posts'));
+          localStorage.setItem(
+            "posts",
+            JSON.stringify([newItem, ...localApiPosts]),
+          );
+          const allPosts = JSON.parse(localStorage.getItem("posts"));
           setLocalApiPosts(allPosts);
 
           setApiFilteredPosts(allPosts);
@@ -249,24 +253,25 @@ function App() {
           setIsInfoTooltipOpen(true);
         }
       })
-      .catch(err => {
+      .catch(() => {
         setPopupTitle("Пост не добавился!:(");
         setPopupPhoto(cross);
         setIsInfoTooltipOpen(true);
-      })
+      });
 
-    navigate("/list")
+    navigate("/list");
   }
 
   function handleEditPost(card_id, card) {
-    postsApi.patchPost(card_id, card)
-      .then(newItem => {
+    postsApi
+      .patchPost(card_id, card)
+      .then((newItem) => {
         if (newItem) {
-          const updatedPosts = localApiPosts.map(post =>
-            post._id === newItem._id ? newItem : post
+          const updatedPosts = localApiPosts.map((post) =>
+            post._id === newItem._id ? newItem : post,
           );
 
-          localStorage.setItem('posts', JSON.stringify(updatedPosts));
+          localStorage.setItem("posts", JSON.stringify(updatedPosts));
           setLocalApiPosts(updatedPosts);
           setApiFilteredPosts(updatedPosts);
 
@@ -279,7 +284,7 @@ function App() {
           setIsInfoTooltipOpen(true);
         }
       })
-      .catch(err => {
+      .catch(() => {
         setPopupTitle("Пост не обновился!:(");
         setPopupPhoto(cross);
         setIsInfoTooltipOpen(true);
@@ -289,18 +294,21 @@ function App() {
   }
 
   function handleItemDelete(card) {
-    postsApi.deletePost(card._id)
+    postsApi
+      .deletePost(card._id)
       .then(() => {
-        setLocalApiPosts((cards) => cards.filter((c) => c._id !== card._id && c))
-        setApiFilteredPosts((cards) => cards.filter((c) => c._id !== card._id))
+        setLocalApiPosts((cards) =>
+          cards.filter((c) => c._id !== card._id && c),
+        );
+        setApiFilteredPosts((cards) => cards.filter((c) => c._id !== card._id));
       })
-      .catch(err => {
-        console.log(`карточка не удаляется: ${err}`)
-    });
+      .catch((err) => {
+        console.log(`карточка не удаляется: ${err}`);
+      });
   }
 
   function addPosts() {
-    setListLength(listLength + 5)
+    setListLength(listLength + 5);
   }
 
   function handleInfoTooltip() {
@@ -314,13 +322,13 @@ function App() {
   }
 
   function handleItemClick(item) {
-    setSelectedPost(item)
-    navigate(`/list/${item._id}`)
+    setSelectedPost(item);
+    navigate(`/list/${item._id}`);
   }
 
   function handleEditButtonClick(item) {
-    setSelectedEditPost(item)
-    navigate("/form")
+    setSelectedEditPost(item);
+    navigate("/form");
   }
 
   function handleSideBar() {
@@ -328,7 +336,7 @@ function App() {
   }
 
   function handleSelectedEditPost() {
-    setSelectedEditPost(null)
+    setSelectedEditPost(null);
     console.log(selectedPost);
   }
 
@@ -348,7 +356,13 @@ function App() {
           />
           <Route
             path="/reset-password"
-            element={<ResetPassword submit={handleResetPassword} sendCode={sendCode} loggedIn={loggedIn} />}
+            element={
+              <ResetPassword
+                submit={handleResetPassword}
+                sendCode={sendCode}
+                loggedIn={loggedIn}
+              />
+            }
           />
           <Route
             path="/signup"

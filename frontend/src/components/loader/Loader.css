@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F7E7CE;
+  background-color: #f7e7ce;
   width: 100%;
   height: 100%;
   z-index: 10;
@@ -42,7 +42,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: #2B2D42;
+  background: #2b2d42;
   border-radius: 50px;
 }
 
@@ -64,6 +64,6 @@
 
 .loader__round::before {
   z-index: 2;
-  background: #2B2D42;
+  background: #2b2d42;
   animation: loader-inside-red 1s ease-in-out infinite;
 }

@@ -41,8 +41,8 @@ export function sendCode(email) {
     },
     body: JSON.stringify({ email: email }),
   })
-      .then(handleRes)
-      .catch((err) => console.log(`не удалось подтвердить почту: ${err}`))
+    .then(handleRes)
+    .catch((err) => console.log(`не удалось подтвердить почту: ${err}`));
 }
 
 export function resetPassword(email, password, code) {
@@ -55,7 +55,7 @@ export function resetPassword(email, password, code) {
     body: JSON.stringify({ password: password, email: email, code: code }),
   })
     .then(handleRes)
-    .catch((err) => console.log(`не удалось сменить пароль: ${err}`))
+    .catch((err) => console.log(`не удалось сменить пароль: ${err}`));
 }
 
 function handleRes(res) {

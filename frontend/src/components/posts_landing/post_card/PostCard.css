@@ -1,144 +1,149 @@
 ﻿.card {
-    position: relative;
-    background-color: #ffe6c1;
-    width: 360px;
-    padding-bottom: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s;
+  position: relative;
+  background-color: #ffe6c1;
+  width: 360px;
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-radius: 10px;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
 }
 
 .card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.25);
-    transition: box-shadow 0.2s;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.4),
+    0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.2s;
 }
 
 .card__container {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 18px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 18px;
 }
 
 .card__heading {
-    font-family: 'Inter', 'Arial', sans-serif;
-    font-weight: 900;
-    font-size: 24px;
-    line-height: 29px;
-    color: #2B2D42;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    width: calc(100% - 50px);
-    margin: 0;
+  font-family: "Inter", "Arial", sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #2b2d42;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: calc(100% - 50px);
+  margin: 0;
 }
 
 .card__duration {
-    padding: 0;
-    margin: 0;
-    font-size: 13px;
-    line-height: 18px;
-    color: #8B8B8B;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: #8b8b8b;
 }
 
 .card__photo {
-    box-sizing: border-box;
-    object-fit: cover;
-    width: 100%;
-    height: 282px;
-    border-radius: 10px 10px 0 0;
-    cursor: pointer;
-    transition: opacity 0.3s linear;
+  box-sizing: border-box;
+  object-fit: cover;
+  width: 100%;
+  height: 282px;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  transition: opacity 0.3s linear;
 }
 
 .card__photo:hover {
-    opacity: 0.8;
-    transition: opacity 0.2s linear;
+  opacity: 0.8;
+  transition: opacity 0.2s linear;
 }
 
 .card__description {
-    display: flex;
-    justify-content: space-between;
-    width: 87.2%;
-    padding: 21px 15px 26px 21px;
+  display: flex;
+  justify-content: space-between;
+  width: 87.2%;
+  padding: 21px 15px 26px 21px;
 }
 
 .card__edit-button {
-    font-family: 'Inter', 'Arial', sans-serif;
-    color: #2B2D42;
-    width: 100px;
-    height: 30px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    background-color: #6FB0B6;
-    transition: opacity 0.3s linear;
+  font-family: "Inter", "Arial", sans-serif;
+  color: #2b2d42;
+  width: 100px;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #6fb0b6;
+  transition: opacity 0.3s linear;
 }
 
 .card__edit-button:hover {
-    opacity: 0.5;
-    transition: opacity 0.2s linear;
+  opacity: 0.5;
+  transition: opacity 0.2s linear;
 }
 
 .card__edit-button_hidden {
-    display: none;
+  display: none;
 }
 
 .card__delete-button {
-    position: absolute;
-    background: center center no-repeat url('../../../images/trash.svg') transparent;
-    border: none;
-    top: 18px;
-    right: 15px;
-    width: 18px;
-    height: 19px;
-    cursor: pointer;
-    transition: opacity .3s;
+  position: absolute;
+  background: center center no-repeat url("../../../images/trash.svg")
+    transparent;
+  border: none;
+  top: 18px;
+  right: 15px;
+  width: 18px;
+  height: 19px;
+  cursor: pointer;
+  transition: opacity 0.3s;
 }
 
 .card__delete-button_hidden {
-    display: none;
+  display: none;
 }
 
 .card__delete-button:hover {
-    opacity: .6;
-    transition: opacity .2s;
+  opacity: 0.6;
+  transition: opacity 0.2s;
 }
 
 .card__delete-button:focus {
-    outline: #5982fa 3px solid;
+  outline: #5982fa 3px solid;
 }
 
 @media screen and (max-width: 1279px) {
-    .card {
-        width: 342px;
-    }
+  .card {
+    width: 342px;
+  }
 
-    .card__image {
-        width: 342px;
-        height: 190px;
-    }
+  .card__image {
+    width: 342px;
+    height: 190px;
+  }
 }
 
 @media screen and (max-width: 767px) {
-    .card {
-        width: 300px;
-        gap: 14px;
-        padding-bottom: 14px;
-    }
+  .card {
+    width: 300px;
+    gap: 14px;
+    padding-bottom: 14px;
+  }
 
-    .card__title {
-        font-size: 12px;
-    }
+  .card__title {
+    font-size: 12px;
+  }
 
-    .card__duration {
-        font-size: 10px;
-    }
+  .card__duration {
+    font-size: 10px;
+  }
 
-    .card__image {
-        width: 300px;
-        height: 168px;
-    }
+  .card__image {
+    width: 300px;
+    height: 168px;
+  }
 }
