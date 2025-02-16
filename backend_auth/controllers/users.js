@@ -209,7 +209,13 @@ const patchUser = async (req, res, next) => {
     if (!user) {
       throw new NotFound("Пользователь с указанным _id не найден.");
     }
-    res.send({ user });
+    res.send({
+      email: user.email,
+      name: user.name,
+      surname: user.surname,
+      phone: user.phone,
+      _id: user._id,
+    });
   } catch (err) {
     if (err.name === "ValidationError" || err.name === "CastError") {
       next(
