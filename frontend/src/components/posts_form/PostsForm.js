@@ -511,7 +511,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
           type="submit"
           disabled={disabledForm}
         >
-          Выложить объявление
+          {post ? "Изменить объявление" : "Выложить объявление"}
         </button>
       </form>
     </section>

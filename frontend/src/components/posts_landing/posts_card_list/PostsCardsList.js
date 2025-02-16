@@ -13,7 +13,7 @@ function PostsCardList({
   searchDone,
 }) {
   return (
-    <section className="movies">
+    <section className="posts">
       {posts.length !== 0 ? (
         <ul className="cards">
           {posts
