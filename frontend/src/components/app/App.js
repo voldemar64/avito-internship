@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 import Header from "../header/Header";
@@ -47,7 +47,7 @@ function App() {
   const navigate = useNavigate();
   const token = localStorage.getItem("jwt");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       mainApi
         .getUserInfo()
@@ -71,7 +71,7 @@ function App() {
     }
   }, [token]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (loggedIn) {
       postsApi
         .getInitialPosts()
@@ -84,6 +84,12 @@ function App() {
         .catch((err) => console.log(`Ошибка при получении объявлений: ${err}`));
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    if (selectedEditPost && location.pathname !== "/form") {
+      setSelectedEditPost(null);
+    }
+  }, [location.pathname]);
 
   function handleRegister(name, surname, phone, email, password) {
     auth
@@ -335,11 +341,6 @@ function App() {
     setIsSideBarOpen(!isSideBarOpen);
   }
 
-  function handleSelectedEditPost() {
-    setSelectedEditPost(null);
-    console.log(selectedPost);
-  }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header
@@ -407,7 +408,6 @@ function App() {
                 onSubmit={handleAddPost}
                 onEditSubmit={handleEditPost}
                 post={selectedEditPost}
-                onExit={handleSelectedEditPost}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />

@@ -1,13 +1,10 @@
 ﻿import "./PostsForm.css";
 import "../register/Register.css";
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
-  const PATH_NAME = "http://www..voldemar-avito.ru/form";
+function PostsFrom({ onSubmit, onEditSubmit, post }) {
   const currentUser = React.useContext(CurrentUserContext);
-  let location = useLocation();
 
   const [selectedType, setSelectedType] = useState("");
   const [firstColumnFields, setFirstColumnFields] = useState({
@@ -41,11 +38,6 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
   const [isFirstColumnValid, setIsFirstColumnValid] = useState(false);
   const [disabledForm, setDisabledForm] = useState(true);
 
-  useEffect(() => {
-    if (location.pathname !== PATH_NAME) {
-      onExit();
-    }
-  }, [location]);
 
   useEffect(() => {
     if (post) {
@@ -163,6 +155,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
       dataToSubmit.schedule = servicesFields.schedule;
     }
 
+    console.log("Пост при отправке формы:", post)
     if (post) {
       const post_id = post._id;
       onEditSubmit(post_id, dataToSubmit);
@@ -189,7 +182,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
       <div className="register__container">
-        <label className="register__label">Марка</label>
+        <label className="register__label">Марка(обязательное)</label>
         <select
           name="brand"
           required
@@ -210,10 +203,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         </select>
       </div>
       <div className="register__container">
-        <label className="register__label">Модель</label>
+        <label className="register__label">Модель(обязательное)</label>
         <input
           name="model"
           required
+          placeholder="Например: M5 Competition"
           type="text"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -224,10 +218,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">Год выпуска</label>
+        <label className="register__label">Год выпуска(обязательное)</label>
         <input
           name="year"
           required
+          placeholder="Например: 1999"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -238,9 +233,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">Пробег</label>
+        <label className="register__label">Пробег(обязательное)</label>
         <input
           name="mileage"
+          required
+          placeholder="Например: 1500"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -257,7 +254,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
       <div className="register__container">
-        <label className="register__label">Тип недвижимости</label>
+        <label className="register__label">Тип недвижимости(обязательное)</label>
         <select
           name="propertyType"
           required
@@ -278,10 +275,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         </select>
       </div>
       <div className="register__container">
-        <label className="register__label">Площадь (кв. м)</label>
+        <label className="register__label">Площадь (кв. м)(обязательное)</label>
         <input
           name="area"
           required
+          placeholder="Например: 250"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -292,10 +290,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">Количество комнат</label>
+        <label className="register__label">Количество комнат(обязательное)</label>
         <input
           name="rooms"
           required
+          placeholder="Например: 4"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -306,10 +305,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">Цена</label>
+        <label className="register__label">Цена(обязательное)</label>
         <input
           name="price"
           required
+          placeholder="Например: 30000000"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -326,7 +326,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
       <div className="register__container">
-        <label className="register__label">Тип услуги</label>
+        <label className="register__label">Тип услуги(обязательное)</label>
         <select
           name="serviceType"
           required
@@ -347,10 +347,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         </select>
       </div>
       <div className="register__container">
-        <label className="register__label">Опыт работы (лет)</label>
+        <label className="register__label">Опыт работы (лет)(обязательное)</label>
         <input
           name="experience"
           required
+          placeholder="Например: 10"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -361,10 +362,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">Стоимость</label>
+        <label className="register__label">Стоимость(обязательное)</label>
         <input
           name="cost"
           required
+          placeholder="Например: 40000"
           type="number"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -375,10 +377,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">График работы</label>
+        <label className="register__label">График работы(обязательное)</label>
         <input
           name="schedule"
           required
+          placeholder="Например: 9:00-17:00"
           type="text"
           className={`register__input ${!isFirstColumnValid ? "register__input_inactive" : ""}`}
           disabled={!isFirstColumnValid}
@@ -399,7 +402,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
           <div className="register__column">
             <h3 className="register__column-title">Общая информация:</h3>
             <div className="register__container">
-              <label className="register__label">Тип объявления</label>
+              <label className="register__label">Тип объявления(обязательное)</label>
               <select
                 name="type"
                 required
@@ -434,10 +437,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
               </select>
             </div>
             <div className="register__container">
-              <label className="register__label">Название</label>
+              <label className="register__label">Название(обязательное)</label>
               <input
                 name="name"
                 required
+                placeholder="Например: Лада Седан"
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.name}
@@ -450,10 +454,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
               />
             </div>
             <div className="register__container">
-              <label className="register__label">Описание</label>
+              <label className="register__label">Описание(обязательное)</label>
               <input
                 name="description"
                 required
+                placeholder="Например: Лучшая машина для понтов"
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.description}
@@ -466,10 +471,11 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
               />
             </div>
             <div className="register__container">
-              <label className="register__label">Локация</label>
+              <label className="register__label">Локация(обязательное)</label>
               <input
                 name="location"
                 required
+                placeholder="Например: Санкт-Петербург"
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.location}
@@ -482,9 +488,10 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
               />
             </div>
             <div className="register__container">
-              <label className="register__label">Фотография</label>
+              <label className="register__label">Фотография(необязательное, ссылка)</label>
               <input
                 name="url"
+                placeholder="Например: https://i.pinimg.com/originals/c5/7e/b9/c57eb970db76255237b3674b23b4d948.jpg"
                 type="text"
                 className="register__input"
                 defaultValue={firstColumnFields.url}
