@@ -2,8 +2,8 @@
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import { errors } from "celebrate";
-import logger from "../backend_auth/middlewares/logger.js";
-import corsMiddleware from "../backend_auth/middlewares/cors.js";
+import logger from "./middlewares/logger.js";
+import corsMiddleware from "./middlewares/cors.js";
 import errorHandler from "../backend_auth/middlewares/errors.js";
 import itemsRoutes from "./routes/items.js";
 import NotFound from "../backend_auth/errors/NotFound.js";
