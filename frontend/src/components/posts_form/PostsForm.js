@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
-  const PATH_NAME = process.env.PATH_NAME || "http://localhost:3000/form";
+  const PATH_NAME = "http://www..voldemar-avito.ru/form";
   const currentUser = React.useContext(CurrentUserContext);
   let location = useLocation();
 

@@ -52,7 +52,7 @@
   }
 }
 
-const postsApi = new PostsApi(process.env.POSTS_PATH || "http://localhost:8080", {
+const postsApi = new PostsApi("https://posts.voldemar-avito.ru/", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });
