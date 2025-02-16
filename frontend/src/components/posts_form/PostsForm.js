@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
+  const PATH_NAME = process.env.PATH_NAME || "http://localhost:3000/form";
   const currentUser = React.useContext(CurrentUserContext);
   let location = useLocation();
 
@@ -41,7 +42,7 @@ function PostsFrom({ onSubmit, onEditSubmit, post, onExit }) {
   const [disabledForm, setDisabledForm] = useState(true);
 
   useEffect(() => {
-    if (location.pathname !== "http://localhost:3000/form") {
+    if (location.pathname !== PATH_NAME) {
       onExit();
     }
   }, [location]);
