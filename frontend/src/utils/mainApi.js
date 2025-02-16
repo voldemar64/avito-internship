@@ -56,7 +56,7 @@ class MainApi {
   }
 }
 
-const api = new MainApi("http://localhost:5000", {
+const api = new MainApi(process.env.AUTH_PATH || "http://localhost:5000", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });

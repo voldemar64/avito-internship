@@ -52,7 +52,7 @@
   }
 }
 
-const postsApi = new PostsApi("http://localhost:8080", {
+const postsApi = new PostsApi(process.env.POSTS_PATH || "http://localhost:8080", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });
