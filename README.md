@@ -134,4 +134,4 @@ git clone git@github.com:voldemar64/avito-internship.git
 cd avito-internship
 cd frontend
 npm install
-npm run dev
+npm run start
