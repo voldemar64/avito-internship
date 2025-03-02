@@ -1,5 +1,5 @@
 .profile {
-  height: calc(100vh - 279px);
+  height: calc(100% - 279px);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -115,3 +115,10 @@
     margin-bottom: 379px;
   }
 }
+
+@media screen and (max-width: 425px) {
+  .profile {
+    height: calc(100% - 85px);
+  }
+}
+
