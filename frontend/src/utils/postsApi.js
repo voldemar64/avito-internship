@@ -75,7 +75,6 @@
       body: JSON.stringify({ userId }),
     }).then((res) => this._handleRes(res));
   }
-
 }
 
 const postsApi = new PostsApi("https://posts.voldemar-avito.ru", {

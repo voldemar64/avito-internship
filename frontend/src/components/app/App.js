@@ -238,13 +238,21 @@ function App() {
   }
 
   function postsTypeFilter(type) {
-    const filteredPosts = JSON.parse(localStorage.getItem("filteredPosts"));
+    const path = location.pathname;
+    const filteredPosts =
+      path === "/list"
+        ? JSON.parse(localStorage.getItem("filteredPosts"))
+        : JSON.parse(localStorage.getItem("savedFilteredPosts"));
 
     if (type !== "" && filteredPosts) {
       const posts = filteredPosts.filter((i) => i.type === type);
-      setApiFilteredPosts(posts);
+      path === "/list"
+        ? setApiFilteredPosts(posts)
+        : setSavedFilteredPosts(posts);
     } else {
-      setApiFilteredPosts(filteredPosts);
+      path === "/list"
+        ? setApiFilteredPosts(filteredPosts)
+        : setSavedFilteredPosts(filteredPosts);
     }
   }
 
