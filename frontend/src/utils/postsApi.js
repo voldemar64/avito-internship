@@ -24,6 +24,15 @@
     });
   }
 
+  getSavedPosts() {
+    return fetch(`${this._baseUrl}/saved-items`, {
+      method: "GET",
+      headers: this._headers,
+    }).then((res) => {
+      return this._handleRes(res);
+    });
+  }
+
   addNewPost(data) {
     return fetch(`${this._baseUrl}/items`, {
       method: "POST",
@@ -50,6 +59,23 @@
       return this._handleRes(res);
     });
   }
+
+  likePost(post_id, userId) {
+    return fetch(`${this._baseUrl}/items/${post_id}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+      body: JSON.stringify({ userId }),
+    }).then((res) => this._handleRes(res));
+  }
+
+  dislikePost(post_id, userId) {
+    return fetch(`${this._baseUrl}/items/${post_id}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+      body: JSON.stringify({ userId }),
+    }).then((res) => this._handleRes(res));
+  }
+
 }
 
 const postsApi = new PostsApi("https://posts.voldemar-avito.ru", {
