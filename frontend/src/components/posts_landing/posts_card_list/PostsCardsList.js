@@ -6,6 +6,7 @@ import React from "react";
 function PostsCardList({
   posts,
   addPosts,
+  onSave,
   onCardClick,
   onCardDelete,
   onEditButtonClick,
@@ -22,6 +23,7 @@ function PostsCardList({
                 <PostCard
                   key={card._id}
                   card={card}
+                  onSave={onSave}
                   onCardClick={onCardClick}
                   onCardDelete={onCardDelete}
                   onEditButtonClick={onEditButtonClick}

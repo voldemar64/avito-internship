@@ -1,8 +1,8 @@
-﻿import SearchForm from "../search_form/SearchForm";
+import SearchForm from "../search_form/SearchForm";
 import PostsCardsList from "../posts_card_list/PostsCardsList";
 import React from "react";
 
-function Posts({
+function SavedPosts({
   postsTypeFilter,
   handleSearch,
   posts,
@@ -34,4 +34,4 @@ function Posts({
   );
 }
 
-export default Posts;
+export default SavedPosts;

@@ -9,6 +9,7 @@ import Register from "../register/Register";
 import ResetPassword from "../reset_password/ResetPassword";
 import Profile from "../profile/Profile";
 import Posts from "../posts_landing/posts/Posts";
+import SavedPosts from "../posts_landing/saved_posts/SavedPosts";
 import Post from "../post/Post";
 import PostsForm from "../posts_form/PostsForm";
 import NotFound from "../not_found/NotFound";
@@ -42,6 +43,8 @@ function App() {
   const [listLength, setListLength] = React.useState(5);
 
   const [localApiPosts, setLocalApiPosts] = React.useState([]);
+  const [savedPosts, setSavedPosts] = React.useState([]);
+  const [savedFilteredPosts, setSavedFilteredPosts] = React.useState([]);
   const [apiFilteredPosts, setApiFilteredPosts] = React.useState([]);
 
   const navigate = useNavigate();
@@ -84,6 +87,29 @@ function App() {
         .catch((err) => console.log(`Ошибка при получении объявлений: ${err}`));
     }
   }, [loggedIn]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      postsApi
+        .getSavedPosts()
+        .then((posts) => {
+          localStorage.setItem(
+            "savedPosts",
+            JSON.stringify(posts.filter((e) => e.owner === currentUser._id)),
+          );
+          localStorage.setItem(
+            "savedFilteredPosts",
+            JSON.stringify(posts.filter((e) => e.owner === currentUser._id)),
+          );
+          const userPosts = JSON.parse(localStorage.getItem("savedPosts"));
+          setSavedPosts(userPosts);
+          setSavedFilteredPosts(userPosts);
+        })
+        .catch((err) =>
+          console.log(`Ошибка при получении сохранённых фильмов: ${err}`),
+        );
+    }
+  }, [loggedIn, currentUser]);
 
   useEffect(() => {
     if (selectedEditPost && location.pathname !== "/form") {
@@ -180,9 +206,13 @@ function App() {
     setLoggedIn(false);
     setCurrentUser({});
     setLocalApiPosts([]);
+    setSavedFilteredPosts([]);
+    setSavedFilteredPosts([]);
     setApiFilteredPosts([]);
     localStorage.removeItem("posts");
     localStorage.removeItem("filteredPosts");
+    localStorage.removeItem("savedPosts");
+    localStorage.removeItem("savedFilteredPosts");
     localStorage.removeItem("savedType");
     localStorage.removeItem("savedSearchValue");
     localStorage.removeItem("jwt");
@@ -211,15 +241,16 @@ function App() {
     const filteredPosts = JSON.parse(localStorage.getItem("filteredPosts"));
 
     if (type !== "" && filteredPosts) {
-      const cars = filteredPosts.filter((i) => i.type === type);
-      setApiFilteredPosts(cars);
+      const posts = filteredPosts.filter((i) => i.type === type);
+      setApiFilteredPosts(posts);
     } else {
       setApiFilteredPosts(filteredPosts);
     }
   }
 
   function handleSearch(input) {
-    if (localApiPosts) {
+    const path = location.pathname;
+    if (path === "/list" && localApiPosts) {
       const filteredSearch =
         input === ""
           ? localApiPosts
@@ -230,7 +261,25 @@ function App() {
             });
 
       localStorage.setItem("filteredPosts", JSON.stringify(filteredSearch));
+
       setApiFilteredPosts(filteredSearch || localApiPosts);
+      setSearchDone(input !== "");
+    } else if (path === "/saved-list" && savedPosts) {
+      const filteredSearch =
+        input === ""
+          ? savedPosts
+          : savedPosts.filter((i) => {
+              const inputs = input.toLowerCase();
+              const name = i.name.toLowerCase();
+              return name.includes(inputs);
+            });
+
+      localStorage.setItem(
+        "savedFilteredPosts",
+        JSON.stringify(filteredSearch),
+      );
+
+      setSavedFilteredPosts(filteredSearch || savedPosts);
       setSearchDone(input !== "");
     } else {
       console.log("Нет данных для поиска");
@@ -313,6 +362,44 @@ function App() {
       });
   }
 
+  function handlePostLike(post) {
+    const liked = savedPosts.some((i) => post.id === i.id);
+
+    if (!liked) {
+      postsApi
+        .likePost(post.id, currentUser._id)
+        .then((updatedPost) => {
+          const newSavedPosts = [...savedPosts, updatedPost];
+          setSavedPosts(newSavedPosts);
+          setSavedFilteredPosts(newSavedPosts);
+          localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
+          localStorage.setItem(
+            "savedFilteredPosts",
+            JSON.stringify(newSavedPosts),
+          );
+        })
+        .catch((err) => console.error(`Ошибка при лайке: ${err}`));
+    } else {
+      handlePostDislike(post);
+    }
+  }
+
+  function handlePostDislike(post) {
+    postsApi
+      .dislikePost(post.id, currentUser._id)
+      .then(() => {
+        const newSavedPosts = savedPosts.filter((i) => i.id !== post.id);
+        setSavedPosts(newSavedPosts);
+        setSavedFilteredPosts(newSavedPosts);
+        localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
+        localStorage.setItem(
+          "savedFilteredPosts",
+          JSON.stringify(newSavedPosts),
+        );
+      })
+      .catch((err) => console.error(`Ошибка при дизлайке: ${err}`));
+  }
+
   function addPosts() {
     setListLength(listLength + 5);
   }
@@ -390,9 +477,29 @@ function App() {
                 handleSearch={handleSearch}
                 posts={apiFilteredPosts}
                 addPosts={addPosts}
+                onSave={handlePostLike}
                 onCardClick={handleItemClick}
                 onCardDelete={handleItemDelete}
                 onEditButtonClick={handleEditButtonClick}
+                listLength={listLength}
+                searchDone={searchDone}
+                loggedIn={loggedIn}
+                tokenChecked={tokenChecked}
+              />
+            }
+          />
+          <Route
+            path="/saved-list"
+            element={
+              <ProtectedRoute
+                component={SavedPosts}
+                postsTypeFilter={postsTypeFilter}
+                handleSearch={handleSearch}
+                posts={savedFilteredPosts}
+                addPosts={addPosts}
+                onSave={handlePostLike}
+                onCardClick={handleItemClick}
+                onCardDelete={handleItemDelete}
                 listLength={listLength}
                 searchDone={searchDone}
                 loggedIn={loggedIn}
