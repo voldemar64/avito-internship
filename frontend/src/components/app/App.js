@@ -91,7 +91,7 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       postsApi
-        .getSavedPosts()
+        .getSavedPosts(currentUser._id)
         .then((posts) => {
           localStorage.setItem(
             "savedPosts",

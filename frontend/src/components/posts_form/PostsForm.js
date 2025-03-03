@@ -38,7 +38,6 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
   const [isFirstColumnValid, setIsFirstColumnValid] = useState(false);
   const [disabledForm, setDisabledForm] = useState(true);
 
-
   useEffect(() => {
     if (post) {
       setSelectedType(post.type);
@@ -252,7 +251,9 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
     <div className="register__column">
       <h3 className="register__column-title">Детали:</h3>
       <div className="register__container">
-        <label className="register__label">Тип недвижимости(обязательное)</label>
+        <label className="register__label">
+          Тип недвижимости(обязательное)
+        </label>
         <select
           name="propertyType"
           required
@@ -288,7 +289,9 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
         />
       </div>
       <div className="register__container">
-        <label className="register__label">Количество комнат(обязательное)</label>
+        <label className="register__label">
+          Количество комнат(обязательное)
+        </label>
         <input
           name="rooms"
           required
@@ -345,7 +348,9 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
         </select>
       </div>
       <div className="register__container">
-        <label className="register__label">Опыт работы (лет)(обязательное)</label>
+        <label className="register__label">
+          Опыт работы (лет)(обязательное)
+        </label>
         <input
           name="experience"
           required
@@ -400,7 +405,9 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
           <div className="register__column">
             <h3 className="register__column-title">Общая информация:</h3>
             <div className="register__container">
-              <label className="register__label">Тип объявления(обязательное)</label>
+              <label className="register__label">
+                Тип объявления(обязательное)
+              </label>
               <select
                 name="type"
                 required
@@ -486,7 +493,9 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
               />
             </div>
             <div className="register__container">
-              <label className="register__label">Фотография(необязательное, ссылка)</label>
+              <label className="register__label">
+                Фотография(необязательное, ссылка)
+              </label>
               <input
                 name="url"
                 placeholder="Например: https://i.pinimg.com/originals/c5/7e/b9/c57eb970db76255237b3674b23b4d948.jpg"

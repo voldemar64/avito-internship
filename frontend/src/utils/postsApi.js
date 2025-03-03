@@ -24,8 +24,8 @@
     });
   }
 
-  getSavedPosts() {
-    return fetch(`${this._baseUrl}/saved-items`, {
+  getSavedPosts(userId) {
+    return fetch(`${this._baseUrl}/items/saved?userId=${userId}`, {
       method: "GET",
       headers: this._headers,
     }).then((res) => {
@@ -77,7 +77,7 @@
   }
 }
 
-const postsApi = new PostsApi("https://posts.voldemar-avito.ru", {
+const postsApi = new PostsApi("http://localhost:8080", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });
