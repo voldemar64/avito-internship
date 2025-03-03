@@ -11,6 +11,22 @@ const getItems = async (req, res, next) => {
   }
 };
 
+const getSavedItems = async (req, res, next) => {
+  try {
+    const { userId } = req.query;
+
+    const savedItems = await Item.find({ likes: userId });
+
+    res.status(200).json(savedItems);
+  } catch (err) {
+    if (err.name === "CastError") {
+      next(new ValidationError("Передан некорректный _id объявления."));
+    } else {
+      next(err);
+    }
+  }
+};
+
 const getCurrentItem = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -95,10 +111,68 @@ const deleteItem = async (req, res, next) => {
   }
 };
 
+const likeItem = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const item = await Item.findById(id);
+    if (!item) {
+      throw new NotFound("Объявление по указанному _id не найдено.");
+    }
+
+    if (item.likes.includes(userId)) {
+      return res.status(400).json({ message: "Вы уже поставили лайк на это объявление" });
+    }
+
+    item.likes.push(userId);
+    await item.save();
+
+    res.status(200).json(item);
+  } catch (err) {
+    if (err.name === "ValidationError" || err.name === "CastError") {
+      next(new ValidationError("Некорректные данные для лайка."));
+    } else {
+      next(err);
+    }
+  }
+};
+
+const dislikeItem = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    const item = await Item.findById(id);
+    if (!item) {
+      throw new NotFound("Объявление по указанному _id не найдено.");
+    }
+
+    const likeIndex = item.likes.indexOf(userId);
+    if (likeIndex === -1) {
+      return res.status(400).json({ message: "Вы не ставили лайк на это объявление" });
+    }
+
+    item.likes.splice(likeIndex, 1);
+    await item.save();
+
+    res.status(200).json(item);
+  } catch (err) {
+    if (err.name === "ValidationError" || err.name === "CastError") {
+      next(new ValidationError("Некорректные данные для дизлайка."));
+    } else {
+      next(err);
+    }
+  }
+};
+
 export default {
   getItems,
+  getSavedItems,
   getCurrentItem,
   postItem,
   patchItem,
   deleteItem,
+  likeItem,
+  dislikeItem,
 };

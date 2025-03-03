@@ -123,6 +123,31 @@ const itemSchema = new mongoose.Schema({
       return this.type === ItemTypes.SERVICES;
     },
   },
+  likes: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "user",
+    default: [],
+  },
 });
+
+itemSchema.methods.addLike = async function (userId) {
+  if (!this.likes.includes(userId)) {
+    this.likes.push(userId);
+    await this.save();
+    return true;
+  }
+  return false;
+};
+
+// Удаление лайка
+itemSchema.methods.removeLike = async function (userId) {
+  const index = this.likes.indexOf(userId);
+  if (index !== -1) {
+    this.likes.splice(index, 1);
+    await this.save();
+    return true;
+  }
+  return false;
+};
 
 export default mongoose.model("Item", itemSchema);
