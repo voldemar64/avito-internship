@@ -155,12 +155,10 @@ function PostsFrom({ onSubmit, onEditSubmit, post }) {
       dataToSubmit.schedule = servicesFields.schedule;
     }
 
-    console.log("Пост при отправке формы:", post)
     if (post) {
       const post_id = post._id;
       onEditSubmit(post_id, dataToSubmit);
     } else {
-      console.log(dataToSubmit);
       onSubmit(dataToSubmit);
     }
   }
