@@ -122,7 +122,9 @@ const likeItem = async (req, res, next) => {
     }
 
     if (item.likes.includes(userId)) {
-      return res.status(400).json({ message: "Вы уже поставили лайк на это объявление" });
+      return res
+        .status(400)
+        .json({ message: "Вы уже поставили лайк на это объявление" });
     }
 
     item.likes.push(userId);
@@ -150,7 +152,9 @@ const dislikeItem = async (req, res, next) => {
 
     const likeIndex = item.likes.indexOf(userId);
     if (likeIndex === -1) {
-      return res.status(400).json({ message: "Вы не ставили лайк на это объявление" });
+      return res
+        .status(400)
+        .json({ message: "Вы не ставили лайк на это объявление" });
     }
 
     item.likes.splice(likeIndex, 1);
