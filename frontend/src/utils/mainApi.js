@@ -56,7 +56,7 @@ class MainApi {
   }
 }
 
-const api = new MainApi("https://auth.voldemar-avito.ru", {
+const api = new MainApi("http://localhost:5000", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });
