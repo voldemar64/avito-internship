@@ -13,11 +13,17 @@ function Card({
   const currentUser = React.useContext(CurrentUserContext);
 
   const isOwn = card.owner === currentUser._id;
+  const isLiked = card.likes.some((i) => i === currentUser._id);
   const cardDeleteButtonClassName = `card__delete-button ${isOwn ? "" : "card__delete-button_hidden"}`;
   const cardEditButtonClassName = `card__edit-button${isOwn ? "" : " card__edit-button_hidden"}`;
+  const cardLikeButtonClassName = `card__like-button${isLiked ? "" : " card__like-button_active"}`;
 
   function handleClick() {
     onCardClick(card);
+  }
+
+  function handleLikeClick() {
+    onSave(card);
   }
 
   function handleDeleteClick() {
@@ -42,9 +48,12 @@ function Card({
           type="button"
           className={cardEditButtonClassName}
           onClick={handleEditButtonClick}
-        >
-          Изменить
-        </button>
+        ></button>
+        <button
+          type="button"
+          className={cardLikeButtonClassName}
+          onClick={handleLikeClick}
+        ></button>
       </div>
       <button
         className={cardDeleteButtonClassName}
