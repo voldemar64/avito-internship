@@ -9,6 +9,7 @@ function Header({ onSideBarOpen, isLogged, windowWidth }) {
   const isProfile = location.pathname === "/profile";
   const isForm = location.pathname === "/form";
   const isList = location.pathname === "/list";
+  const isSavedList = location.pathname === "/saved-list";
 
   return (
     <header className={`header${isProfile ? " header_type_dark" : ""}`}>
@@ -28,6 +29,12 @@ function Header({ onSideBarOpen, isLogged, windowWidth }) {
                 className={`header__link header__link_type_list${isList ? " header__link_active" : ""}`}
               >
                 Объявления
+              </Link>
+              <Link
+                to="/saved-list"
+                className={`header__link header__link_type_list${isSavedList ? " header__link_active" : ""}`}
+              >
+                Сохранённое
               </Link>
               <Link
                 to="/profile"

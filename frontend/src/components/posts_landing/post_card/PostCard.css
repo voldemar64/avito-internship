@@ -72,11 +72,11 @@
 .card__edit-button {
   background: center center no-repeat url("../../../images/edit.svg")
   transparent;
-  width: 24px;
+  margin: 0 10px;
+  width: 27px;
   height: 24px;
   border: none;
   cursor: pointer;
-  margin-right: 24px;
   transition: opacity 0.3s linear;
 }
 
@@ -89,10 +89,23 @@
   display: none;
 }
 
+.card__like-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.card__like-counter {
+   font-weight: 400;
+   font-size: 13px;
+   line-height: 16px;
+   text-align: center;
+   margin: 0;
+ }
+
 .card__like-button {
   background: center center no-repeat url("../../../images/like.svg")
   transparent;
-  width: 24px;
+  width: 33px;
   height: 24px;
   border: none;
   cursor: pointer;
@@ -113,8 +126,8 @@
   background: center center no-repeat url("../../../images/trash.svg")
     transparent;
   border: none;
-  top: 18px;
-  right: 15px;
+  top: 25px;
+  right: 25px;
   width: 18px;
   height: 19px;
   cursor: pointer;

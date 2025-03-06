@@ -9,6 +9,7 @@ function SideBar(props) {
   const isProfile = location.pathname === "/profile";
   const isForm = location.pathname === "/form";
   const isList = location.pathname === "/list";
+  const isSavedList = location.pathname === "/saved-list";
 
   return (
     <section className={`side-bar${props.isOpen ? " side-bar_visible" : ""}`}>
@@ -40,14 +41,23 @@ function SideBar(props) {
           Объявления
         </Link>
       </div>
-      <Link
-        className={`side-bar__button side-bar__button_profile${isProfile ? " side-bar__button_active" : ""}`}
-        to="/profile"
-        onClick={props.onClose}
-      >
-        <p className="side-bar__account">Аккаунт</p>
-        <img className="side-bar__img" src={profilePath} alt="профиль"></img>
-      </Link>
+      <div className="side-bar__container">
+        <Link
+          className={`side-bar__button${isSavedList ? " side-bar__button_active" : ""}`}
+          to="/saved-list"
+          onClick={props.onClose}
+        >
+          Сохранённые объявления
+        </Link>
+        <Link
+          className={`side-bar__button side-bar__button_profile${isProfile ? " side-bar__button_active" : ""}`}
+          to="/profile"
+          onClick={props.onClose}
+        >
+          <p className="side-bar__account">Аккаунт</p>
+          <img className="side-bar__img" src={profilePath} alt="профиль"></img>
+        </Link>
+      </div>
     </section>
   );
 }

@@ -57,8 +57,8 @@ function App() {
         .then((res) => {
           if (res) {
             setTokenChecked(true);
-            setLoggedIn(true);
             setCurrentUser(res);
+            setLoggedIn(true);
           } else {
             setTokenChecked(false);
             handleSignOut();
@@ -89,24 +89,25 @@ function App() {
   }, [loggedIn]);
 
   useEffect(() => {
-    if (loggedIn) {
+    if (loggedIn && currentUser && currentUser._id) {
       postsApi
         .getSavedPosts(currentUser._id)
         .then((posts) => {
-          localStorage.setItem(
-            "savedPosts",
-            JSON.stringify(posts.filter((e) => e.owner === currentUser._id)),
+          const likedPosts = posts.filter((post) =>
+            post.likes.includes(currentUser._id),
           );
+
+          localStorage.setItem("savedPosts", JSON.stringify(likedPosts));
           localStorage.setItem(
             "savedFilteredPosts",
-            JSON.stringify(posts.filter((e) => e.owner === currentUser._id)),
+            JSON.stringify(likedPosts),
           );
-          const userPosts = JSON.parse(localStorage.getItem("savedPosts"));
-          setSavedPosts(userPosts);
-          setSavedFilteredPosts(userPosts);
+
+          setSavedPosts(likedPosts);
+          setSavedFilteredPosts(likedPosts);
         })
         .catch((err) =>
-          console.log(`Ошибка при получении сохранённых фильмов: ${err}`),
+          console.log(`Ошибка при получении сохранённых объявлений: ${err}`),
         );
     }
   }, [loggedIn, currentUser]);
@@ -371,15 +372,23 @@ function App() {
   }
 
   function handlePostLike(post) {
-    const liked = savedPosts.some((i) => post.id === i.id);
+    const liked = savedPosts.some((i) => post._id === i._id);
 
     if (!liked) {
       postsApi
-        .likePost(post.id, currentUser._id)
+        .likePost(post._id, currentUser._id)
         .then((updatedPost) => {
-          const newSavedPosts = [...savedPosts, updatedPost];
+          const newSavedPosts = [...savedFilteredPosts, updatedPost];
+
           setSavedPosts(newSavedPosts);
           setSavedFilteredPosts(newSavedPosts);
+          setLocalApiPosts((state) =>
+            state.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
+          );
+          setApiFilteredPosts((state) =>
+            state.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
+          );
+
           localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
           localStorage.setItem(
             "savedFilteredPosts",
@@ -394,11 +403,21 @@ function App() {
 
   function handlePostDislike(post) {
     postsApi
-      .dislikePost(post.id, currentUser._id)
-      .then(() => {
-        const newSavedPosts = savedPosts.filter((i) => i.id !== post.id);
+      .dislikePost(post._id, currentUser._id)
+      .then((updatedPost) => {
+        const newSavedPosts = savedPosts.filter(
+          (i) => i._id !== updatedPost._id,
+        );
+
         setSavedPosts(newSavedPosts);
         setSavedFilteredPosts(newSavedPosts);
+        setLocalApiPosts((state) =>
+          state.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
+        );
+        setApiFilteredPosts((state) =>
+          state.map((p) => (p._id === updatedPost._id ? updatedPost : p)),
+        );
+
         localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
         localStorage.setItem(
           "savedFilteredPosts",
