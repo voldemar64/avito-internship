@@ -3,7 +3,7 @@ import isEmail from "validator/lib/isEmail.js";
 import bcrypt from "bcryptjs";
 import AuthError from "../errors/AuthError.js";
 
-const phoneExpression = /^\+7\d{10}$/;
+const phoneExpression = /^8\d{10}$/;
 const codeExpression = /^\d{6}$/;
 
 const userSchema = new mongoose.Schema({

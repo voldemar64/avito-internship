@@ -1,6 +1,6 @@
 import { Joi, celebrate } from "celebrate";
 
-const phoneExpression = /^\+7\d{10}$/;
+const phoneExpression = /^8\d{10}$/;
 const codeExpression = /^\d{6}$/;
 
 // Общие схемы для повторного использования
