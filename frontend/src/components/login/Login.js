@@ -11,8 +11,14 @@ function Login({ submit, loggedIn }) {
       : "Введите корректный адрес электронной почты.";
   };
 
-  const { values, handleChange, isValid } = useFormWithValidation({
+  const validatePassword = (password) => {
+    if (!password) return "Введите пароль.";
+    return "";
+  };
+
+  const { values, errors, handleChange, isValid } = useFormWithValidation({
     email: validateEmail,
+    password: validatePassword,
   });
 
   function handleSubmit(e) {
@@ -38,6 +44,9 @@ function Login({ submit, loggedIn }) {
                 className="register__input"
                 onChange={handleChange}
               />
+              {errors.email && (
+                <span className="register__error">{errors.email}</span>
+              )}
             </div>
             <div className="register__container">
               <label className="register__label">Пароль</label>
@@ -48,6 +57,9 @@ function Login({ submit, loggedIn }) {
                 className="register__input"
                 onChange={handleChange}
               />
+              {errors.password && (
+                <span className="register__error">{errors.password}</span>
+              )}
             </div>
           </div>
         </div>

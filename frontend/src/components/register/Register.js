@@ -4,6 +4,21 @@ import { Link, Navigate } from "react-router-dom";
 import { useFormWithValidation } from "../../utils/formValidator";
 
 function Login({ submit, loggedIn }) {
+  const validateName = (name) => {
+    if (!name) return "Введите имя.";
+    return "";
+  };
+
+  const validateSurname = (surname) => {
+    if (!surname) return "Введите фамилию.";
+    return "";
+  };
+
+  const validatePassword = (password) => {
+    if (!password) return "Введите пароль.";
+    return "";
+  };
+
   const validateEmail = (email) => {
     if (!email) return "Введите адрес электронной почты.";
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -13,10 +28,10 @@ function Login({ submit, loggedIn }) {
 
   const validatePhone = (phone) => {
     if (!phone) return "Введите номер телефона.";
-    const phoneRegex = /^\+7\d{10}$/; // Проверка на +7 и ровно 10 цифр
+    const phoneRegex = /^8\d{10}$/; // Проверка на 8 и ровно 10 цифр
     return phoneRegex.test(phone)
       ? ""
-      : "Введите номер телефона в формате +7XXXXXXXXXX.";
+      : "Введите номер телефона в формате 8XXXXXXXXXX.";
   };
 
   const validateConfirmPassword = (confirmPassword, values) => {
@@ -25,6 +40,9 @@ function Login({ submit, loggedIn }) {
   };
 
   const { values, errors, handleChange, isValid } = useFormWithValidation({
+    name: validateName,
+    surname: validateSurname,
+    password: validatePassword,
     email: validateEmail,
     phone: validatePhone,
     confirmPassword: (confirmPassword) =>
@@ -61,6 +79,9 @@ function Login({ submit, loggedIn }) {
                 className="register__input"
                 onChange={handleChange}
               />
+              {errors.name && (
+                <span className="register__error">{errors.name}</span>
+              )}
             </div>
             <div className="register__container">
               <label className="register__label">Фамилия</label>
@@ -71,6 +92,9 @@ function Login({ submit, loggedIn }) {
                 className="register__input"
                 onChange={handleChange}
               />
+              {errors.surname && (
+                <span className="register__error">{errors.surname}</span>
+              )}
             </div>
             <div className="register__container">
               <label className="register__label">Телефон</label>
@@ -110,6 +134,9 @@ function Login({ submit, loggedIn }) {
                 className="register__input"
                 onChange={handleChange}
               />
+              {errors.password && (
+                <span className="register__error">{errors.password}</span>
+              )}
             </div>
             <div className="register__container">
               <label className="register__label">Повторить пароль</label>

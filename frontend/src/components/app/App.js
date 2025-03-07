@@ -233,7 +233,7 @@ function App() {
       })
       .catch((err) => {
         setPopupTitle(`произошла ошибка: ${err}`);
-        setPopupPhoto(tick);
+        setPopupPhoto(cross);
         setIsInfoTooltipOpen(true);
       });
   }

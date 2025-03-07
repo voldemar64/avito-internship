@@ -1,52 +1,80 @@
 import "./Profile.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import { useFormWithValidation } from "../../utils/formValidator";
 
 function Profile({ onSubmit, signOut }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [userName, setUserName] = React.useState(currentUser.name);
-  const [userEmail, setUserEmail] = React.useState(currentUser.email);
-  const [userSurname, setUserSurname] = React.useState(currentUser.surname);
-  const [userPhone, setUserPhone] = React.useState(currentUser.phone);
-  const [disableForm, setDisabledForm] = React.useState(true);
+  const [disabledForm, setDisabledForm] = React.useState(true);
 
-  React.useEffect(() => {
+  const validateName = (name) => {
+    if (!name) return "Введите имя.";
+    return "";
+  };
+
+  const validateSurname = (surname) => {
+    if (!surname) return "Введите фамилию.";
+    return "";
+  };
+
+  const validateEmail = (email) => {
+    if (!email) return "Введите адрес электронной почты.";
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      ? ""
+      : "Введите корректный адрес электронной почты.";
+  };
+
+  const validatePhone = (phone) => {
+    if (!phone) return "Введите номер телефона.";
+    const phoneRegex = /^8\d{10}$/;
+    return phoneRegex.test(phone)
+      ? ""
+      : "Введите номер телефона в формате 8XXXXXXXXXX.";
+  };
+
+  const { values, setValues, errors, handleChange, isValid } =
+    useFormWithValidation({
+      name: validateName,
+      surname: validateSurname,
+      email: validateEmail,
+      phone: validatePhone,
+    });
+
+  useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      surname: currentUser.surname,
+      email: currentUser.email,
+      phone: currentUser.phone,
+    });
+  }, [currentUser]);
+
+  useEffect(() => {
+    console.log(values);
+    console.log(isValid);
+    console.log(disabledForm);
     if (
-      userName !== currentUser.name ||
-      userEmail !== currentUser.email ||
-      userSurname !== currentUser.surname ||
-      userPhone !== currentUser.phone
+      values.name !== currentUser.name ||
+      values.surname !== currentUser.surname ||
+      values.email !== currentUser.email ||
+      values.phone !== currentUser.phone
     ) {
       setDisabledForm(false);
     } else {
       setDisabledForm(true);
     }
-  }, [userName, userEmail, userSurname, userPhone]);
-
-  function handleChangeName(evt) {
-    setUserName(evt.target.value);
-  }
-
-  function handleChangeEmail(evt) {
-    setUserEmail(evt.target.value);
-  }
-
-  function handleChangeSurname(evt) {
-    setUserSurname(evt.target.value);
-  }
-
-  function handleChangePhone(evt) {
-    setUserPhone(evt.target.value);
-  }
+  }, [values, currentUser]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit({
-      name: userName,
-      email: userEmail,
-      surname: userSurname,
-      phone: userPhone,
-    });
+    if (isValid) {
+      onSubmit({
+        name: values.name,
+        email: values.email,
+        surname: values.surname,
+        phone: values.phone,
+      });
+    }
   }
 
   return (
@@ -56,47 +84,61 @@ function Profile({ onSubmit, signOut }) {
         <div className="profile__input-container">
           <label className="profile__label">Имя</label>
           <input
+            name="name"
             className="profile__input"
             required
             type="text"
-            value={userName}
-            onChange={handleChangeName}
+            defaultValue={currentUser.name}
+            onChange={handleChange}
           />
+          {errors.name && <span className="profile__error">{errors.name}</span>}
         </div>
         <div className="profile__input-container">
           <label className="profile__label">Фамилия</label>
           <input
+            name="surname"
             className="profile__input"
             required
             type="text"
-            value={userSurname}
-            onChange={handleChangeSurname}
+            defaultValue={currentUser.surname}
+            onChange={handleChange}
           />
+          {errors.surname && (
+            <span className="profile__error">{errors.surname}</span>
+          )}
         </div>
         <div className="profile__input-container">
           <label className="profile__label">E-mail</label>
           <input
+            name="email"
             className="profile__input"
             required
             type="text"
-            value={userEmail}
-            onChange={handleChangeEmail}
+            defaultValue={currentUser.email}
+            onChange={handleChange}
           />
+          {errors.email && (
+            <span className="profile__error">{errors.email}</span>
+          )}
         </div>
         <div className="profile__input-container">
           <label className="profile__label">Телефон</label>
           <input
+            name="phone"
             className="profile__input"
             required
             type="text"
-            value={userPhone}
-            onChange={handleChangePhone}
+            defaultValue={currentUser.phone}
+            onChange={handleChange}
           />
+          {errors.phone && (
+            <span className="profile__error">{errors.phone}</span>
+          )}
         </div>
         <button
-          className={`profile__submit${disableForm ? " profile__submit_disabled" : ""}`}
+          className={`profile__submit${disabledForm || !isValid ? " profile__submit_disabled" : ""}`}
           type="submit"
-          disabled={disableForm}
+          disabled={disabledForm || !isValid}
         >
           Редактировать
         </button>

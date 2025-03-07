@@ -54,5 +54,5 @@ export function useFormWithValidation(validationRules) {
     [],
   );
 
-  return { values, handleChange, errors, isValid, resetForm };
+  return { values, setValues, handleChange, errors, isValid, resetForm };
 }

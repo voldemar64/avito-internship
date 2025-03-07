@@ -28,6 +28,7 @@
   width: 410px;
   display: flex;
   justify-content: space-between;
+  position: relative;
   font-size: 11px;
   line-height: 13px;
   color: #2b2d42;
@@ -54,6 +55,15 @@
   min-width: 60%;
 }
 
+.profile__error {
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 12px;
+  color: #ff3055;
+  position: absolute;
+  bottom: -14px;
+}
+
 .profile__submit {
   background-color: transparent;
   color: #6fb0b6;
@@ -61,6 +71,7 @@
   font-size: 13px;
   line-height: 16px;
   text-align: center;
+  cursor: pointer;
   transition: opacity 0.3s linear;
 }
 
@@ -85,6 +96,7 @@
   line-height: 16px;
   text-align: center;
   color: #ee3465;
+  cursor: pointer;
   transition: opacity 0.3s linear;
 }
 
