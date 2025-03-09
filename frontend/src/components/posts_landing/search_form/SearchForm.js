@@ -2,7 +2,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-function SearchForm({ postsTypeFilter, handleSearch }) {
+function SearchForm({ postsTypeFilter, handleSearch, enabled }) {
   const localStorageValue = localStorage.getItem("savedSearchValue");
   const localType = localStorage.getItem("savedType");
 
@@ -11,15 +11,19 @@ function SearchForm({ postsTypeFilter, handleSearch }) {
 
   const pathName = useLocation();
 
+  const isMainPath = pathName.pathname === "/";
+  const isListPath = pathName.pathname === "/list";
+  const selectClassName = `search-form__select${isMainPath ? " search-form__select_type_dark" : ""}`;
+
   React.useEffect(() => {
-    if (pathName.pathname === "/list") {
+    if (isListPath || isMainPath) {
       localStorage.setItem("savedSearchValue", value);
       localStorage.setItem("savedType", selectedType);
     }
   }, [pathName, value, selectedType]);
 
   React.useEffect(() => {
-    if (pathName.pathname === "/list") {
+    if (isListPath) {
       handleSearch(localStorageValue ?? "");
       postsTypeFilter(localType ?? "");
     }
@@ -42,16 +46,18 @@ function SearchForm({ postsTypeFilter, handleSearch }) {
           placeholder="Объявление"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          disabled={!enabled}
         />
         <button className="search-form__button" />
       </form>
       <select
-        className="search-form__select"
+        className={selectClassName}
         value={selectedType}
         onChange={(e) => {
           setSelectedType(e.target.value);
           postsTypeFilter(e.target.value);
         }}
+        disabled={!enabled}
       >
         <option value="">Тип объявления</option>
         <option value="Авто">Авто</option>

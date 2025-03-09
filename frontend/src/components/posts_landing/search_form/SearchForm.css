@@ -48,6 +48,14 @@
   color: #8b8b8b;
 }
 
+.search-form__select_type_dark {
+  background-color: #2b2d42;
+}
+
+.search-form__input:disabled, .search-form__button:disabled, .search-form__select:disabled {
+  cursor: not-allowed;
+}
+
 .search-form__text {
   font-size: 13px;
   line-height: 18px;
