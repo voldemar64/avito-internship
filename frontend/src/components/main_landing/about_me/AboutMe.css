@@ -1,99 +1,99 @@
 .about-me {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 70px 0 140px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 0 140px;
 }
 
 .about-me__content {
-    width: 580px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 60px 20px;
-    gap: 30px;
-    border-radius: 20px;
+  width: 580px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  gap: 30px;
+  border-radius: 20px;
 }
 
 .about-me__text {
-    width: 500px;
-    margin: 0;
-    color: #2b2d42;
-    font-size: 22px;
-    line-height: 25px;
-    text-align: center;
+  width: 500px;
+  margin: 0;
+  color: #2b2d42;
+  font-size: 22px;
+  line-height: 25px;
+  text-align: center;
 }
 
 .about-me__info {
-    position: absolute;
-    top: 405px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: absolute;
+  top: 405px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .info__image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
 }
 
 .info__name {
-    margin: 0 0 10px 0;
-    color: #2b2d42;
-    font-size: 22px;
-    line-height: 25px;
-    text-align: center;
+  margin: 0 0 10px 0;
+  color: #2b2d42;
+  font-size: 22px;
+  line-height: 25px;
+  text-align: center;
 }
 
 .info__description {
-    margin: 0;
-    color: #2b2d42;
-    font-size: 15px;
-    line-height: 17px;
-    text-align: center;
+  margin: 0;
+  color: #2b2d42;
+  font-size: 15px;
+  line-height: 17px;
+  text-align: center;
 }
 
 @media screen and (max-width: 425px) {
-    .about-me__content {
-        width: 350px;
-        padding: 40px 20px;
-        gap: 10px;
-    }
+  .about-me__content {
+    width: 350px;
+    padding: 40px 20px;
+    gap: 10px;
+  }
 
-    .about-me__text {
-        width: 325px;
-    }
+  .about-me__text {
+    width: 325px;
+  }
 
-    .about-me__info {
-        top: 505px;
-    }
+  .about-me__info {
+    top: 505px;
+  }
 
-    .info__image {
-        width: 60px;
-        height: 60px;
-    }
+  .info__image {
+    width: 60px;
+    height: 60px;
+  }
 }
 
 @media screen and (max-width: 375px) {
-    .about-me {
-        padding: 30px 0 100px;
-    }
+  .about-me {
+    padding: 30px 0 100px;
+  }
 
-    .about-me__content {
-        width: 300px;
-        padding: 30px 10px 50px;
-    }
+  .about-me__content {
+    width: 300px;
+    padding: 30px 10px 50px;
+  }
 
-    .about-me__text {
-        width: 300px;
-        font-size: 18px;
-        line-height: 25px;
-    }
+  .about-me__text {
+    width: 300px;
+    font-size: 18px;
+    line-height: 25px;
+  }
 
-    .about-me__info {
-        top: 415px;
-    }
+  .about-me__info {
+    top: 415px;
+  }
 }

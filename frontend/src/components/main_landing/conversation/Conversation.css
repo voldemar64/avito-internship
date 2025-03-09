@@ -1,157 +1,157 @@
 .conversation {
-    display: flex;
-    justify-content: center;
-    padding: 50px 0;
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
 }
 
 .conversation__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-    background-color: #fff;
-    border-radius: 15px;
-    padding: 70px 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 70px 140px;
 }
 
 .conversation__title {
-    margin: 0;
-    color: #2b2d42;
-    font-size: 38px;
-    line-height: 40px;
+  margin: 0;
+  color: #2b2d42;
+  font-size: 38px;
+  line-height: 40px;
 }
 
 .conversation__chat {
-    width: 580px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  width: 580px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .chat__item {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
 }
 
 .chat__item_bot {
-    align-self: flex-start;
-    flex-direction: row-reverse;
+  align-self: flex-start;
+  flex-direction: row-reverse;
 }
 
 .chat__item_me {
-    align-self: flex-end;
+  align-self: flex-end;
 }
 
 .chat__message {
-    max-width: 300px;
-    margin: 0;
-    padding: 10px 20px;
-    font-size: 18px;
-    line-height: 25px;
-    color: #2b2d42;
-    background-color: #fedea1;
-    border-radius: 15px;
+  max-width: 300px;
+  margin: 0;
+  padding: 10px 20px;
+  font-size: 18px;
+  line-height: 25px;
+  color: #2b2d42;
+  background-color: #fedea1;
+  border-radius: 15px;
 }
 
 .chat__icon {
-    width: 50px;
-    height: 50px;
+  width: 50px;
+  height: 50px;
 }
 
 .chat__icon_me {
-    margin: 0;
-    background-color: #696FFF;
-    color: #fff;
-    border-radius: 50%;
-    align-content: center;
-    text-align: center;
+  margin: 0;
+  background-color: #696fff;
+  color: #fff;
+  border-radius: 50%;
+  align-content: center;
+  text-align: center;
 }
 
 .conversation__button {
-    width: 280px;
-    border: none;
-    border-radius: 25px;
-    padding: 15px 5px;
-    cursor: pointer;
-    background-color: #2b2d42;
-    color: #fff;
-    transition: opacity 0.3s linear;
+  width: 280px;
+  border: none;
+  border-radius: 25px;
+  padding: 15px 5px;
+  cursor: pointer;
+  background-color: #2b2d42;
+  color: #fff;
+  transition: opacity 0.3s linear;
 }
 
 .conversation__button:hover {
-    opacity: 0.7;
-    transition: opacity 0.3s linear;
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
 }
 
 @media screen and (max-width: 768px) {
-    .conversation {
-        padding: 40px 0;
-    }
+  .conversation {
+    padding: 40px 0;
+  }
 
-    .conversation__content {
-        gap: 40px;
-        padding: 60px 40px;
-    }
+  .conversation__content {
+    gap: 40px;
+    padding: 60px 40px;
+  }
 
-    .conversation__chat {
-        width: 500px;
-        gap: 10px;
-    }
+  .conversation__chat {
+    width: 500px;
+    gap: 10px;
+  }
 }
 
 @media screen and (max-width: 425px) {
-    .conversation__content {
-        gap: 40px;
-        padding: 40px 20px;
-    }
+  .conversation__content {
+    gap: 40px;
+    padding: 40px 20px;
+  }
 
-    .conversation__title {
-        width: 300px;
-        font-size: 30px;
-        line-height: 32px;
-    }
+  .conversation__title {
+    width: 300px;
+    font-size: 30px;
+    line-height: 32px;
+  }
 
-    .conversation__chat {
-        width: 350px;
-        gap: 10px;
-    }
+  .conversation__chat {
+    width: 350px;
+    gap: 10px;
+  }
 
-    .chat__message {
-        max-width: 220px;
-    }
+  .chat__message {
+    max-width: 220px;
+  }
 }
 
 @media screen and (max-width: 375px) {
-    .conversation__content {
-        padding: 40px 5px;
-    }
+  .conversation__content {
+    padding: 40px 5px;
+  }
 
-    .conversation__chat {
-        gap: 5px;
-    }
+  .conversation__chat {
+    gap: 5px;
+  }
 
-    .chat__icon {
-        width: 40px;
-        height: 40px;
-    }
+  .chat__icon {
+    width: 40px;
+    height: 40px;
+  }
 
-    .chat__message {
-        padding: 10px 15px;
-        max-width: 200px;
-    }
+  .chat__message {
+    padding: 10px 15px;
+    max-width: 200px;
+  }
 }
 
 @media screen and (max-width: 320px) {
-    .conversation__content {
-        padding: 30px 0;
-    }
+  .conversation__content {
+    padding: 30px 0;
+  }
 
-    .conversation__chat {
-        width: 320px;
-    }
+  .conversation__chat {
+    width: 320px;
+  }
 }

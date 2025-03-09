@@ -71,7 +71,7 @@
 
 .card__edit-button {
   background: center center no-repeat url("../../../images/edit.svg")
-  transparent;
+    transparent;
   margin: 0 10px;
   width: 27px;
   height: 24px;
@@ -95,16 +95,16 @@
 }
 
 .card__like-counter {
-   font-weight: 400;
-   font-size: 13px;
-   line-height: 16px;
-   text-align: center;
-   margin: 0;
- }
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  margin: 0;
+}
 
 .card__like-button {
   background: center center no-repeat url("../../../images/like.svg")
-  transparent;
+    transparent;
   width: 33px;
   height: 24px;
   border: none;

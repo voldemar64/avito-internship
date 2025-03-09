@@ -52,7 +52,9 @@
   background-color: #2b2d42;
 }
 
-.search-form__input:disabled, .search-form__button:disabled, .search-form__select:disabled {
+.search-form__input:disabled,
+.search-form__button:disabled,
+.search-form__select:disabled {
   cursor: not-allowed;
 }
 

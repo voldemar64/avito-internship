@@ -1,222 +1,222 @@
 .about-project {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 150px 0 200px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 150px 0 200px 0;
 }
 
 .about-project__container {
-    position: relative;
-    display: flex;
-    flex-direction: row;
+  position: relative;
+  display: flex;
+  flex-direction: row;
 }
 
 .about-project__content {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .about-project__title {
-    margin: 0;
-    color: #2b2d42;
-    font-size: 54px;
-    line-height: 60px;
-    width: 515px;
+  margin: 0;
+  color: #2b2d42;
+  font-size: 54px;
+  line-height: 60px;
+  width: 515px;
 }
 
 .about-project__description {
-    width: 440px;
-    margin: 0;
-    color: #2b2d42;
-    font-size: 22px;
-    line-height: 25px;
+  width: 440px;
+  margin: 0;
+  color: #2b2d42;
+  font-size: 22px;
+  line-height: 25px;
 }
 
 .about-project__buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 .about-project__button {
-    width: 280px;
-    border: none;
-    border-radius: 25px;
-    padding: 15px 5px;
-    cursor: pointer;
-    transition: opacity 0.3s linear;
+  width: 280px;
+  border: none;
+  border-radius: 25px;
+  padding: 15px 5px;
+  cursor: pointer;
+  transition: opacity 0.3s linear;
 }
 
 .about-project__button:hover {
-    opacity: 0.7;
-    transition: opacity 0.3s linear;
+  opacity: 0.7;
+  transition: opacity 0.3s linear;
 }
 
 .about-project__button_search {
-    background-color: #2b2d42;
-    color: #fff;
+  background-color: #2b2d42;
+  color: #fff;
 }
 
 .about-project__button_liked {
-    background-color: #fff;
-    color: #2b2d42;
+  background-color: #fff;
+  color: #2b2d42;
 }
 
 .about-project__rates {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .rates__subtitle {
-    margin: 0;
-    font-weight: 500;
-    color: #2b2d42;
-    font-size: 18px;
-    line-height: 25px;
+  margin: 0;
+  font-weight: 500;
+  color: #2b2d42;
+  font-size: 18px;
+  line-height: 25px;
 }
 
 .rates__description {
-    margin: 0;
-    color: #2b2d42;
-    font-size: 18px;
-    line-height: 25px;
+  margin: 0;
+  color: #2b2d42;
+  font-size: 18px;
+  line-height: 25px;
 }
 
 .rates__img_yandex {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .rates__img_stars {
-    width: 90px;
-    height: 17px;
+  width: 90px;
+  height: 17px;
 }
 
 .about-project__image {
-    position: relative;
-    z-index: -1;
-    width: 500px;
-    height: 500px;
-    border-radius: 0 50% 50% 50%;
+  position: relative;
+  z-index: -1;
+  width: 500px;
+  height: 500px;
+  border-radius: 0 50% 50% 50%;
 }
 
 .about-project__sticker {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    right: 475px;
-    top: -25px;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  right: 475px;
+  top: -25px;
 }
 
 @media screen and (max-width: 1024px) {
-    .about-project {
-        padding: 120px 0 140px 0;
-    }
+  .about-project {
+    padding: 120px 0 140px 0;
+  }
 
-    .about-project__title {
-        font-size: 38px;
-        line-height: 40px;
-        width: 500px;
-    }
+  .about-project__title {
+    font-size: 38px;
+    line-height: 40px;
+    width: 500px;
+  }
 
-    .about-project__description {
-        font-size: 18px;
-        line-height: 20px;
-    }
+  .about-project__description {
+    font-size: 18px;
+    line-height: 20px;
+  }
 
-    .about-project__buttons {
-        gap: 10px;
-    }
+  .about-project__buttons {
+    gap: 10px;
+  }
 
-    .rates__subtitle {
-        font-size: 15px;
-        line-height: 17px;
-    }
+  .rates__subtitle {
+    font-size: 15px;
+    line-height: 17px;
+  }
 
-    .rates__description {
-        font-size: 15px;
-        line-height: 17px;
-    }
+  .rates__description {
+    font-size: 15px;
+    line-height: 17px;
+  }
 
-    .about-project__image {
-        width: 400px;
-        height: 400px;
-        left: -20px;
-    }
+  .about-project__image {
+    width: 400px;
+    height: 400px;
+    left: -20px;
+  }
 
-    .about-project__sticker {
-        right: 395px;
-    }
+  .about-project__sticker {
+    right: 395px;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .about-project__title {
-        font-size: 30px;
-        line-height: 32px;
-        width: 350px;
-    }
+  .about-project__title {
+    font-size: 30px;
+    line-height: 32px;
+    width: 350px;
+  }
 
-    .about-project__description {
-        gap: 5px;
-    }
+  .about-project__description {
+    gap: 5px;
+  }
 
-    .about-project__button {
-        width: 210px;
-    }
+  .about-project__button {
+    width: 210px;
+  }
 
-    .about-project__image {
-        width: 300px;
-        height: 300px;
-        left: 0;
-    }
+  .about-project__image {
+    width: 300px;
+    height: 300px;
+    left: 0;
+  }
 
-    .about-project__sticker {
-        right: 275px;
-    }
+  .about-project__sticker {
+    right: 275px;
+  }
 }
 
 @media screen and (max-width: 425px) {
-    .about-project {
-        padding: 50px 30px;
-    }
+  .about-project {
+    padding: 50px 30px;
+  }
 
-    .about-project__container {
-        flex-direction: column-reverse;
-        align-items: end;
-    }
+  .about-project__container {
+    flex-direction: column-reverse;
+    align-items: end;
+  }
 
-    .about-project__content {
-        align-items: center;
-    }
+  .about-project__content {
+    align-items: center;
+  }
 
-    .about-project__title {
-        width: 300px;
-    }
+  .about-project__title {
+    width: 300px;
+  }
 
-    .about-project__description {
-        width: 300px;
-    }
+  .about-project__description {
+    width: 300px;
+  }
 
-    .about-project__buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
+  .about-project__buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .about-project__button {
-        width: 300px;
-    }
+  .about-project__button {
+    width: 300px;
+  }
 
-    .about-project__image {
-        width: 150px;
-        height: 150px;
-    }
+  .about-project__image {
+    width: 150px;
+    height: 150px;
+  }
 
-    .about-project__sticker {
-        right: 130px;
-        width: 40px;
-        height: 40px;
-    }
+  .about-project__sticker {
+    right: 130px;
+    width: 40px;
+    height: 40px;
+  }
 }
