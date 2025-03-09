@@ -77,7 +77,7 @@
   }
 }
 
-const postsApi = new PostsApi("https://auth.voldemar-avito.ru", {
+const postsApi = new PostsApi("https://posts.voldemar-avito.ru", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });
