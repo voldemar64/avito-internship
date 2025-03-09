@@ -241,17 +241,17 @@ function App() {
   function postsTypeFilter(type) {
     const path = location.pathname;
     const filteredPosts =
-      path === "/list"
+      path === "/list" || path === "/"
         ? JSON.parse(localStorage.getItem("filteredPosts"))
         : JSON.parse(localStorage.getItem("savedFilteredPosts"));
 
     if (type !== "" && filteredPosts) {
       const posts = filteredPosts.filter((i) => i.type === type);
-      path === "/list"
+      path === "/list" || path === "/"
         ? setApiFilteredPosts(posts)
         : setSavedFilteredPosts(posts);
     } else {
-      path === "/list"
+      path === "/list" || path === "/"
         ? setApiFilteredPosts(filteredPosts)
         : setSavedFilteredPosts(filteredPosts);
     }
@@ -259,7 +259,7 @@ function App() {
 
   function handleSearch(input) {
     const path = location.pathname;
-    if (path === "/list" && localApiPosts) {
+    if ((path === "/list" || path === "/") && localApiPosts) {
       const filteredSearch =
         input === ""
           ? localApiPosts
@@ -464,7 +464,16 @@ function App() {
       />
       <main className="main">
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <Main
+                isLogged={loggedIn}
+                postsTypeFilter={postsTypeFilter}
+                handleSearch={handleSearch}
+              />
+            }
+          />
           <Route
             path="/signin"
             element={<Login submit={handleLogin} loggedIn={loggedIn} />}
@@ -510,6 +519,7 @@ function App() {
                 onEditButtonClick={handleEditButtonClick}
                 listLength={listLength}
                 searchDone={searchDone}
+                enabled={loggedIn}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />
@@ -529,6 +539,7 @@ function App() {
                 onCardDelete={handleItemDelete}
                 listLength={listLength}
                 searchDone={searchDone}
+                enabled={loggedIn}
                 loggedIn={loggedIn}
                 tokenChecked={tokenChecked}
               />

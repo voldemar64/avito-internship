@@ -8,12 +8,12 @@ import MassMedia from "../mass_media/MassMedia";
 import AboutMe from "../about_me/AboutMe";
 import Cities from "../cities/Cities";
 
-function Main({ loggedIn, postsTypeFilter, handleSearch }) {
+function Main({ isLogged, postsTypeFilter, handleSearch }) {
   return (
     <>
       <AboutProject />
       <Search
-        loggedIn={loggedIn}
+        isLogged={isLogged}
         postsTypeFilter={postsTypeFilter}
         handleSearch={handleSearch}
       />

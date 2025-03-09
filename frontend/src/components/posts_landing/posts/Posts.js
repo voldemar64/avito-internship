@@ -13,12 +13,14 @@ function Posts({
   onEditButtonClick,
   listLength,
   searchDone,
+  enabled,
 }) {
   return (
     <>
       <SearchForm
         postsTypeFilter={postsTypeFilter}
         handleSearch={handleSearch}
+        enabled={enabled}
       />
       <PostsCardsList
         posts={posts}
