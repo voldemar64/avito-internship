@@ -537,6 +537,7 @@ function App() {
                 onSave={handlePostLike}
                 onCardClick={handleItemClick}
                 onCardDelete={handleItemDelete}
+                onEditButtonClick={handleEditButtonClick}
                 listLength={listLength}
                 searchDone={searchDone}
                 enabled={loggedIn}
