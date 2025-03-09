@@ -77,7 +77,7 @@
   }
 }
 
-const postsApi = new PostsApi("http://localhost:8080", {
+const postsApi = new PostsApi("https://auth.voldemar-avito.ru", {
   Accept: "application/json",
   "Content-Type": "application/json",
 });

@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:5000";
+export const BASE_URL = "https://auth.voldemar-avito.ru";
 
 export function register(name, surname, phone, email, password) {
   return fetch(`${BASE_URL}/signup`, {
