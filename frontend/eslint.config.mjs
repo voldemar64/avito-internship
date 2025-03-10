@@ -22,8 +22,8 @@ export default [
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:react-hooks/recommended",
-      "plugin:prettier/recommended",
-    ),
+      "plugin:prettier/recommended"
+    )
   ),
   {
     plugins: {
@@ -35,6 +35,7 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
+        ...globals.node, // Добавляем глобальные переменные Node.js
       },
 
       ecmaVersion: "latest",

@@ -9,7 +9,7 @@ module.exports = () => {
 
   return {
     mode,
-    entry: path.resolve(__dirname, "./src/index.js"),
+    entry: path.resolve(__dirname, "./src/index.tsx"),
     output: {
       path: path.resolve(__dirname, "./dist"),
       filename: "bundle.js",
@@ -22,10 +22,10 @@ module.exports = () => {
           test: /\.svg$/,
           oneOf: [
             {
-              issuer: /\.[jt]sx?$/, // Для файлов .js и .jsx
+              issuer: /\.[jt]sx?$/, // Для файлов .ts, .tsx, .js и .jsx
               use: [
                 {
-                  loader: "file-loader", // Импорт SVG как файл
+                  loader: "file-loader",
                   options: {
                     name: "images/[name].[hash].[ext]",
                   },
@@ -42,7 +42,14 @@ module.exports = () => {
           ],
         },
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(ts|tsx)$/, // Для обработки .ts и .tsx файлов
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
+          },
+        },
+        {
+          test: /\.(js|jsx)$/, // Добавляем обработку для .js и .jsx файлов с JSX
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
@@ -78,7 +85,7 @@ module.exports = () => {
       open: true,
     },
     resolve: {
-      extensions: [".js", ".jsx"],
+      extensions: [".ts", ".tsx", ".js", ".jsx"], // Поддержка .ts, .tsx, .js, .jsx
     },
   };
 };

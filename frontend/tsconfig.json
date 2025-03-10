@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "lib": ["dom", "esnext"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true, // Разрешает использование .js файлов в проекте
+    "checkJs": false // Если хотите, чтобы TypeScript не проверял .js файлы на ошибки типов
+  },
+  "include": ["src/**/*"]
+}
