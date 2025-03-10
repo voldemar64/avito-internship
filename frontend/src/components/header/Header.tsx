@@ -1,9 +1,15 @@
 import "./Header.css";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import profilePath from "../../images/profile.svg?url";
+import profilePath from "../../images/profile.svg";
 
-function Header({ onSideBarOpen, isLogged, windowWidth }) {
+interface HeaderProps {
+  onSideBarOpen: () => void;
+  isLogged: boolean;
+  windowWidth: () => { width: number };
+}
+
+const Header: React.FC<HeaderProps> = ({ onSideBarOpen, isLogged, windowWidth }) => {
   const location = useLocation();
   const { width } = windowWidth();
   const isProfile = location.pathname === "/profile";
@@ -70,6 +76,6 @@ function Header({ onSideBarOpen, isLogged, windowWidth }) {
       </div>
     </header>
   );
-}
+};
 
 export default Header;
