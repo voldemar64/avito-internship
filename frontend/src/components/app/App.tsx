@@ -19,7 +19,7 @@ import ProtectedRoute from "../protected_route/ProtectedRoute";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 import { useWindowWidth } from "../../utils/windowWidth";
-import * as auth from "../../utils/auth";
+import authApi from "../../utils/authApi";
 import mainApi from "../../utils/mainApi";
 import postsApi from "../../utils/postsApi";
 
@@ -39,11 +39,17 @@ interface Post {
     _id: string;
     name: string;
     description: string;
-    type: string;
-    price: number;
     location: string;
-    url: string;
+    url?: string;
+    type: string;
     likes: string[];
+    [key: string]: any; // Для других полей
+}
+
+interface ApiResponse {
+    success: boolean;
+    message?: string;
+    data?: any;
 }
 
 
@@ -76,10 +82,10 @@ function App() {
         if (token) {
             mainApi
                 .getUserInfo()
-                .then((res) => {
+                .then((res : ApiResponse) => {
                     if (res) {
                         setTokenChecked(true);
-                        setCurrentUser(res);
+                        setCurrentUser(res.data);
                         setLoggedIn(true);
                     } else {
                         setTokenChecked(false);
@@ -100,8 +106,8 @@ function App() {
         if (loggedIn) {
             postsApi
                 .getInitialPosts()
-                .then((posts) => {
-                    localStorage.setItem("posts", JSON.stringify(posts));
+                .then((res: ApiResponse) => {
+                    localStorage.setItem("posts", JSON.stringify(res.data));
                     const allPosts = JSON.parse(localStorage.getItem("posts") || "[]");
                     setLocalApiPosts(allPosts);
                     setApiFilteredPosts(allPosts);
@@ -114,8 +120,8 @@ function App() {
         if (loggedIn && currentUser && currentUser._id) {
             postsApi
                 .getSavedPosts(currentUser._id)
-                .then((posts) => {
-                    const likedPosts = posts.filter((post) =>
+                .then((res : ApiResponse) => {
+                    const likedPosts = res.data.filter((post : Post) =>
                         post.likes.includes(currentUser._id),
                     );
 
@@ -140,33 +146,8 @@ function App() {
         }
     }, [location.pathname]);
 
-// Типизация функций
-    interface User {
-        _id: string;
-        name: string;
-        surname: string;
-        email: string;
-        phone: string;
-    }
-
-    interface Post {
-        _id: string;
-        name: string;
-        description: string;
-        type: string;
-        likes: string[];
-        price: number;
-        [key: string]: any;
-    }
-
-    interface ApiResponse {
-        success: boolean;
-        message?: string;
-        data?: any;
-    }
-
     function handleRegister(name: string, surname: string, phone: string, email: string, password: string): void {
-        auth
+        authApi
             .register({ name, surname, phone, email, password })
             .then((res: ApiResponse) => {
                 if (res.success) {
@@ -186,7 +167,7 @@ function App() {
     }
 
     function handleLogin(email: string, password: string): void {
-        auth
+        authApi
             .authorize({ email, password })
             .then((res: ApiResponse) => {
                 if (res.success) {
@@ -207,7 +188,7 @@ function App() {
     }
 
     function sendCode(email: string): void {
-        auth
+        authApi
             .sendCode({ email })
             .then((res: ApiResponse) => {
                 if (res.success) {
@@ -228,7 +209,7 @@ function App() {
     }
 
     function handleResetPassword(email: string, password: string, code: string): void {
-        auth
+        authApi
             .resetPassword({ email, password, code })
             .then((res: ApiResponse) => {
                 if (res.success) {
@@ -269,9 +250,9 @@ function App() {
     function handleEditProfile(user: User): void {
         mainApi
             .patchUserInfo(user)
-            .then((res: User) => {
-                if (res) {
-                    setCurrentUser(res);
+            .then((res: ApiResponse) => {
+                if (res.success) {
+                    setCurrentUser(res.data);
                     setPopupTitle("Данные пользователя изменены");
                     setPopupPhoto(tick);
                     setIsInfoTooltipOpen(true);
@@ -341,11 +322,11 @@ function App() {
     function handleAddPost(card: Post): void {
         postsApi
             .addNewPost(card)
-            .then((newItem: Post) => {
-                if (newItem) {
+            .then((res : ApiResponse) => {
+                if (res.success) {
                     localStorage.setItem(
                         "posts",
-                        JSON.stringify([newItem, ...localApiPosts]),
+                        JSON.stringify([res.data, ...localApiPosts]),
                     );
                     const allPosts = JSON.parse(localStorage.getItem("posts") || "[]");
                     setLocalApiPosts(allPosts);
@@ -371,10 +352,10 @@ function App() {
     function handleEditPost(card_id: string, card: Post): void {
         postsApi
             .patchPost(card_id, card)
-            .then((newItem: Post) => {
-                if (newItem) {
+            .then((res : ApiResponse) => {
+                if (res.success) {
                     const updatedPosts = localApiPosts.map((post: Post) =>
-                        post._id === newItem._id ? newItem : post,
+                        post._id === res.data._id ? res.data : post,
                     );
 
                     localStorage.setItem("posts", JSON.stringify(updatedPosts));
@@ -420,16 +401,16 @@ function App() {
         if (!liked) {
             postsApi
                 .likePost(post._id, currentUser!._id)
-                .then((updatedPost: Post) => {
-                    const newSavedPosts = [...savedFilteredPosts, updatedPost];
+                .then((res : ApiResponse) => {
+                    const newSavedPosts = [...savedFilteredPosts, res.data];
 
                     setSavedPosts(newSavedPosts);
                     setSavedFilteredPosts(newSavedPosts);
                     setLocalApiPosts((state: Post[]) =>
-                        state.map((p: Post) => (p._id === updatedPost._id ? updatedPost : p)),
+                        state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
                     );
                     setApiFilteredPosts((state: Post[]) =>
-                        state.map((p: Post) => (p._id === updatedPost._id ? updatedPost : p)),
+                        state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
                     );
 
                     localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
@@ -447,18 +428,18 @@ function App() {
     function handlePostDislike(post: Post): void {
         postsApi
             .dislikePost(post._id, currentUser!._id)
-            .then((updatedPost: Post) => {
+            .then((res : ApiResponse) => {
                 const newSavedPosts = savedPosts.filter(
-                    (i: Post) => i._id !== updatedPost._id,
+                    (i: Post) => i._id !== res.data._id,
                 );
 
                 setSavedPosts(newSavedPosts);
                 setSavedFilteredPosts(newSavedPosts);
                 setLocalApiPosts((state: Post[]) =>
-                    state.map((p: Post) => (p._id === updatedPost._id ? updatedPost : p)),
+                    state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
                 );
                 setApiFilteredPosts((state: Post[]) =>
-                    state.map((p: Post) => (p._id === updatedPost._id ? updatedPost : p)),
+                    state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
                 );
 
                 localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
