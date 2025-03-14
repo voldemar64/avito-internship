@@ -138,7 +138,7 @@ const PostsForm: React.FC<PostsFormProps> = ({ onSubmit, onEditSubmit, post }) =
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const user_id = currentUser._id;
+    const user_id = currentUser!._id;
 
     const dataToSubmit: Post = {
       name: firstColumnFields.name,
