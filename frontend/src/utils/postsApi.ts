@@ -5,16 +5,18 @@
 }
 
 interface Post {
+  _id?: string;
   name: string;
   description: string;
   location: string;
-  price: number;
-  // Добавьте другие поля, которые могут быть у поста
+  url?: string;
+  type: string;
+  [key: string]: any; // Для других полей
 }
 
 class PostsApi {
-  private _baseUrl: string;
-  private _headers: HeadersInit;
+  private readonly _baseUrl: string;
+  private readonly _headers: HeadersInit;
 
   constructor(baseUrl: string, headers: HeadersInit) {
     this._baseUrl = baseUrl;
@@ -24,9 +26,9 @@ class PostsApi {
   private async _handleRes(res: Response): Promise<ApiResponse> {
     if (res.ok) {
       if (res.status === 204) {
-        return { success: true }; // Возвращаем пустой объект для успешного запроса без тела
+        return { success: true };
       }
-      return res.json();
+      return { success: true, data: res.json()};
     } else {
       const errorMessage = `Ошибка: ${res.status}`;
       return { success: false, message: errorMessage };
@@ -145,7 +147,7 @@ class PostsApi {
 }
 
 const postsApi = new PostsApi("https://posts.voldemar-avito.ru", {
-  Accept: "application/json",
+  "Accept": "application/json",
   "Content-Type": "application/json",
 });
 

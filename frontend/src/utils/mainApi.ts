@@ -1,25 +1,32 @@
 interface User {
-  _id: string;
+  _id?: string;
   name: string;
   surname: string;
   phone: string;
   email: string;
 }
 
+// Тип для ответа с сервера
+interface ApiResponse {
+  success: boolean;
+  message?: string;
+  data?: any;
+}
+
 class MainApi {
-  private _baseUrl: string;
-  private _headers: HeadersInit;
+  private readonly _baseUrl: string;
+  private readonly _headers: HeadersInit;
 
   constructor(baseUrl: string, headers: HeadersInit) {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
 
-  private async _handleRes(res: Response): Promise<User> {
+  private async _handleRes(res: Response): Promise<ApiResponse> {
     if (res.ok) {
-      return res.json();
+      return { success: true, data: res.json()};
     } else {
-      const errorMessage = `Ошибка: ${res.status}`;
+      return Promise.reject(`Ошибка: ${res.status}`);
     }
   }
 
@@ -32,7 +39,7 @@ class MainApi {
   }
 
   // Получение информации о пользователе
-  public async getUserInfo(): Promise<User> {
+  public async getUserInfo(): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/users/me`, {
         headers: this._getHeaders(),
@@ -45,7 +52,7 @@ class MainApi {
   }
 
   // Обновление информации о пользователе
-  public async patchUserInfo({ name, surname, phone, email }: { name: string, surname: string, phone: string, email: string }): Promise<ApiResponse> {
+  public async patchUserInfo({ name, surname, phone, email }: User): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/users/me`, {
         method: "PATCH",
@@ -58,24 +65,10 @@ class MainApi {
       return { success: false, message: `Не удалось обновить информацию о пользователе: ${err}` };
     }
   }
-
-  // Обновление аватара
-  public async patchAvatar(data: { avatar: string }): Promise<User> {
-    try {
-      const res = await fetch(`${this._baseUrl}/users/me/avatar`, {
-        method: "PATCH",
-        headers: this._getHeaders(),
-        body: JSON.stringify({ avatar: data.avatar }),
-      });
-      return this._handleRes(res);
-    } catch (err) {
-      console.log(`Не удалось обновить аватар: ${err}`);
-    }
-  }
 }
 
 const api = new MainApi("https://auth.voldemar-avito.ru", {
-  Accept: "application/json",
+  "Accept": "application/json",
   "Content-Type": "application/json",
 });
 
