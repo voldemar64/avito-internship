@@ -24,7 +24,8 @@ class MainApi {
 
   private async _handleRes(res: Response): Promise<ApiResponse> {
     if (res.ok) {
-      return { success: true, data: res.json()};
+      const data = await res.json();
+      return { success: true, data };
     } else {
       return Promise.reject(`Ошибка: ${res.status}`);
     }

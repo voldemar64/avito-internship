@@ -28,7 +28,8 @@ class PostsApi {
       if (res.status === 204) {
         return { success: true };
       }
-      return { success: true, data: res.json()};
+      const data = await res.json();
+      return { success: true, data };
     } else {
       const errorMessage = `Ошибка: ${res.status}`;
       return { success: false, message: errorMessage };
