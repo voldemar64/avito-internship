@@ -412,61 +412,132 @@ const PostsForm: React.FC<PostsFormProps> = ({ onSubmit, onEditSubmit, post }) =
       </div>
   );
 
-  return (
-      <section className="register register_type_big">
-        <h2 className="register__title">Введите данные объявления</h2>
-        <form className="register__form" onSubmit={handleSubmit}>
-          <div className="register__columns">
-            <div className="register__column">
-              <h3 className="register__column-title">Общая информация:</h3>
-              <div className="register__container">
-                <label className="register__label">Тип объявления(обязательное)</label>
-                <select
-                    name="type"
-                    required
-                    className="register__input register__input_type_select"
-                    value={selectedType}
-                    onChange={(e) => {
-                      setSelectedType(e.target.value);
-                      setAutoFields({
-                        brand: "",
-                        model: "",
-                        year: "",
-                        mileage: "",
-                      });
-                      setRealEstateFields({
-                        propertyType: "",
-                        area: "",
-                        rooms: "",
-                        price: "",
-                      });
-                      setServicesFields({
-                        serviceType: "",
-                        experience: "",
-                        cost: "",
-                        schedule: "",
-                      });
-                    }}
+    return (
+        <section className="register register_type_big">
+            <h2 className="register__title">Введите данные объявления</h2>
+            <form className="register__form" onSubmit={handleSubmit}>
+                <div className="register__columns">
+                    <div className="register__column">
+                        <h3 className="register__column-title">Общая информация:</h3>
+                        <div className="register__container">
+                            <label className="register__label">
+                                Тип объявления(обязательное)
+                            </label>
+                            <select
+                                name="type"
+                                required
+                                className="register__input register__input_type_select"
+                                value={selectedType}
+                                onChange={(e) => {
+                                    setSelectedType(e.target.value);
+                                    setAutoFields({
+                                        brand: "",
+                                        model: "",
+                                        year: "",
+                                        mileage: "",
+                                    });
+                                    setRealEstateFields({
+                                        propertyType: "",
+                                        area: "",
+                                        rooms: "",
+                                        price: "",
+                                    });
+                                    setServicesFields({
+                                        serviceType: "",
+                                        experience: "",
+                                        cost: "",
+                                        schedule: "",
+                                    });
+                                }}
+                            >
+                                <option value="">Выберите тип</option>
+                                <option value="Авто">Авто</option>
+                                <option value="Недвижимость">Недвижимость</option>
+                                <option value="Услуги">Услуги</option>
+                            </select>
+                        </div>
+                        <div className="register__container">
+                            <label className="register__label">Название(обязательное)</label>
+                            <input
+                                name="name"
+                                required
+                                placeholder="Например: Лада Седан"
+                                type="text"
+                                className="register__input"
+                                defaultValue={firstColumnFields.name}
+                                onChange={(e) =>
+                                    setFirstColumnFields({
+                                        ...firstColumnFields,
+                                        name: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                        <div className="register__container">
+                            <label className="register__label">Описание(обязательное)</label>
+                            <input
+                                name="description"
+                                required
+                                placeholder="Например: Лучшая машина для понтов"
+                                type="text"
+                                className="register__input"
+                                defaultValue={firstColumnFields.description}
+                                onChange={(e) =>
+                                    setFirstColumnFields({
+                                        ...firstColumnFields,
+                                        description: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                        <div className="register__container">
+                            <label className="register__label">Локация(обязательное)</label>
+                            <input
+                                name="location"
+                                required
+                                placeholder="Например: Санкт-Петербург"
+                                type="text"
+                                className="register__input"
+                                defaultValue={firstColumnFields.location}
+                                onChange={(e) =>
+                                    setFirstColumnFields({
+                                        ...firstColumnFields,
+                                        location: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                        <div className="register__container">
+                            <label className="register__label">
+                                Фотография(необязательное, ссылка)
+                            </label>
+                            <input
+                                name="url"
+                                placeholder="Например: https://i.pinimg.com/originals/c5/7e/b9/c57eb970db76255237b3674b23b4d948.jpg"
+                                type="text"
+                                className="register__input"
+                                defaultValue={firstColumnFields.url}
+                                onChange={(e) =>
+                                    setFirstColumnFields({
+                                        ...firstColumnFields,
+                                        url: e.target.value,
+                                    })
+                                }
+                            />
+                        </div>
+                    </div>
+                    {renderFieldsForType()}
+                </div>
+                <button
+                    className={`register__button ${disabledForm ? "register__button_disabled" : ""}`}
+                    type="submit"
+                    disabled={disabledForm}
                 >
-                  <option value="">Выберите тип</option>
-                  <option value="Авто">Авто</option>
-                  <option value="Недвижимость">Недвижимость</option>
-                  <option value="Услуги">Услуги</option>
-                </select>
-              </div>
-            </div>
-            {renderFieldsForType()}
-          </div>
-          <button
-              className={`register__button ${disabledForm ? "register__button_disabled" : ""}`}
-              type="submit"
-              disabled={disabledForm}
-          >
-            {post ? "Изменить объявление" : "Выложить объявление"}
-          </button>
-        </form>
-      </section>
-  );
+                    {post ? "Изменить объявление" : "Выложить объявление"}
+                </button>
+            </form>
+        </section>
+    );
 };
 
 export default PostsForm;
