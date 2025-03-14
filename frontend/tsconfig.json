@@ -8,8 +8,9 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowJs": true, // Разрешает использование .js файлов в проекте
-    "checkJs": false // Если хотите, чтобы TypeScript не проверял .js файлы на ошибки типов
+    "allowJs": false,
+    "checkJs": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

@@ -22,7 +22,7 @@ module.exports = () => {
           test: /\.svg$/,
           oneOf: [
             {
-              issuer: /\.[jt]sx?$/, // Для файлов .ts, .tsx, .js и .jsx
+              issuer: /\.[jt]sx?$/,
               use: [
                 {
                   loader: "file-loader",
@@ -33,8 +33,8 @@ module.exports = () => {
               ],
             },
             {
-              issuer: /\.css$/, // Для файлов .css
-              type: "asset/resource", // Обработка SVG как ресурс
+              issuer: /\.css$/,
+              type: "asset/resource",
               generator: {
                 filename: "images/[name].[hash][ext]",
               },
@@ -42,14 +42,7 @@ module.exports = () => {
           ],
         },
         {
-          test: /\.(ts|tsx)$/, // Для обработки .ts и .tsx файлов
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-          },
-        },
-        {
-          test: /\.(js|jsx)$/, // Добавляем обработку для .js и .jsx файлов с JSX
+          test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
@@ -85,7 +78,7 @@ module.exports = () => {
       open: true,
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".js", ".jsx"], // Поддержка .ts, .tsx, .js, .jsx
+      extensions: [".ts", ".tsx"],
     },
   };
 };
