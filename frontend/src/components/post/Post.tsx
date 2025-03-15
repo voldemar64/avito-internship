@@ -22,7 +22,7 @@ const Post: React.FC<PostProps> = ({ post, onCardDelete, onEditButtonClick }) =>
     const currentUser = React.useContext(CurrentUserContext);
     const navigate = useNavigate();
 
-    const isOwn = post.owner === currentUser._id;
+    const isOwn = post.owner === currentUser!._id;
     const cardDeleteButtonClassName = `post__delete-button ${isOwn ? "" : "post__delete-button_hidden"}`;
     const cardEditButtonClassName = `post__edit-button${isOwn ? "" : " post__edit-button_hidden"}`;
 

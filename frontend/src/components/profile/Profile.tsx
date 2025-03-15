@@ -52,25 +52,25 @@ const Profile: React.FC<ProfileProps> = ({ onSubmit, signOut }) => {
 
   useEffect(() => {
     setValues({
-      name: currentUser.name,
-      surname: currentUser.surname,
-      email: currentUser.email,
-      phone: currentUser.phone,
+      name: currentUser!.name,
+      surname: currentUser!.surname,
+      email: currentUser!.email,
+      phone: currentUser!.phone,
     });
-  }, [currentUser]);
+  }, [currentUser!]);
 
   useEffect(() => {
     if (
-        values.name !== currentUser.name ||
-        values.surname !== currentUser.surname ||
-        values.email !== currentUser.email ||
-        values.phone !== currentUser.phone
+        values.name !== currentUser!.name ||
+        values.surname !== currentUser!.surname ||
+        values.email !== currentUser!.email ||
+        values.phone !== currentUser!.phone
     ) {
       setDisabledForm(false);
     } else {
       setDisabledForm(true);
     }
-  }, [values, currentUser]);
+  }, [values, currentUser!]);
 
   function handleSubmit(evt: React.FormEvent) {
     evt.preventDefault();
@@ -87,7 +87,7 @@ const Profile: React.FC<ProfileProps> = ({ onSubmit, signOut }) => {
   return (
       <section className="profile">
         <form className="profile__form" onSubmit={handleSubmit}>
-          <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
+          <h2 className="profile__title">{`Привет, ${currentUser!.name}!`}</h2>
           <div className="profile__input-container">
             <label className="profile__label">Имя</label>
             <input
@@ -95,7 +95,7 @@ const Profile: React.FC<ProfileProps> = ({ onSubmit, signOut }) => {
                 className="profile__input"
                 required
                 type="text"
-                defaultValue={currentUser.name}
+                defaultValue={currentUser!.name}
                 onChange={handleChange}
             />
             {errors.name && <span className="profile__error">{errors.name}</span>}
@@ -107,7 +107,7 @@ const Profile: React.FC<ProfileProps> = ({ onSubmit, signOut }) => {
                 className="profile__input"
                 required
                 type="text"
-                defaultValue={currentUser.surname}
+                defaultValue={currentUser!.surname}
                 onChange={handleChange}
             />
             {errors.surname && (
@@ -121,7 +121,7 @@ const Profile: React.FC<ProfileProps> = ({ onSubmit, signOut }) => {
                 className="profile__input"
                 required
                 type="text"
-                defaultValue={currentUser.email}
+                defaultValue={currentUser!.email}
                 onChange={handleChange}
             />
             {errors.email && (
@@ -135,7 +135,7 @@ const Profile: React.FC<ProfileProps> = ({ onSubmit, signOut }) => {
                 className="profile__input"
                 required
                 type="text"
-                defaultValue={currentUser.phone}
+                defaultValue={currentUser!.phone}
                 onChange={handleChange}
             />
             {errors.phone && (
