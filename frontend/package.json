@@ -1,13 +1,14 @@
 {
   "name": "site_scout",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": "true",
   "homepage": "./",
   "type": "module",
   "scripts": {
-    "start": "webpack serve --env mode=development",
-    "build": "webpack --env mode=production",
+    "dev": "vite",
+    "build": "tsc -b && vite build",
     "lint": "eslint src/**/*.js",
+    "preview": "vite preview",
     "lint:fix": "eslint src/**/*.js --fix",
     "format": "prettier --write .."
   },
@@ -16,8 +17,6 @@
   "license": "ISC",
   "description": "Avito - million dollar profit project",
   "dependencies": {
-    "dotenv": "^16.4.7",
-    "html-webpack-plugin": "^5.6.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
@@ -30,6 +29,9 @@
     "@eslint/js": "^9.17.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "css-loader": "^7.1.2",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
@@ -39,7 +41,8 @@
     "prettier": "^3.4.2",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.2",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2"
   },
   "browserslist": {
     "production": [
