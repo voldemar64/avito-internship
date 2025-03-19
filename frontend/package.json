@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint src/**/*.js",
     "preview": "vite preview",
-    "lint:fix": "eslint src/**/*.js --fix",
+    "lint:fix": "eslint .",
     "format": "prettier --write .."
   },
   "keywords": [],
