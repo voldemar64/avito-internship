@@ -1,41 +1,15 @@
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import prettier from "eslint-plugin-prettier";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
 import typescript from "@typescript-eslint/eslint-plugin";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import parser from "@typescript-eslint/parser";
 
 export default [
-  ...fixupConfigRules(
-    compat.extends(
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended",
-      "plugin:prettier/recommended",
-      "plugin:@typescript-eslint/recommended"
-    )
-  ),
+  js.configs.recommended,
   {
-    parser: "@typescript-eslint/parser",
-    plugins: {
-      react: fixupPluginRules(react),
-      "react-hooks": fixupPluginRules(reactHooks),
-      prettier: fixupPluginRules(prettier),
-      "@typescript-eslint": typescript,
-    },
-
     languageOptions: {
+      parser,
       ecmaVersion: "latest",
       sourceType: "module",
       parserOptions: {
@@ -43,19 +17,89 @@ export default [
           tsx: true,
         },
       },
+      globals: {
+        Element: "readonly",
+        localStorage: "readonly",
+        console: "readonly",
+        HTMLElement: "readonly",
+        MouseEvent: "readonly",
+        HTMLFormElement: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        NodeJS: "readonly",
+        document: "readonly",
+        window: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+      },
     },
-
+    plugins: {
+      react,
+      "react-hooks": reactHooks,
+      prettier,
+      "@typescript-eslint": typescript,
+    },
     settings: {
       react: {
         version: "detect",
       },
     },
-
     rules: {
       "prettier/prettier": "error",
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-unused-vars": ["error"],
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+    },
+  },
+  {
+    languageOptions: {
+      parser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+    },
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: {
+      "@typescript-eslint/explicit-module-boundary-types": "warn",
+    },
+  },
+  {
+    plugins: {
+      react,
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+  {
+    plugins: {
+      "react-hooks": reactHooks,
+    },
+  },
+  {
+    plugins: {
+      prettier,
+    },
+    rules: {
+      "prettier/prettier": "error",
+    },
+  },
+  {
+    plugins: {
+      "@typescript-eslint": typescript,
+    },
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+        },
+      ],
       "@typescript-eslint/explicit-module-boundary-types": "off",
     },
   },

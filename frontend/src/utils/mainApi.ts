@@ -48,12 +48,20 @@ class MainApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось получить информацию о пользователе: ${err}`);
-      return { success: false, message: `Не удалось получить информацию о пользователе: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось получить информацию о пользователе: ${err}`,
+      };
     }
   }
 
   // Обновление информации о пользователе
-  public async patchUserInfo({ name, surname, phone, email }: User): Promise<ApiResponse> {
+  public async patchUserInfo({
+    name,
+    surname,
+    phone,
+    email,
+  }: User): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/users/me`, {
         method: "PATCH",
@@ -63,13 +71,16 @@ class MainApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось обновить информацию о пользователе: ${err}`);
-      return { success: false, message: `Не удалось обновить информацию о пользователе: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось обновить информацию о пользователе: ${err}`,
+      };
     }
   }
 }
 
 const api = new MainApi("http://localhost:5000", {
-  "Accept": "application/json",
+  Accept: "application/json",
   "Content-Type": "application/json",
 });
 

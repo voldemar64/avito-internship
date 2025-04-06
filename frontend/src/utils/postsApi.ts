@@ -54,7 +54,10 @@ class PostsApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось получить начальные посты: ${err}`);
-      return { success: false, message: `Не удалось получить начальные посты: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось получить начальные посты: ${err}`,
+      };
     }
   }
 
@@ -68,7 +71,10 @@ class PostsApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось получить сохраненные посты: ${err}`);
-      return { success: false, message: `Не удалось получить сохраненные посты: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось получить сохраненные посты: ${err}`,
+      };
     }
   }
 
@@ -83,7 +89,10 @@ class PostsApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось добавить новый пост: ${err}`);
-      return { success: false, message: `Не удалось добавить новый пост: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось добавить новый пост: ${err}`,
+      };
     }
   }
 
@@ -127,12 +136,18 @@ class PostsApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось поставить лайк на пост: ${err}`);
-      return { success: false, message: `Не удалось поставить лайк на пост: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось поставить лайк на пост: ${err}`,
+      };
     }
   }
 
   // Снять лайк с поста
-  public async dislikePost(post_id: string, userId: string): Promise<ApiResponse> {
+  public async dislikePost(
+    post_id: string,
+    userId: string,
+  ): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/items/${post_id}/likes`, {
         method: "DELETE",
@@ -142,13 +157,16 @@ class PostsApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось снять лайк с поста: ${err}`);
-      return { success: false, message: `Не удалось снять лайк с поста: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось снять лайк с поста: ${err}`,
+      };
     }
   }
 }
 
 const postsApi = new PostsApi("http://localhost:8080", {
-  "Accept": "application/json",
+  Accept: "application/json",
   "Content-Type": "application/json",
 });
 

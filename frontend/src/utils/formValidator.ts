@@ -28,7 +28,9 @@ export function useForm() {
 type ValidationFunction = (value: string) => string;
 
 // Типизация для хука useFormWithValidation
-export function useFormWithValidation(validationRules: { [key: string]: ValidationFunction }) {
+export function useFormWithValidation(validationRules: {
+  [key: string]: ValidationFunction;
+}) {
   const [values, setValues] = useState<FormValues>({});
   const [errors, setErrors] = useState<FormErrors>({});
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -55,19 +57,23 @@ export function useFormWithValidation(validationRules: { [key: string]: Validati
   useEffect(() => {
     if (targetValue) {
       setIsValid(
-          Boolean(Object.values(errors).every((err) => !err)) &&
+        Boolean(Object.values(errors).every((err) => !err)) &&
           targetValue.closest("form")!.checkValidity(),
       );
     }
   }, [errors, targetValue]);
 
   const resetForm = useCallback(
-      (newValues: FormValues = {}, newErrors: FormErrors = {}, newIsValid: boolean = false) => {
-        setValues(newValues);
-        setErrors(newErrors);
-        setIsValid(newIsValid);
-      },
-      [],
+    (
+      newValues: FormValues = {},
+      newErrors: FormErrors = {},
+      newIsValid: boolean = false,
+    ) => {
+      setValues(newValues);
+      setErrors(newErrors);
+      setIsValid(newIsValid);
+    },
+    [],
   );
 
   return { values, setValues, handleChange, errors, isValid, resetForm };

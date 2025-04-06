@@ -9,7 +9,11 @@ interface HeaderProps {
   windowWidth: () => { width: number };
 }
 
-const Header: React.FC<HeaderProps> = ({ onSideBarOpen, isLogged, windowWidth }) => {
+const Header: React.FC<HeaderProps> = ({
+  onSideBarOpen,
+  isLogged,
+  windowWidth,
+}) => {
   const location = useLocation();
   const { width } = windowWidth();
   const isProfile = location.pathname === "/profile";

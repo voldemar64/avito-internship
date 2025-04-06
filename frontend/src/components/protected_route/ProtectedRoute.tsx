@@ -7,7 +7,11 @@ interface ProtectedRouteProps {
   [key: string]: any; // Тип для остальных пропсов, которые могут быть переданы компоненту
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ component: Component, loggedIn, ...props }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  component: Component,
+  loggedIn,
+  ...props
+}) => {
   return loggedIn ? <Component {...props} /> : <Loader />;
 };
 

@@ -19,13 +19,13 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({
-                                     key,
-                                     card,
-                                     onSave,
-                                     onCardClick,
-                                     onCardDelete,
-                                     onEditButtonClick,
-                                   }) => {
+  key,
+  card,
+  onSave,
+  onCardClick,
+  onCardDelete,
+  onEditButtonClick,
+}) => {
   const currentUser = React.useContext(CurrentUserContext);
 
   const isOwn = card.owner === currentUser!._id;
@@ -51,34 +51,34 @@ const Card: React.FC<CardProps> = ({
   }
 
   return (
-      <li className="card" key={key}>
-        <img
-            src={card.url}
-            alt={card.name}
-            className="card__photo"
-            onClick={handleClick}
-        />
-        <div className="card__description">
-          <h2 className="card__heading">{card.name}</h2>
-          <button
-              type="button"
-              className={cardEditButtonClassName}
-              onClick={handleEditButtonClick}
-          ></button>
-          <div className="card__like-container">
-            <button
-                type="button"
-                className={cardLikeButtonClassName}
-                onClick={handleLikeClick}
-            ></button>
-            <p className="card__like-counter">{card.likes.length}</p>
-          </div>
-        </div>
+    <li className="card" key={key}>
+      <img
+        src={card.url}
+        alt={card.name}
+        className="card__photo"
+        onClick={handleClick}
+      />
+      <div className="card__description">
+        <h2 className="card__heading">{card.name}</h2>
         <button
-            className={cardDeleteButtonClassName}
-            onClick={handleDeleteClick}
+          type="button"
+          className={cardEditButtonClassName}
+          onClick={handleEditButtonClick}
         ></button>
-      </li>
+        <div className="card__like-container">
+          <button
+            type="button"
+            className={cardLikeButtonClassName}
+            onClick={handleLikeClick}
+          ></button>
+          <p className="card__like-counter">{card.likes.length}</p>
+        </div>
+      </div>
+      <button
+        className={cardDeleteButtonClassName}
+        onClick={handleDeleteClick}
+      ></button>
+    </li>
   );
 };
 

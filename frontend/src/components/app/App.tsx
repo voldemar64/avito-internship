@@ -28,457 +28,476 @@ import cross from "../../images/cross.svg";
 
 // Типы состояния
 interface User {
-    _id: string;
-    name: string;
-    surname: string;
-    phone: string;
-    email: string;
+  _id: string;
+  name: string;
+  surname: string;
+  phone: string;
+  email: string;
 }
 
-interface Post {
-    _id: string;
-    name: string;
-    description: string;
-    location: string;
-    url?: string;
-    type: string;
-    likes: string[];
-    [key: string]: any; // Для других полей
+interface PostSchema {
+  _id: string;
+  name: string;
+  description: string;
+  location: string;
+  url?: string;
+  type: string;
+  likes: string[];
+  [key: string]: any; // Для других полей
 }
 
 interface ApiResponse {
-    success: boolean;
-    message?: string;
-    data?: any;
+  success: boolean;
+  message?: string;
+  data?: any;
 }
 
-
 function App() {
-    const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
-    const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState<boolean>(false);
-    const [popupTitle, setPopupTitle] = useState<string>("");
-    const [popupPhoto, setPopupPhoto] = useState<string>("");
+  const [isSideBarOpen, setIsSideBarOpen] = useState<boolean>(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState<boolean>(false);
+  const [popupTitle, setPopupTitle] = useState<string>("");
+  const [popupPhoto, setPopupPhoto] = useState<string>("");
 
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
-    const [tokenChecked, setTokenChecked] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [tokenChecked, setTokenChecked] = useState<boolean>(false);
 
-    const [searchDone, setSearchDone] = useState<boolean>(false);
-    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-    const [selectedEditPost, setSelectedEditPost] = useState<Post | null>(null);
+  const [searchDone, setSearchDone] = useState<boolean>(false);
+  const [selectedPost, setSelectedPost] = useState<PostSchema | null>(null);
+  const [selectedEditPost, setSelectedEditPost] = useState<PostSchema | null>(
+    null,
+  );
 
-    const [listLength, setListLength] = useState<number>(5);
+  const [listLength, setListLength] = useState<number>(5);
 
-    const [localApiPosts, setLocalApiPosts] = useState<Post[]>([]);
-    const [savedPosts, setSavedPosts] = useState<Post[]>([]);
-    const [savedFilteredPosts, setSavedFilteredPosts] = useState<Post[]>([]);
-    const [apiFilteredPosts, setApiFilteredPosts] = useState<Post[]>([]);
+  const [localApiPosts, setLocalApiPosts] = useState<PostSchema[]>([]);
+  const [savedPosts, setSavedPosts] = useState<PostSchema[]>([]);
+  const [savedFilteredPosts, setSavedFilteredPosts] = useState<PostSchema[]>(
+    [],
+  );
+  const [apiFilteredPosts, setApiFilteredPosts] = useState<PostSchema[]>([]);
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const token = localStorage.getItem("jwt");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const token = localStorage.getItem("jwt");
 
-    useEffect(() => {
-        if (token) {
-            mainApi
-                .getUserInfo()
-                .then((res : ApiResponse) => {
-                    if (res) {
-                        setTokenChecked(true);
-                        setCurrentUser(res.data);
-                        setLoggedIn(true);
-                    } else {
-                        setTokenChecked(false);
-                        handleSignOut();
-                    }
-                })
-                .catch((err) => {
-                    setTokenChecked(false);
-                    handleSignOut();
-                    console.log(`Не получается токен: ${err}`);
-                });
-        } else {
+  useEffect(() => {
+    if (token) {
+      mainApi
+        .getUserInfo()
+        .then((res: ApiResponse) => {
+          if (res) {
+            setTokenChecked(true);
+            setCurrentUser(res.data);
+            setLoggedIn(true);
+          } else {
             setTokenChecked(false);
-        }
-    }, [token]);
-
-    useEffect(() => {
-        if (loggedIn) {
-            postsApi
-                .getInitialPosts()
-                .then((res: ApiResponse) => {
-                    localStorage.setItem("posts", JSON.stringify(res.data));
-                    const allPosts = JSON.parse(localStorage.getItem("posts") || "[]");
-                    setLocalApiPosts(allPosts);
-                    setApiFilteredPosts(allPosts);
-                })
-                .catch((err) => console.log(`Ошибка при получении объявлений: ${err}`));
-        }
-    }, [loggedIn]);
-
-    useEffect(() => {
-        if (loggedIn && currentUser && currentUser._id) {
-            postsApi
-                .getSavedPosts(currentUser._id)
-                .then((res : ApiResponse) => {
-                    const likedPosts = res.data.filter((post : Post) =>
-                        post.likes.includes(currentUser._id),
-                    );
-
-                    localStorage.setItem("savedPosts", JSON.stringify(likedPosts));
-                    localStorage.setItem(
-                        "savedFilteredPosts",
-                        JSON.stringify(likedPosts),
-                    );
-
-                    setSavedPosts(likedPosts);
-                    setSavedFilteredPosts(likedPosts);
-                })
-                .catch((err) =>
-                    console.log(`Ошибка при получении сохранённых объявлений: ${err}`),
-                );
-        }
-    }, [loggedIn, currentUser]);
-
-    useEffect(() => {
-        if (selectedEditPost && location.pathname !== "/form") {
-            setSelectedEditPost(null);
-        }
-    }, [location.pathname]);
-
-    function handleRegister(name: string, surname: string, phone: string, email: string, password: string): void {
-        authApi
-            .register({ name, surname, phone, email, password })
-            .then((res: ApiResponse) => {
-                if (res.success) {
-                    setPopupTitle("Вы успешно зарегистрировались!");
-                    setPopupPhoto(tick);
-                    handleLogin(email, password);
-                } else {
-                    setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
-                    setPopupPhoto(cross);
-                }
-            })
-            .catch(() => {
-                setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
-                setPopupPhoto(cross);
-            })
-            .finally(() => setIsInfoTooltipOpen(true));
+            handleSignOut();
+          }
+        })
+        .catch((err) => {
+          setTokenChecked(false);
+          handleSignOut();
+          console.log(`Не получается токен: ${err}`);
+        });
+    } else {
+      setTokenChecked(false);
     }
+  }, [token]);
 
-    function handleLogin(email: string, password: string): void {
-        authApi
-            .authorize({ email, password })
-            .then((res: ApiResponse) => {
-                if (res.success) {
-                    localStorage.setItem("jwt", res.data.token);
-                    setLoggedIn(true);
-                    navigate("/");
-                } else {
-                    setPopupTitle("Что-то пошло не так!:(");
-                    setPopupPhoto(cross);
-                    setIsInfoTooltipOpen(true);
-                }
-            })
-            .catch(() => {
-                setPopupTitle("Что-то пошло не так!:(");
-                setPopupPhoto(cross);
-                setIsInfoTooltipOpen(true);
-            });
+  useEffect(() => {
+    if (loggedIn) {
+      postsApi
+        .getInitialPosts()
+        .then((res: ApiResponse) => {
+          localStorage.setItem("posts", JSON.stringify(res.data));
+          const allPosts = JSON.parse(localStorage.getItem("posts") || "[]");
+          setLocalApiPosts(allPosts);
+          setApiFilteredPosts(allPosts);
+        })
+        .catch((err) => console.log(`Ошибка при получении объявлений: ${err}`));
     }
+  }, [loggedIn]);
 
-    function sendCode(email: string): void {
-        authApi
-            .sendCode({ email })
-            .then((res: ApiResponse) => {
-                if (res.success) {
-                    setPopupTitle("Код отправлен!");
-                    setPopupPhoto(tick);
-                    setIsInfoTooltipOpen(true);
-                } else {
-                    setPopupTitle("Код не отправлен!:(");
-                    setPopupPhoto(cross);
-                    setIsInfoTooltipOpen(true);
-                }
-            })
-            .catch(() => {
-                setPopupTitle("Что-то пошло не так!:(");
-                setPopupPhoto(cross);
-                setIsInfoTooltipOpen(true);
-            });
+  useEffect(() => {
+    if (loggedIn && currentUser && currentUser._id) {
+      postsApi
+        .getSavedPosts(currentUser._id)
+        .then((res: ApiResponse) => {
+          const likedPosts = res.data.filter((post: PostSchema) =>
+            post.likes.includes(currentUser._id),
+          );
+
+          localStorage.setItem("savedPosts", JSON.stringify(likedPosts));
+          localStorage.setItem(
+            "savedFilteredPosts",
+            JSON.stringify(likedPosts),
+          );
+
+          setSavedPosts(likedPosts);
+          setSavedFilteredPosts(likedPosts);
+        })
+        .catch((err) =>
+          console.log(`Ошибка при получении сохранённых объявлений: ${err}`),
+        );
     }
+  }, [loggedIn, currentUser]);
 
-    function handleResetPassword(email: string, password: string, code: string): void {
-        authApi
-            .resetPassword({ email, password, code })
-            .then((res: ApiResponse) => {
-                if (res.success) {
-                    setPopupTitle("Пароль изменён!");
-                    setPopupPhoto(tick);
-                    navigate("/signin");
-                } else {
-                    setPopupTitle("Что-то пошло не так!:(");
-                    setPopupPhoto(cross);
-                    setIsInfoTooltipOpen(true);
-                }
-            })
-            .catch(() => {
-                setPopupTitle("Что-то пошло не так!:(");
-                setPopupPhoto(cross);
-                setIsInfoTooltipOpen(true);
-            })
-            .finally(() => setIsInfoTooltipOpen(true));
+  useEffect(() => {
+    if (selectedEditPost && location.pathname !== "/form") {
+      setSelectedEditPost(null);
     }
+  }, [location.pathname]);
 
-    function handleSignOut(): void {
-        setTokenChecked(false);
-        setLoggedIn(false);
-        setCurrentUser(null);
-        setLocalApiPosts([]);
-        setSavedFilteredPosts([]);
-        setApiFilteredPosts([]);
-        localStorage.removeItem("posts");
-        localStorage.removeItem("filteredPosts");
-        localStorage.removeItem("savedPosts");
-        localStorage.removeItem("savedFilteredPosts");
-        localStorage.removeItem("savedType");
-        localStorage.removeItem("savedSearchValue");
-        localStorage.removeItem("jwt");
-        navigate("/");
-    }
-
-    function handleEditProfile(user: User): void {
-        mainApi
-            .patchUserInfo(user)
-            .then((res: ApiResponse) => {
-                if (res.success) {
-                    setCurrentUser(res.data);
-                    setPopupTitle("Данные пользователя изменены");
-                    setPopupPhoto(tick);
-                    setIsInfoTooltipOpen(true);
-                }
-            })
-            .catch((err: string) => {
-                setPopupTitle(`произошла ошибка: ${err}`);
-                setPopupPhoto(cross);
-                setIsInfoTooltipOpen(true);
-            });
-    }
-
-    function postsTypeFilter(type: string): void {
-        const path = location.pathname;
-        const filteredPosts =
-            path === "/list" || path === "/"
-                ? JSON.parse(localStorage.getItem("filteredPosts") || "[]")
-                : JSON.parse(localStorage.getItem("savedFilteredPosts") || "[]");
-
-        if (type !== "" && filteredPosts) {
-            const posts = filteredPosts.filter((i: Post) => i.type === type);
-            path === "/list" || path === "/"
-                ? setApiFilteredPosts(posts)
-                : setSavedFilteredPosts(posts);
+  function handleRegister(
+    name: string,
+    surname: string,
+    phone: string,
+    email: string,
+    password: string,
+  ): void {
+    authApi
+      .register({ name, surname, phone, email, password })
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          setPopupTitle("Вы успешно зарегистрировались!");
+          setPopupPhoto(tick);
+          handleLogin(email, password);
         } else {
-            path === "/list" || path === "/"
-                ? setApiFilteredPosts(filteredPosts)
-                : setSavedFilteredPosts(filteredPosts);
+          setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
+          setPopupPhoto(cross);
         }
-    }
+      })
+      .catch(() => {
+        setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
+        setPopupPhoto(cross);
+      })
+      .finally(() => setIsInfoTooltipOpen(true));
+  }
 
-    function handleSearch(input: string): void {
-        const path = location.pathname;
-        if ((path === "/list" || path === "/") && localApiPosts) {
-            const filteredSearch =
-                input === ""
-                    ? localApiPosts
-                    : localApiPosts.filter((i: Post) => {
-                        const inputs = input.toLowerCase();
-                        const name = i.name.toLowerCase();
-                        return name.includes(inputs);
-                    });
-
-            localStorage.setItem("filteredPosts", JSON.stringify(filteredSearch));
-
-            setApiFilteredPosts(filteredSearch || localApiPosts);
-            setSearchDone(input !== "");
-        } else if (path === "/saved-list" && savedPosts) {
-            const filteredSearch =
-                input === ""
-                    ? savedPosts
-                    : savedPosts.filter((i: Post) => {
-                        const inputs = input.toLowerCase();
-                        const name = i.name.toLowerCase();
-                        return name.includes(inputs);
-                    });
-
-            localStorage.setItem("savedFilteredPosts", JSON.stringify(filteredSearch));
-
-            setSavedFilteredPosts(filteredSearch || savedPosts);
-            setSearchDone(input !== "");
+  function handleLogin(email: string, password: string): void {
+    authApi
+      .authorize({ email, password })
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          localStorage.setItem("jwt", res.data.token);
+          setLoggedIn(true);
+          navigate("/");
         } else {
-            console.log("Нет данных для поиска");
+          setPopupTitle("Что-то пошло не так!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
         }
-    }
+      })
+      .catch(() => {
+        setPopupTitle("Что-то пошло не так!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
+  }
 
-    function handleAddPost(card: Post): void {
-        postsApi
-            .addNewPost(card)
-            .then((res : ApiResponse) => {
-                if (res.success) {
-                    localStorage.setItem(
-                        "posts",
-                        JSON.stringify([res.data, ...localApiPosts]),
-                    );
-                    const allPosts = JSON.parse(localStorage.getItem("posts") || "[]");
-                    setLocalApiPosts(allPosts);
-                    setApiFilteredPosts(allPosts);
-                    setPopupTitle("Пост добавлен!");
-                    setPopupPhoto(tick);
-                    setIsInfoTooltipOpen(true);
-                } else {
-                    setPopupTitle("Пост не добавился!:(");
-                    setPopupPhoto(cross);
-                    setIsInfoTooltipOpen(true);
-                }
-            })
-            .catch(() => {
-                setPopupTitle("Пост не добавился!:(");
-                setPopupPhoto(cross);
-                setIsInfoTooltipOpen(true);
-            });
-
-        navigate("/list");
-    }
-
-    function handleEditPost(card_id: string, card: Post): void {
-        postsApi
-            .patchPost(card_id, card)
-            .then((res : ApiResponse) => {
-                if (res.success) {
-                    const updatedPosts = localApiPosts.map((post: Post) =>
-                        post._id === res.data._id ? res.data : post,
-                    );
-
-                    localStorage.setItem("posts", JSON.stringify(updatedPosts));
-                    setLocalApiPosts(updatedPosts);
-                    setApiFilteredPosts(updatedPosts);
-                    setPopupTitle("Пост обновлён!");
-                    setPopupPhoto(tick);
-                    setIsInfoTooltipOpen(true);
-                } else {
-                    setPopupTitle("Пост не обновился!:(");
-                    setPopupPhoto(cross);
-                    setIsInfoTooltipOpen(true);
-                }
-            })
-            .catch(() => {
-                setPopupTitle("Пост не обновился!:(");
-                setPopupPhoto(cross);
-                setIsInfoTooltipOpen(true);
-            });
-
-        navigate("/list");
-    }
-
-    function handleItemDelete(card: Post): void {
-        postsApi
-            .deletePost(card._id)
-            .then(() => {
-                setLocalApiPosts((cards: Post[]) =>
-                    cards.filter((c: Post) => c._id !== card._id),
-                );
-                setApiFilteredPosts((cards: Post[]) =>
-                    cards.filter((c: Post) => c._id !== card._id),
-                );
-            })
-            .catch((err: string) => {
-                console.log(`карточка не удаляется: ${err}`);
-            });
-    }
-
-    function handlePostLike(post: Post): void {
-        const liked = savedPosts.some((i: Post) => post._id === i._id);
-
-        if (!liked) {
-            postsApi
-                .likePost(post._id, currentUser!._id)
-                .then((res : ApiResponse) => {
-                    const newSavedPosts = [...savedFilteredPosts, res.data];
-
-                    setSavedPosts(newSavedPosts);
-                    setSavedFilteredPosts(newSavedPosts);
-                    setLocalApiPosts((state: Post[]) =>
-                        state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
-                    );
-                    setApiFilteredPosts((state: Post[]) =>
-                        state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
-                    );
-
-                    localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
-                    localStorage.setItem(
-                        "savedFilteredPosts",
-                        JSON.stringify(newSavedPosts),
-                    );
-                })
-                .catch((err: string) => console.error(`Ошибка при лайке: ${err}`));
+  function sendCode(email: string): void {
+    authApi
+      .sendCode({ email })
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          setPopupTitle("Код отправлен!");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
         } else {
-            handlePostDislike(post);
+          setPopupTitle("Код не отправлен!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
         }
-    }
+      })
+      .catch(() => {
+        setPopupTitle("Что-то пошло не так!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
+  }
 
-    function handlePostDislike(post: Post): void {
-        postsApi
-            .dislikePost(post._id, currentUser!._id)
-            .then((res : ApiResponse) => {
-                const newSavedPosts = savedPosts.filter(
-                    (i: Post) => i._id !== res.data._id,
-                );
-
-                setSavedPosts(newSavedPosts);
-                setSavedFilteredPosts(newSavedPosts);
-                setLocalApiPosts((state: Post[]) =>
-                    state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
-                );
-                setApiFilteredPosts((state: Post[]) =>
-                    state.map((p: Post) => (p._id === res.data._id ? res.data : p)),
-                );
-
-                localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
-                localStorage.setItem(
-                    "savedFilteredPosts",
-                    JSON.stringify(newSavedPosts),
-                );
-            })
-            .catch((err: string) => console.error(`Ошибка при дизлайке: ${err}`));
-    }
-
-    function addPosts(): void {
-        setListLength((prev) => prev + 5);
-    }
-
-    function handleInfoTooltip(): void {
-        setIsInfoTooltipOpen(false);
-    }
-
-    function handleOverlayClick(e: React.MouseEvent): void {
-        if ((e.target as HTMLElement).classList.contains("popup")) {
-            handleInfoTooltip();
+  function handleResetPassword(
+    email: string,
+    password: string,
+    code: string,
+  ): void {
+    authApi
+      .resetPassword({ email, password, code })
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          setPopupTitle("Пароль изменён!");
+          setPopupPhoto(tick);
+          navigate("/signin");
+        } else {
+          setPopupTitle("Что-то пошло не так!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
         }
-    }
+      })
+      .catch(() => {
+        setPopupTitle("Что-то пошло не так!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      })
+      .finally(() => setIsInfoTooltipOpen(true));
+  }
 
-    function handleItemClick(item: Post): void {
-        setSelectedPost(item);
-        navigate(`/list/${item._id}`);
-    }
+  function handleSignOut(): void {
+    setTokenChecked(false);
+    setLoggedIn(false);
+    setCurrentUser(null);
+    setLocalApiPosts([]);
+    setSavedFilteredPosts([]);
+    setApiFilteredPosts([]);
+    localStorage.removeItem("posts");
+    localStorage.removeItem("filteredPosts");
+    localStorage.removeItem("savedPosts");
+    localStorage.removeItem("savedFilteredPosts");
+    localStorage.removeItem("savedType");
+    localStorage.removeItem("savedSearchValue");
+    localStorage.removeItem("jwt");
+    navigate("/");
+  }
 
-    function handleEditButtonClick(item: Post): void {
-        setSelectedEditPost(item);
-        navigate("/form");
-    }
+  function handleEditProfile(user: User): void {
+    mainApi
+      .patchUserInfo(user)
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          setCurrentUser(res.data);
+          setPopupTitle("Данные пользователя изменены");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
+        }
+      })
+      .catch((err: string) => {
+        setPopupTitle(`произошла ошибка: ${err}`);
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
+  }
 
-    function handleSideBar(): void {
-        setIsSideBarOpen(!isSideBarOpen);
-    }
+  function postsTypeFilter(type: string): void {
+    const path = location.pathname;
+    const filteredPosts =
+      path === "/list" || path === "/"
+        ? JSON.parse(localStorage.getItem("filteredPosts") || "[]")
+        : JSON.parse(localStorage.getItem("savedFilteredPosts") || "[]");
 
+    if (type !== "" && filteredPosts) {
+      const posts = filteredPosts.filter((i: PostSchema) => i.type === type);
+      path === "/list" || path === "/"
+        ? setApiFilteredPosts(posts)
+        : setSavedFilteredPosts(posts);
+    } else {
+      path === "/list" || path === "/"
+        ? setApiFilteredPosts(filteredPosts)
+        : setSavedFilteredPosts(filteredPosts);
+    }
+  }
+
+  function handleSearch(input: string): void {
+    const path = location.pathname;
+    if ((path === "/list" || path === "/") && localApiPosts) {
+      const filteredSearch =
+        input === ""
+          ? localApiPosts
+          : localApiPosts.filter((i: PostSchema) => {
+              const inputs = input.toLowerCase();
+              const name = i.name.toLowerCase();
+              return name.includes(inputs);
+            });
+
+      localStorage.setItem("filteredPosts", JSON.stringify(filteredSearch));
+
+      setApiFilteredPosts(filteredSearch || localApiPosts);
+      setSearchDone(input !== "");
+    } else if (path === "/saved-list" && savedPosts) {
+      const filteredSearch =
+        input === ""
+          ? savedPosts
+          : savedPosts.filter((i: PostSchema) => {
+              const inputs = input.toLowerCase();
+              const name = i.name.toLowerCase();
+              return name.includes(inputs);
+            });
+
+      localStorage.setItem(
+        "savedFilteredPosts",
+        JSON.stringify(filteredSearch),
+      );
+
+      setSavedFilteredPosts(filteredSearch || savedPosts);
+      setSearchDone(input !== "");
+    } else {
+      console.log("Нет данных для поиска");
+    }
+  }
+
+  function handleAddPost(card: PostSchema): void {
+    postsApi
+      .addNewPost(card)
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          localStorage.setItem(
+            "posts",
+            JSON.stringify([res.data, ...localApiPosts]),
+          );
+          const allPosts = JSON.parse(localStorage.getItem("posts") || "[]");
+          setLocalApiPosts(allPosts);
+          setApiFilteredPosts(allPosts);
+          setPopupTitle("Пост добавлен!");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setPopupTitle("Пост не добавился!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
+        }
+      })
+      .catch(() => {
+        setPopupTitle("Пост не добавился!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
+
+    navigate("/list");
+  }
+
+  function handleEditPost(card_id: string, card: PostSchema): void {
+    postsApi
+      .patchPost(card_id, card)
+      .then((res: ApiResponse) => {
+        if (res.success) {
+          const updatedPosts = localApiPosts.map((post: PostSchema) =>
+            post._id === res.data._id ? res.data : post,
+          );
+
+          localStorage.setItem("posts", JSON.stringify(updatedPosts));
+          setLocalApiPosts(updatedPosts);
+          setApiFilteredPosts(updatedPosts);
+          setPopupTitle("Пост обновлён!");
+          setPopupPhoto(tick);
+          setIsInfoTooltipOpen(true);
+        } else {
+          setPopupTitle("Пост не обновился!:(");
+          setPopupPhoto(cross);
+          setIsInfoTooltipOpen(true);
+        }
+      })
+      .catch(() => {
+        setPopupTitle("Пост не обновился!:(");
+        setPopupPhoto(cross);
+        setIsInfoTooltipOpen(true);
+      });
+
+    navigate("/list");
+  }
+
+  function handleItemDelete(card: PostSchema): void {
+    postsApi
+      .deletePost(card._id)
+      .then(() => {
+        setLocalApiPosts((cards: PostSchema[]) =>
+          cards.filter((c: PostSchema) => c._id !== card._id),
+        );
+        setApiFilteredPosts((cards: PostSchema[]) =>
+          cards.filter((c: PostSchema) => c._id !== card._id),
+        );
+      })
+      .catch((err: string) => {
+        console.log(`карточка не удаляется: ${err}`);
+      });
+  }
+
+  function handlePostLike(post: PostSchema): void {
+    const liked = savedPosts.some((i: PostSchema) => post._id === i._id);
+
+    if (!liked) {
+      postsApi
+        .likePost(post._id, currentUser!._id)
+        .then((res: ApiResponse) => {
+          const newSavedPosts = [...savedFilteredPosts, res.data];
+
+          setSavedPosts(newSavedPosts);
+          setSavedFilteredPosts(newSavedPosts);
+          setLocalApiPosts((state: PostSchema[]) =>
+            state.map((p: PostSchema) =>
+              p._id === res.data._id ? res.data : p,
+            ),
+          );
+          setApiFilteredPosts((state: PostSchema[]) =>
+            state.map((p: PostSchema) =>
+              p._id === res.data._id ? res.data : p,
+            ),
+          );
+
+          localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
+          localStorage.setItem(
+            "savedFilteredPosts",
+            JSON.stringify(newSavedPosts),
+          );
+        })
+        .catch((err: string) => console.error(`Ошибка при лайке: ${err}`));
+    } else {
+      handlePostDislike(post);
+    }
+  }
+
+  function handlePostDislike(post: PostSchema): void {
+    postsApi
+      .dislikePost(post._id, currentUser!._id)
+      .then((res: ApiResponse) => {
+        const newSavedPosts = savedPosts.filter(
+          (i: PostSchema) => i._id !== res.data._id,
+        );
+
+        setSavedPosts(newSavedPosts);
+        setSavedFilteredPosts(newSavedPosts);
+        setLocalApiPosts((state: PostSchema[]) =>
+          state.map((p: PostSchema) => (p._id === res.data._id ? res.data : p)),
+        );
+        setApiFilteredPosts((state: PostSchema[]) =>
+          state.map((p: PostSchema) => (p._id === res.data._id ? res.data : p)),
+        );
+
+        localStorage.setItem("savedPosts", JSON.stringify(newSavedPosts));
+        localStorage.setItem(
+          "savedFilteredPosts",
+          JSON.stringify(newSavedPosts),
+        );
+      })
+      .catch((err: string) => console.error(`Ошибка при дизлайке: ${err}`));
+  }
+
+  function addPosts(): void {
+    setListLength((prev) => prev + 5);
+  }
+
+  function handleInfoTooltip(): void {
+    setIsInfoTooltipOpen(false);
+  }
+
+  function handleOverlayClick(e: React.MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains("popup")) {
+      handleInfoTooltip();
+    }
+  }
+
+  function handleItemClick(item: PostSchema): void {
+    setSelectedPost(item);
+    navigate(`/list/${item._id}`);
+  }
+
+  function handleEditButtonClick(item: PostSchema): void {
+    setSelectedEditPost(item);
+    navigate("/form");
+  }
+
+  function handleSideBar(): void {
+    setIsSideBarOpen(!isSideBarOpen);
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser!}>

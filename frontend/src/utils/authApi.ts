@@ -54,7 +54,13 @@ class AuthApi {
   }
 
   // Регистрация нового пользователя
-  public async register({ name, surname, phone, email, password }: RegisterRequest): Promise<ApiResponse> {
+  public async register({
+    name,
+    surname,
+    phone,
+    email,
+    password,
+  }: RegisterRequest): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/signup`, {
         method: "POST",
@@ -64,12 +70,18 @@ class AuthApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось зарегистрироваться: ${err}`);
-      return { success: false, message: `Не удалось зарегистрироваться: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось зарегистрироваться: ${err}`,
+      };
     }
   }
 
   // Авторизация пользователя
-  public async authorize({ email, password }: LoginRequest): Promise<ApiResponse> {
+  public async authorize({
+    email,
+    password,
+  }: LoginRequest): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/signin`, {
         method: "POST",
@@ -94,12 +106,19 @@ class AuthApi {
       return this._handleRes(res);
     } catch (err) {
       console.log(`Не удалось подтвердить почту: ${err}`);
-      return { success: false, message: `Не удалось подтвердить почту: ${err}` };
+      return {
+        success: false,
+        message: `Не удалось подтвердить почту: ${err}`,
+      };
     }
   }
 
   // Сброс пароля
-  public async resetPassword({ email, password, code }: ResetPasswordRequest): Promise<ApiResponse> {
+  public async resetPassword({
+    email,
+    password,
+    code,
+  }: ResetPasswordRequest): Promise<ApiResponse> {
     try {
       const res = await fetch(`${this._baseUrl}/reset-password`, {
         method: "POST",
@@ -115,7 +134,7 @@ class AuthApi {
 }
 
 const authApi = new AuthApi("http://localhost:5000", {
-  "Accept": "application/json",
+  Accept: "application/json",
   "Content-Type": "application/json",
 });
 

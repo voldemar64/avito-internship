@@ -9,28 +9,32 @@ import AboutMe from "../about_me/AboutMe";
 import Cities from "../cities/Cities";
 
 interface MainProps {
-    isLogged: boolean;
-    postsTypeFilter: (type: string) => void;
-    handleSearch: (value: string) => void;
+  isLogged: boolean;
+  postsTypeFilter: (type: string) => void;
+  handleSearch: (value: string) => void;
 }
 
-const Main: React.FC<MainProps> = ({ isLogged, postsTypeFilter, handleSearch }) => {
-    return (
-        <>
-            <AboutProject />
-            <Search
-                isLogged={isLogged}
-                postsTypeFilter={postsTypeFilter}
-                handleSearch={handleSearch}
-            />
-            <Benefits />
-            <Sources />
-            <Conversation />
-            <MassMedia />
-            <AboutMe />
-            <Cities />
-        </>
-    );
+const Main: React.FC<MainProps> = ({
+  isLogged,
+  postsTypeFilter,
+  handleSearch,
+}) => {
+  return (
+    <>
+      <AboutProject />
+      <Search
+        isLogged={isLogged}
+        postsTypeFilter={postsTypeFilter}
+        handleSearch={handleSearch}
+      />
+      <Benefits />
+      <Sources />
+      <Conversation />
+      <MassMedia />
+      <AboutMe />
+      <Cities />
+    </>
+  );
 };
 
 export default Main;

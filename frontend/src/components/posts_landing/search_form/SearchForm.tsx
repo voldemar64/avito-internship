@@ -8,7 +8,11 @@ interface SearchFormProps {
   enabled: boolean;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({ postsTypeFilter, handleSearch, enabled }) => {
+const SearchForm: React.FC<SearchFormProps> = ({
+  postsTypeFilter,
+  handleSearch,
+  enabled,
+}) => {
   const localStorageValue = localStorage.getItem("savedSearchValue");
   const localType = localStorage.getItem("savedType");
 
@@ -42,36 +46,36 @@ const SearchForm: React.FC<SearchFormProps> = ({ postsTypeFilter, handleSearch, 
   }
 
   return (
-      <section className="search-form">
-        <form
-            className="search-form__container"
-            onSubmit={(e) => handleSubmitForm(e)}
-        >
-          <input
-              className="search-form__input"
-              placeholder="Объявление"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              disabled={!enabled}
-          />
-          <button className="search-form__button" />
-        </form>
-        <select
-            className={selectClassName}
-            value={selectedType}
-            onChange={(e) => {
-              setSelectedType(e.target.value);
-              postsTypeFilter(e.target.value);
-            }}
-            disabled={!enabled}
-        >
-          <option value="">Тип объявления</option>
-          <option value="Авто">Авто</option>
-          <option value="Недвижимость">Недвижимость</option>
-          <option value="Услуги">Услуги</option>
-        </select>
-      </section>
+    <section className="search-form">
+      <form
+        className="search-form__container"
+        onSubmit={(e) => handleSubmitForm(e)}
+      >
+        <input
+          className="search-form__input"
+          placeholder="Объявление"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={!enabled}
+        />
+        <button className="search-form__button" />
+      </form>
+      <select
+        className={selectClassName}
+        value={selectedType}
+        onChange={(e) => {
+          setSelectedType(e.target.value);
+          postsTypeFilter(e.target.value);
+        }}
+        disabled={!enabled}
+      >
+        <option value="">Тип объявления</option>
+        <option value="Авто">Авто</option>
+        <option value="Недвижимость">Недвижимость</option>
+        <option value="Услуги">Услуги</option>
+      </select>
+    </section>
   );
-}
+};
 
 export default SearchForm;
