@@ -1,5 +1,6 @@
 import "./InfoTooltip.css";
 import React from "react";
+import defaultImage from "../../images/cross.svg"
 
 // Типизация пропсов компонента
 interface InfoTooltipProps {
@@ -27,7 +28,7 @@ const InfoTooltip: React.FC<InfoTooltipProps> = ({ isOpen, onClose, onOverlayCli
           onClick={onOverlayClick}
       >
         <div className="popup__container">
-          <img src={photo} alt="Картинка" className="popup__photo" />
+          <img src={photo || defaultImage} alt="Картинка" className="popup__photo" />
           <h2 className="popup__title popup__title_info">{title}</h2>
           <button
               type="button"
