@@ -1,6 +1,6 @@
 import "./AboutProject.css";
 import React from "react";
-import estatePath from "../../../images/estate.jpg";
+import estatePath from "../../../images/estate.webp";
 import yandexPath from "../../../images/yandex.svg";
 import starsPath from "../../../images/stars.svg";
 import stickerWinkPath from "../../../images/wink_sticker.svg";

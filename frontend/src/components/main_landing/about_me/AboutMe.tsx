@@ -1,6 +1,6 @@
 import "./AboutMe.css";
 import React from "react";
-import avatarPath from "../../../images/avatar.jpg";
+import avatarPath from "../../../images/avatar.webp";
 
 const AboutMe: React.FC = () => {
     return (
