@@ -114,7 +114,7 @@ class AuthApi {
   }
 }
 
-const authApi = new AuthApi("https://auth.voldemar-avito.ru", {
+const authApi = new AuthApi("http://localhost:5000", {
   "Accept": "application/json",
   "Content-Type": "application/json",
 });
