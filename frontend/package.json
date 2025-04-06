@@ -20,7 +20,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "vite-plugin-dts": "^4.5.3"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.26.0",

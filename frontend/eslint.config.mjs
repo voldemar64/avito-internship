@@ -40,7 +40,7 @@ export default [
       sourceType: "module",
       parserOptions: {
         ecmaFeatures: {
-          jsx: true,
+          tsx: true,
         },
       },
     },
